@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<head>
+<link href="/static/css/bootstrap3.3.7.min.css" rel="stylesheet"  th:href="@{/static/css/bootstrap3.3.7.min.css}"/>
+</head>
+<body>
+	<div id="zhongxin" align="center">
+		<hr />
+		<form action="system/manager_edit" name="myForm" id="myForm" method="post">
+			<fieldset>
+				<legend>修改</legend>
+				<table>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">角色</label>
+						</td>
+						<td>
+							<input type="hidden" name="id" id="id" />
+							<input type="hidden" name="accountStatus" id="accountStatus" />
+							<select name="userRoleId" id="userRoleId" class="form-control">
+								<option value="">请选择角色</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">部门</label>
+						</td>
+					   	<td>
+						   	<select name="departmentId" id="departmentId" class="form-control">
+								<option value="">请选择部门</option>
+							</select>
+					   	</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">公司</label>
+						</td>
+					  	<td>
+						  	<select name="companyId" id="companyId" class="form-control">
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">用户名</label>
+						</td>
+						<td>
+							<input name="loginName" id="loginName" maxlength="32" class="form-control" readonly="readonly" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">工号</label>
+						</td>
+						<td>
+							<input name="userWorkNumber" id="userWorkNumber" maxlength="32" class="form-control" readonly="readonly" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">姓名</label>
+						</td>
+						<td>
+							<input name="userName" id="userName" maxlength="10" class="form-control" required="required" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">手机号</label>
+						</td>
+						<td>
+							<input name="userPhone" id="userPhone" maxlength="11" class="form-control" required="required" onkeyup="value=value.replace(/[^\d]/,'')" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">QQ</label>
+						</td>
+						<td>
+							<input name="userQq" id="userQq" maxlength="20" class="form-control" onkeyup="value=value.replace(/[^\d]/,'')" />
+						</td>
+					</tr>
+				</table>
+				<label class="col-sm-2 control-label"><input id="open" onclick="setStatus(0);" type="radio"><span class="lbl">正常</span></label>
+				<label class="col-sm-2 control-label"><input id="close" onclick="setStatus(1);" type="radio"><span class="lbl">停用</span></label>
+			</fieldset>
+		</form>
+		<div>
+			<a class="btn btn-mini btn-primary" id="saveButton">保存</a>
+			<a class="btn btn-mini btn-danger" onclick="top.Dialog.close()">取消</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var contextPath="[[@{/}]]";
+		$(top.hangge());
+		$("#saveButton").unbind();
+		$("#saveButton").bind("click",function(){
+			if($("#name").val()==""){
+				$("#name").tips({
+					side:3,
+		            msg:"输入姓名",
+		            bg:"#AE81FF",
+		            time:2
+		        });
+				$("#name").focus();
+				return false;
+			}
+			if($("#PHONE").val()==""){
+				$("#PHONE").tips({
+					side:3,
+		            msg:"输入手机号",
+		            bg:"#AE81FF",
+		            time:2
+		        });
+				$("#PHONE").focus();
+				return false;
+			}
+			$.ajax({
+        		url : contextPath+"system/manager_update_ajax",
+        		type : "POST",
+				dataType : "json",
+				data : $("#myForm").serialize(),
+				success : function(jsonObject) {
+					if(jsonObject.status == "2000"){
+						Dialog.alert(jsonObject.message,function(){
+							Dialog.close();
+						});
+					}else{
+						Dialog.alert(jsonObject.message);
+					}
+				}
+			});
+		});
+		
+		var id = [[${id}]];
+		function getAllMessage(){
+			$.post(contextPath+"system/manager_detail_ajax",{"id":id},function(jsonObject){
+				var manager = jsonObject.data.manager;
+				$("#id").val(manager.id);
+				$("#accountStatus").val(manager.accountStatus);
+				manager.accountStatus == 0 ? $("#open").attr("checked",true) : $("#close").attr("checked",true);
+				$("#loginName").val(manager.loginName);
+				$("#userName").val(manager.userName);
+				$("#userWorkNumber").val(manager.userWorkNumber);
+				$("#userPhone").val(manager.userPhone);
+				$("#userRoleId").val(manager.userRoleId);
+				$("#companyId").val(manager.companyId);
+				$("#departmentId").val(manager.departmentId);
+				$("#userQq").val(manager.userQq);
+			});
+		}
+		
+		function getList(){
+			//角色列表
+			$.post(contextPath+"system/role_list_ajax",{},function(jsonObject){
+				var roleList = jsonObject.data;
+				$.each(roleList,function(i){
+					$("#userRoleId").append("<option value='"+roleList[i].id+"'>"+roleList[i].roleName+"</option>");
+				});
+				//部门列表
+				$.post(contextPath+"system/department_list_ajax",{},function(jsonObject){
+					var departmentList = jsonObject.data;
+					$.each(departmentList,function(i){
+						$("#departmentId").append("<option value='"+departmentList[i].id+"'>"+departmentList[i].departmentName+"</option>");
+					});
+					//公司列表
+					$.post(contextPath+"system/company_list_ajax",{},function(jsonObject){
+						var companyList = jsonObject.data;
+						$.each(companyList,function(i){
+							$("#companyId").append("<option value='"+companyList[i].id+"'>"+companyList[i].companyName+"</option>");
+						});
+						getAllMessage();
+					});
+				});
+			});
+		}
+		getList();
+		
+		function setStatus(value){
+			$("#accountStatus").val(value);
+			if(value == 0){
+				$("#open").attr("checked", true);
+				$("#close").attr("checked", false);
+			}else if(value == 1){
+				$("#open").attr("checked", false);
+				$("#close").attr("checked", true);
+			}
+		}
+	</script>
+</body>
+</html>

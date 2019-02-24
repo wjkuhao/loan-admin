@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<head>
+    <link href="/static/css/bootstrap3.3.7.min.css" rel="stylesheet" th:href="@{/static/css/bootstrap3.3.7.min.css}"/>
+    <style type="text/css">
+        .hlb {
+            display: none;
+        }
+
+        .fy {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="zhongxin" align="center">
+    <hr/>
+    <form name="myForm" id="myForm">
+        <fieldset>
+            <legend>修改</legend>
+        </fieldset>
+        <table>
+            <tr>
+                <label class="my_label_checkbox" style="margin-right: 20px"><input id="pay" type="checkbox" onclick="payChecked()"/><span
+                        class="lbl"></span>放款</label>
+                <label class="my_label_checkbox"><input id="repay" type="checkbox" onclick="repayChecked()"/><span
+                        class="lbl"></span>还款</label>
+                <td>
+                    <input name="hlb_id" id="hlb_id"  type="hidden"/>
+                    <input name="hlb_rsa_private_key" id="hlb_rsa_private_key"  type="hidden"/>
+                    <input name="fuyou_merid" id="fuyou_merid"  type="hidden"/>
+                    <input name="fuyou_secureid" id="fuyou_secureid"  type="hidden"/>
+                    <input name="fuyou_h5key" id="fuyou_h5key"  type="hidden"/>
+                    <label class="col-sm-2 control-label">汇聚id</label>
+                </td>
+                <td>
+                    <input name="huiju_id" id="huiju_id" maxlength="30" class="form-control" required="required"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="col-sm-2 control-label">汇聚md5私钥</label>
+                </td>
+                <td>
+                    <textarea name="huiju_md5_key" id="huiju_md5_key" class="form-control"
+                              style="resize:none; width: 300px; height: 300px;" required="required"></textarea>
+                </td>
+            </tr>
+        </table>
+    </form>
+    <div>
+        <a class="btn btn-mini btn-primary" id="saveButton">保存</a>
+        <a class="btn btn-mini btn-danger" onclick="top.Dialog.close()">取消</a>
+    </div>
+</div>
+<script type="text/javascript">
+    var contextPath = "[[@{/}]]";
+    var merchantAlias = '[[${merchantAlias}]]';
+    var merchantChannels;
+    function payChecked() {
+        if ($("#pay").prop("checked")) {
+            merchantChannels.huiju.pay = 1;
+        } else {
+            merchantChannels.huiju.pay = 0;
+        }
+    }
+
+    function repayChecked() {
+        if ($("#repay").prop("checked")) {
+            merchantChannels.huiju.repay = 1;
+        } else {
+            merchantChannels.huiju.repay = 0;
+        }
+    }
+    $("#saveButton").unbind();
+
+    $("#saveButton").bind("click", function () {
+        var huiju_id = $("#huiju_id").val();
+        var huiju_md5_key = $("#huiju_md5_key").val();
+        if ($("#pay").prop("checked")) {
+            if (huiju_id == "") {
+                $("#huiju_id").tips({
+                    side: 3,
+                    msg: "请输入汇聚商编",
+                    bg: "#AE81FF",
+                    time: 2
+                });
+                $("#huiju_id").focus();
+                return false;
+            }
+            if (huiju_md5_key == "") {
+                $("#huiju_md5_key").tips({
+                    side: 3,
+                    msg: "请输入汇聚md5私钥",
+                    bg: "#AE81FF",
+                    time: 2
+                });
+                $("#huiju_md5_key").focus();
+                return false;
+            }
+        }
+        if ($("#repay").prop("checked")) {
+            if (huiju_id == "") {
+                $("#huiju_id").tips({
+                    side: 3,
+                    msg: "请输入汇聚商编",
+                    bg: "#AE81FF",
+                    time: 2
+                });
+                $("#huiju_id").focus();
+                return false;
+            }
+            if (huiju_md5_key == "") {
+                $("#huiju_md5_key").tips({
+                    side: 3,
+                    msg: "请输入汇聚md5私钥",
+                    bg: "#AE81FF",
+                    time: 2
+                });
+                $("#huiju_md5_key").focus();
+                return false;
+            }
+        }
+
+
+        var myTable = $("#myForm").serialize() + "&merchantChannels=" + JSON.stringify(merchantChannels) + "&merchantAlias=" + merchantAlias;
+        $.ajax({
+            url: contextPath + "merchant/edit_merchant_channel_ajax",
+            type: "POST",
+            dataType: "json",
+            data: myTable,
+            success: function (data) {
+                if (data.status == 2000) {
+                    Dialog.alert("操作成功", function () {
+                        Dialog.close();
+                    });
+                } else {
+                    Dialog.alert(data.message);
+                }
+            }
+        });
+    });
+
+    function getAllMessage() {
+        $.post(contextPath + "merchant/find_merchant_channel_ajax", {"merchantAlias": merchantAlias}, function (data) {
+            var obj = data.data;
+            $("#fuyou_merid").val(obj.fuyou_merid);
+            $("#fuyou_secureid").val(obj.fuyou_secureid);
+            $("#fuyou_h5key").val(obj.fuyou_h5key);
+            $("#hlb_id").val(obj.hlb_id);
+            $("#hlb_rsa_private_key").val(obj.hlb_rsa_private_key);
+            $("#huiju_id").val(obj.huiju_id);
+            $("#huiju_md5_key").val(obj.huiju_md5_key);
+            merchantChannels = JSON.parse(obj.merchantChannel);
+            if (merchantChannels == null) {
+                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}}");
+                $("#pay").prop('checked', false);
+                $("#repay").prop('checked', false);
+            }
+            if (merchantChannels.huiju == undefined) {
+                if (merchantChannels.helibao == 1 && merchantChannels.fuyou == 1) {
+                    merchantChannels = JSON.parse("{\"helibao\":{\"pay\":1,\"repay\":1},\"fuyou\":{\"pay\":1,\"repay\":1},\"huiju\":{\"pay\":0,\"repay\":0}}");
+                    $("#pay").prop('checked', false);
+                    $("#repay").prop('checked', false);
+                }
+                if (merchantChannels.helibao == 0 && merchantChannels.fuyou == 1) {
+                    merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":1,\"repay\":1},\"huiju\":{\"pay\":0,\"repay\":0}}");
+                    $("#pay").prop('checked', false);
+                    $("#repay").prop('checked', false);
+                }
+                if (merchantChannels.helibao == 1 && merchantChannels.fuyou == 0) {
+                    merchantChannels = JSON.parse("{\"helibao\":{\"pay\":1,\"repay\":1},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}}");
+                    $("#pay").prop('checked', false);
+                    $("#repay").prop('checked', false);
+                }
+                if (merchantChannels.helibao == 0 && merchantChannels.fuyou == 0) {
+                    merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}}");
+                    $("#pay").prop('checked', false);
+                    $("#repay").prop('checked', false);
+                }
+                if (merchantChannels.helibao != null && merchantChannels.fuyou != null) {
+                    merchantChannels.huiju = JSON.parse("{\"pay\":0,\"repay\":0}");
+                    $("#pay").prop('checked', false);
+                    $("#repay").prop('checked', false);
+                }
+
+
+
+            }
+            if (merchantChannels.huiju != undefined && merchantChannels.huiju.pay != null) {
+                if (merchantChannels.huiju.pay == 1) {
+                    $("#pay").prop('checked', true);
+                } else {
+                    $("#pay").prop('checked', false);
+                }
+                if (merchantChannels.huiju.repay == 1) {
+                    $("#repay").prop('checked', true);
+                } else {
+                    $("#repay").prop('checked', false);
+                }
+            }
+
+        });
+    }
+    getAllMessage();
+</script>
+</body>
+</html>

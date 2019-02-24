@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.mod.loan.mapper.ManagerMapper" >
+	<resultMap id="BaseResultMap" type="com.mod.loan.model.Manager" >
+    <!--
+      WARNING - @mbg.generated
+    -->
+	    <id column="id" property="id" jdbcType="BIGINT" />
+	    <result column="login_name" property="loginName" jdbcType="VARCHAR" />
+	    <result column="login_password" property="loginPassword" jdbcType="VARCHAR" />
+	    <result column="user_role_id" property="userRoleId" jdbcType="BIGINT" />
+	    <result column="user_phone" property="userPhone" jdbcType="VARCHAR" />
+	    <result column="user_name" property="userName" jdbcType="VARCHAR" />
+	    <result column="user_qq" property="userQq" jdbcType="VARCHAR" />
+	    <result column="user_work_number" property="userWorkNumber" jdbcType="VARCHAR" />
+	    <result column="company_id" property="companyId" jdbcType="BIGINT" />
+	    <result column="department_id" property="departmentId" jdbcType="BIGINT" />
+	    <result column="last_login_time" property="lastLoginTime" jdbcType="TIMESTAMP" />
+	    <result column="last_login_ip" property="lastLoginIp" jdbcType="VARCHAR" />
+	    <result column="account_status" property="accountStatus" jdbcType="INTEGER" />
+	    <result column="account_type" property="accountType" jdbcType="INTEGER" />
+	</resultMap>
+  
+	<select id="findManagerList" resultType="HashMap" >
+		select account.id,account.login_name as 'loginName',account.user_phone as 'userPhone',
+			   account.user_name as 'userName',account.user_qq as 'userQq',account.user_work_number as 'userWorkNumber',
+     		   account.last_login_time as 'lastLoginTime',account.last_login_ip as 'lastLoginIp',account.account_status as 'accountStatus',
+     		   role.role_name as 'roleName',company.company_name as 'companyName',department.department_name as 'departmentName'
+		from tb_manager account 
+		left join tb_manager_role role on account.user_role_id = role.id
+		left join tb_manager_company company on account.company_id = company.id
+		left join tb_manager_department department on account.department_id = department.id
+		<where>
+			<if test="accountStatus != null ">
+				and account.account_status = #{accountStatus}
+			</if>
+	 	</where>
+	 	order by account.id desc
+	 	limit #{startIndex},#{pageSize} 
+  	</select>
+  	
+	<select id="selectById" resultMap="BaseResultMap">
+        select id,login_name,user_role_id,user_phone,user_name,last_login_time,last_login_ip,account_status
+        from tb_manager where id = #{id}
+    </select>
+</mapper>

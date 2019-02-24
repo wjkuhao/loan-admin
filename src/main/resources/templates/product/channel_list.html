@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<body>
+	<br />
+	<table class="table table-striped table-bordered table-hover">
+		<thead>
+			<tr>
+				<th width="10%" class="center">序号</th>
+				<th width="20%" class="center">商城分类</th>
+				<th width="20%" class="center">资源图片</th>
+				<th width="20%" class="center">资源路径</th>
+				<th width="10%" class="center">状态</th>
+				<th width="10%" class="center">排序</th>
+				<th width="10%" class="center">操作</th>
+			</tr>
+		</thead>
+		<tbody id="tbody"></tbody>
+	</table>
+	<div class="page-header position-relative">
+		<table>
+			<tr>
+				<td>
+					<a class="btn btn-small btn-success" onclick="addMenu()">新增</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<script type="text/javascript">
+		var contextPath="[[@{/}]]";
+		$(top.hangge());
+		
+		//加载一级菜单列表
+		function getAllMessage(parentId){
+			$("#tbody").html("");
+			$.post(contextPath+"product/channel_list_ajax",{},function(jsonObject){
+				var parentChannelList = jsonObject.data.parentChannelList;
+				$.each(parentChannelList,function(i){
+					//序号
+					var num = i + 1;
+					var channelId = this.id;
+					var channelName = this.channelName;
+                    var channelImg = "<img src='" + this.channelImg + "' width='100' height='100' />"+"</td>";
+                    var channelUrl = this.channelUrl == null ? "" : "<a target='blank' href='"+this.channelUrl+"'>"+this.channelUrl+"</a>";
+
+					var status = this.status == 1 ? "<font color='green'>启用</font>" : "<font color='red'>停用</font>";
+					var idx = this.idx;
+					//每条最后操作部分
+					var opration = "<div class='btn-group'>"
+								 + "<a class='btn btn-mini btn-warning' id='obj" + channelId + "' onclick=\"openClose('" + channelId + "')\">展开</a>"
+								 + "<a class='btn btn-mini btn-info' title='编辑' onclick=\"updateMenu('" + channelId + "')\"><i class='icon-edit'></i></a>"
+								 + "</div>";
+					//每条记录的所有内容
+					var content = "<tr id='tr" + channelId + "'><td class='center'>"
+																+ num
+																+ "</td><td class='center'>"
+																+ channelName
+																+ "</td><td class='center'>"
+																+ channelImg
+																+ "</td><td class='center'>"
+																+ channelUrl
+																+ "</td><td class='center'>"
+																+ status
+																+ "</td><td class='center'>"
+																+ idx
+																+ "</td><td class='center'>"
+																+ opration
+																+ "</td><tr/>";
+					$("#tbody").append(content);
+				});
+				//加载完成后，展开上一次点击的顶级菜单
+				open(parentId);
+			});
+		}
+		getAllMessage();
+		
+		//根据点击加载二级列表
+		function openClose(parentId){
+			var txt = $("#obj" + parentId).text();
+			if(txt == "展开"){
+				open(parentId);
+			}else{
+				close(parentId);
+			}
+		}
+
+		//展开菜单
+		function open(parentId){
+			if(parentId != null){
+				$("#obj" + parentId).text("折叠");
+				$.post(contextPath+"product/channel_child_ajax",{"parentId":parentId},function(jsonObject){
+					var channelList = jsonObject.data;
+					$("#tr" + parentId).after("<tr id='tempTr" + parentId + "'><td colspan='6'>数据载入中</td></tr>");
+					if(channelList.length > 0){
+						var html = "";
+						$.each(channelList,function(i){
+							html = "<tr name='subTr" + parentId + "' id='subTr" + this.id + "'>";
+							html += "<td></td>";
+							html += "<td class='center'><span style='width:80px;display:inline-block;'></span>";
+							if(i == channelList.length - 1){
+								html += "<img src='" + contextPath + "static/images/joinbottom.gif' style='vertical-align: middle;'/>";
+							}else{
+								html += "<img src='" + contextPath + "static/images/join.gif' style='vertical-align: middle;'/>";
+							}
+							html += "<span style='width:100px;text-align:left;display:inline-block;'>" + this.channelName + "</span>";
+							html += "</td>";
+                            html += "<td class='center'>"+"-- --"+"</td>";
+							html += "<td class='center'>"+"-- --"+"</td>";
+							if (this.status == 1) {
+								html += "<td class='center'><span><font color='green'>启用</font></span></td>";
+							}else{
+								html += "<td class='center'><span><font color='red'>停用</font></span></td>";
+							}
+							html += "<td class='center'>" + this.idx + "</td>";
+							html += "<td class='center'>" +
+								"<a class='btn btn-mini btn-info' title='编辑' onclick='updateMenu(\"" + this.id + "\",\"" + parentId + "\")'><i class='icon-edit'></i></a> " +
+								"<a class='btn btn-mini btn-info' title='详情' onclick='detailMenu(\"" + this.id + "\",\"" + parentId + "\")'>详情</a>" +
+								"</td>";
+							html += "</tr>";
+							$("#tempTr" + parentId).before(html);
+						});
+						$("#tempTr" + parentId).remove();
+					}else{
+						$("#tempTr" + parentId+" > td").html("没有相关数据");
+					}
+				});
+			}
+		}
+
+        //折叠菜单
+        function close(parentId){
+            $("#tempTr" + parentId).remove();
+            $("tr[name='subTr" + parentId + "']").remove();
+            $("#obj"+parentId).text("展开");
+        }
+
+		
+		//新增
+		function addMenu(){
+			 var diag = new top.Dialog();
+			 diag.Drag=true;
+			 diag.Title ="新增";
+			 diag.URL = contextPath+"product/channel_add";
+			 diag.Width = 600;
+			 diag.Height = 600;
+			 diag.CancelEvent = function(){ //关闭事件
+				diag.close();
+				getAllMessage();
+			 };
+			 diag.show();
+		}
+		
+		//修改
+		function updateMenu(id,parentId){
+		   	 var diag = new top.Dialog();
+			 diag.Drag=true;
+			 diag.Title ="修改";
+			 diag.URL = contextPath+"product/channel_update?id=" + id;
+			 diag.Width = 600;
+			 diag.Height = 600;
+			 diag.CancelEvent = function(){ //关闭事件
+				diag.close();
+				getAllMessage(parentId);
+			 };
+			 diag.show();
+		}
+
+		//删除
+		function delMenu(id,parentId){
+			Dialog.confirm("确认删除该菜单吗？",function(){
+				$.ajax({
+	        		url : contextPath+"product/channel_del_ajax",
+					type : "POST",
+					dataType : "json",
+					data : {
+						"id":id
+					},
+					success : function(jsonObject) {
+						if(jsonObject.status == "2000"){
+							Dialog.alert(jsonObject.message,function(){
+								getAllMessage(parentId);
+							});
+						}else{
+							Dialog.alert(jsonObject.message);
+						}
+					}
+				});
+			});
+		}
+        //二级目录下详情
+        function detailMenu(id,parentId){
+            var diag = new top.Dialog();
+            diag.Drag=true;
+            diag.Title ="三级详情";
+            diag.URL = contextPath+"product/channel_detail?id=" + id;
+            diag.Width = 1000;
+            diag.Height =600;
+            diag.CancelEvent = function(){ //关闭事件
+                diag.close();
+                getAllMessage(parentId);
+            };
+            diag.show();
+        }
+
+	</script>
+</body>
+</html>

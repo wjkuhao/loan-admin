@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<head>
+<link href="/static/css/bootstrap3.3.7.min.css" rel="stylesheet"  th:href="@{/static/css/bootstrap3.3.7.min.css}"/>
+</head>
+<body>
+	<div id="zhongxin" align="center">
+		<hr />
+		<form name="myForm" id="myForm">
+			<fieldset>
+				<legend>新增</legend>
+			</fieldset>
+				<table>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">强制更新</label>
+						</td>
+						<td>
+							<input type="hidden" name="versionAlias" id="versionAlias" />
+							<select name="versionForce" id="versionForce" class="form-control">
+								<option value="0">否</option>
+								<option value="1">是</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">版本类型</label>
+						</td>
+						<td>
+							<select name="versionType" id="versionType" class="form-control">
+								<option value="android">android</option>
+								<option value="ios">ios</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">版本名称</label>
+						</td>
+						<td>
+							<input name="versionName" id="versionName" maxlength="20" class="form-control" required="required"  />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">版本编号</label>
+						</td>
+						<td>
+							<input name="versionCode" id="versionCode" maxlength="11" class="form-control" required="required" onkeyup="value=/^\d{0,10}$/.test(value)?value:''" onblur="value=/^\d{0,10}$/.test(value)?value:''" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">状态</label>
+						</td>
+						<td>
+							<select name="versionStatus" id="versionStatus" class="form-control">
+								<option value="0">停用</option>
+								<option value="1">启用</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">下载地址</label>
+						</td>
+						<td>
+							<textarea name="versionUrl" id="versionUrl" maxlength="500" class="form-control" style="resize:none; width: 300px; height: 117px;" placeholder="下载地址"></textarea>
+						</td>
+						<td>
+							<input type="file" name="file" id="file" style="display:none;" />
+							<a class="btn btn-mini btn-info" title="上传文件" onclick="uploadFile('file','versionUrl')">上传文件</a>
+							<img src="/static/images/loadingi.gif" id="jzdh" style="opacity: 0;" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">应用市场地址</label>
+						</td>
+						<td>
+							<textarea name="appMarket" id="appMarket" maxlength="500" class="form-control" style="resize:none; width: 300px; height: 117px;" placeholder="应用市场地址"></textarea>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">版本内容</label>
+						</td>
+						<td>
+							<textarea name="versionContent" id="versionContent" maxlength="500" class="form-control" style="resize:none; width: 300px; height: 117px;" placeholder="版本更新内容"></textarea>
+						</td>
+					</tr>
+				</table>
+		</form>
+		<div>
+			<a class="btn btn-mini btn-primary" id="saveButton">保存</a>
+			<a class="btn btn-mini btn-danger" onclick="top.Dialog.close()">取消</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var contextPath="[[@{/}]]";
+		var versionAlias="[[${versionAlias}]]";
+		$(top.hangge());
+		
+		$("#saveButton").unbind();
+		$("#saveButton").bind("click",function(){
+			$("#versionAlias").val(versionAlias);
+			var versionName = $("#versionName").val();
+			var versionCode = $("#versionCode").val();
+			var versionUrl = $("#versionUrl").val();
+	        if(versionAlias == ""){
+	        	$("#versionAlias").tips({
+					side:3,
+			        msg:"请输入APP别名。",
+			        bg:"#AE81FF",
+			        time:2
+			    });
+				$("#versionAlias").focus();
+				return false;
+	        }
+	        if(versionName == ""){
+	        	$("#versionName").tips({
+					side:3,
+			        msg:"请输入版本名称。",
+			        bg:"#AE81FF",
+			        time:2
+			    });
+				$("#versionName").focus();
+				return false;
+	        }
+	        if(versionCode == ""){
+	        	$("#versionCode").tips({
+					side:3,
+			        msg:"请输入版本编号。",
+			        bg:"#AE81FF",
+			        time:2
+			    });
+				$("#versionCode").focus();
+				return false;
+	        }
+	        if(versionUrl == ""){
+	        	$("#versionUrl").tips({
+					side:3,
+			        msg:"请输入下载地址。",
+			        bg:"#AE81FF",
+			        time:2
+			    });
+				$("#versionUrl").focus();
+				return false;
+	        }
+			
+			$.ajax({
+        		url : contextPath+"operation/version_edit_ajax",
+        		type : "POST",
+				dataType : "json",
+				data : $("#myForm").serialize(),
+				success : function(data) {
+					if(data.status == 2000){
+						Dialog.alert("操作成功",function(){
+							Dialog.close();
+						});
+					}else{
+						Dialog.alert(data.message);
+					}
+				}
+			});
+		});
+		
+		function uploadFile(fileId,target){
+			$("#" + fileId).off("change").on("change", function (e) {
+				var file = e.target.files[0];
+				var versionType = $("#versionType").val();
+				// 显示加载动画
+				$("#jzdh").attr("style","opacity: 1;");
+				
+				if(versionType == "ios"){
+		            uploadIosFileOSS(file,function(data){
+		            	// 隐藏加载动画
+		                $("#jzdh").attr("style","opacity: 0;");
+		             	// 置空文件选择器
+						$("#" + fileId).val("");
+		            	if(data.status == 2000){
+							Dialog.alert("上传成功",function(){
+				                $("#"+target).html(data.data.absolutePath);
+							});
+						}else{
+							Dialog.alert(data.message);
+						}
+		            });
+				}else if(versionType == "android"){
+					uploadAndroidFileOSS(file,function(data){
+		            	// 隐藏加载动画
+		                $("#jzdh").attr("style","opacity: 0;");
+		             	// 置空文件选择器
+						$("#" + fileId).val("");
+		            	if(data.status == 2000){
+							Dialog.alert("上传成功",function(){
+				                $("#"+target).html(data.data.absolutePath);
+							});
+						}else{
+							Dialog.alert(data.message);
+						}
+		            });
+				}
+			});
+			
+			setTimeout(function(){
+				$("#" + fileId).click();
+			}, 0);
+		}
+	</script>
+</body>
+</html>

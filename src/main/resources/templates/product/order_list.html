@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<body>
+<div class="container-fluid" id="main-container">
+    <div id="page-content" class="clearfix">
+        <div class="row-fluid">
+            <div class="row-fluid">
+                <!-- 检索  -->
+                <div>
+                    <span>状态:</span>
+                    <select id="status" name="status" class="form-control" onchange="this.blur()">
+                        <option value="">全部</option>
+                        <option value="11">待付款</option>
+                        <option value="21">待发货</option>
+                        <option value="31">待收货</option>
+                        <option value="41">交易成功</option>
+                        <option value="51">交易取消</option>
+                    </select>
+                    <span>订单编号:</span>
+                    <input id="orderNo" name="orderNo" type="text"/>
+                    <span>收货人电话:</span>
+                    <input id="receivePhone" name="receivePhone" type="text"/>
+                    <span>快递单号:</span>
+                    <input id="deliveryNo" name="deliveryNo" type="text"/>
+                    <button id="query" class="btn btn-small btn-success" onclick="search()"><i class="icon-search"></i> 查询</button>
+                </div>
+                <!-- 检索  -->
+                <table id="table_report" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">订单编号</th>
+                        <th class="center">商品总额</th>
+                        <th class="center">快递总额</th>
+                        <th class="center">订单总额</th>
+                        <th class="center">状态</th>
+                        <th class="center">快递公司名称</th>
+                        <th class="center">快递单号</th>
+                        <th class="center">收货人姓名</th>
+                        <th class="center">详细收货地址</th>
+                        <th class="center">订单备注</th>
+                        <th class="center">下单时间</th>
+                        <th class="center">付款时间</th>
+                        <th class="center">快递发货时间</th>
+                        <th class="center">收货时间（成交时间）</th>
+                        <th class="center">操作</th>
+                    </tr>
+                    </thead>
+                    <tbody id="myTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 返回顶部  -->
+<a href="#" id="btn-scroll-up" class="btn btn-small btn-inverse">
+    <i class="icon-double-angle-up icon-only"></i>
+</a>
+<script type="text/javascript">
+    var contextPath = "[[@{/}]]";
+    $(top.hangge());
+    var myTable = new MaxTable();
+    myTable.initialize({
+        table: "myTable",
+        id: "id",
+        queryUrl: contextPath + "product/order_list_ajax",
+        headerColumns: [{
+            id: "order_no",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "product_amount",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "delivery_amount",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "order_amount",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "status",
+            renderer: function (idValue, value, record) {
+                if (value == 11) {
+                    return "<font color='orange'>待付款</font>";
+                }
+                if (value == 21) {
+                    return "<font color='orange'>待发货</font>";
+                }
+                if (value == 31) {
+                    return "<font color='green'>待收货</font>";
+                }
+                if (value == 41) {
+                    return "<font color='green'>交易成功</font>";
+                }
+                if (value == 51) {
+                    return "<font color='red'>交易取消</font>";
+                }
+                return "---";
+            }
+        }, {
+            id: "delivery_name",
+            renderer: function (idValue, value, record) {
+                return value ? value  : "---";
+            }
+        }, {
+            id: "delivery_no",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "receive_name",
+            renderer: function (idValue, value, record) {
+                return value ? value + "(" + record.receive_phone + ")" : "---";
+            }
+        }, {
+            id: "receive_detail",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "remark",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "create_time",
+            renderer: function (idValue, value, record) {
+                return value ? moment(value).format("YYYY-MM-DD HH:mm:ss") : "---";
+            }
+        }, {
+            id: "pay_finish_time",
+            renderer: function (idValue, value, record) {
+                return value ? moment(value).format("YYYY-MM-DD HH:mm:ss") : "---";
+            }
+        }, {
+            id: "delivery_time",
+            renderer: function (idValue, value, record) {
+                return value ? moment(value).format("YYYY-MM-DD HH:mm:ss") : "---";
+            }
+        }, {
+            id: "receive_time",
+            renderer: function (idValue, value, record) {
+                return value ? moment(value).format("YYYY-MM-DD") : "---";
+            }
+        }, {
+            id: "id",
+            renderer: function (idValue, value, record) {
+                var html = "<div class='btn-group'>";
+                html += "<a class='btn btn-mini btn-info' title='订单详情' onclick=\"detail(" + record.id + ");\">订单详情</a>";
+                html += "<a class='btn btn-mini btn-info' title='填写物流信息' onclick=\"edit(" + record.id + ");\">填写物流信息</a>";
+                html += "</div>";
+                return html;
+            }
+        }]
+    });
+
+    function query() {
+        myTable.page.totalRowNum = 0;
+        myTable.onLoad({
+            deliveryNo: $("#deliveryNo").val(),
+            orderNo: $("#orderNo").val(),
+            receivePhone: $("#receivePhone").val(),
+            status: $("#status").val()
+        });
+    }
+    query();
+    function search() {
+        myTable.page.pageNo = 1;
+        query();
+    }
+    function detail(id) {
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "订单详情";
+        diag.URL = contextPath + "product/order_detail_info?id=" + id;
+        diag.Width = 1500;
+        diag.Height = 800;
+        diag.CancelEvent = function () { //关闭事件
+            query();
+            diag.close();
+        };
+        diag.show();
+    }
+    function edit(id) {
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "填写物流信息";
+        diag.URL = contextPath + "product/delivery_info?id=" + id;
+        diag.Width = 700;
+        diag.Height = 400;
+        diag.CancelEvent = function () { //关闭事件
+            query();
+            diag.close();
+        };
+        diag.show();
+    }
+</script>
+</body>
+</html>
+

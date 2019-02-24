@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<head>
+<link href="/static/css/bootstrap3.3.7.min.css" rel="stylesheet"  th:href="@{/static/css/bootstrap3.3.7.min.css}"/>
+</head>
+<body>
+	<div id="zhongxin" align="center">
+		<hr />
+		<div>
+			<label id="questionImg"></label>
+		</div>
+		<div>
+			<label class="col-sm-2 control-label">具体描述</label></td>
+			<textarea id="questionDesc" readonly="readonly" style="resize:none; width: 450px; height: 217px;"></textarea>
+		</div>
+		<div>
+			<a class="btn btn-mini btn-primary" onclick="top.Dialog.close()">确认</a>
+			<a class="btn btn-mini btn-danger" onclick="top.Dialog.close()">取消</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		$(top.hangge());
+		var id = [[${id}]];
+		var contextPath="[[@{/}]]";
+		function getAllMessage(){
+        	$.post(contextPath+"operation/feedback_detail_ajax",{"id":id},function(jsonObject){
+        		var data = jsonObject.data;
+        		if(data.questionImg){
+	        		var array = data.questionImg.split("|");
+	        		var imgHtml = "";
+	        		$.each(array,function(i){
+	        			imgHtml += "<img width='190px' height='300px' src='[(${ALI_OSS_FILE_URL})]" + this + "' style='float:left;' />";
+	        		});
+	        		$("#questionImg").html(imgHtml);
+        		}
+        		$("#questionDesc").val(data.questionDesc ? data.questionDesc : "---");
+        	});
+        }
+        getAllMessage();
+	</script>
+</body>
+</html>

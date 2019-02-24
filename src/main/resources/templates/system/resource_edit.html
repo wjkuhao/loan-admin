@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<head>
+<link href="/static/css/bootstrap3.3.7.min.css" rel="stylesheet"  th:href="@{/static/css/bootstrap3.3.7.min.css}"/>
+</head>
+<body>
+	<div id="zhongxin" align="center">
+		<hr />
+		<form id="myForm">
+			<fieldset>
+				<legend>修改</legend>
+			</fieldset>
+			<table>
+				<tr>
+					<td><label class="col-sm-2 control-label">父级菜单</label></td>
+					<td>
+						<input type="hidden" name="id" id="id" />
+						<select id="pid" name="pid" class="form-control">
+							<option value="0">顶级菜单</option>
+						</select>
+					</td>
+				</tr>
+				<tr>
+					<td><label class="col-sm-2 control-label">菜单名称</label></td>
+					<td>
+						<input id="resourceName" name="resourceName" class="form-control" maxlength="16" />
+					</td>
+				</tr>
+				<tr>
+					<td><label class="col-sm-2 control-label">链接地址</label></td>
+					<td>
+						<input id="resourceUrl" name="resourceUrl" class="form-control" maxlength="100" />
+					</td>
+				</tr>
+				<tr>
+					<td><label class="col-sm-2 control-label">序号</label></td>
+					<td>
+						<input id="resourceOrder" name="resourceOrder" class="form-control" maxlength="16" onkeyup="value=value.replace(/[^\d$]/,'')" />
+					</td>
+				</tr>
+				<tr>
+					<td><label class="col-sm-2 control-label">状态</label></td>
+					<td>
+						<select id="resourceStatus" name="resourceStatus" class="form-control">
+							<option value="0">启用</option>
+							<option value="1">禁用</option>
+						</select>
+					</td>
+				</tr>
+			</table>
+		</form>
+		<div>
+			<a class="btn btn-mini btn-primary" id="saveButton">保存</a>
+			<a class="btn btn-mini btn-danger" onclick="top.Dialog.close()">取消</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var contextPath="[[@{/}]]";
+		$(top.hangge());
+		var id = [[${id}]];
+		getAllMessage();
+		function getAllMessage(){
+			$.post(contextPath+"system/resource_detail_ajax",{"id":id},function(jsonObject){
+				var resource = jsonObject.data;
+				$("#id").val(resource.id);
+				$("#pid").val(resource.pid);
+				$("#resourceStatus").val(resource.resourceStatus);
+				$("#resourceName").val(resource.resourceName);
+				$("#resourceUrl").val(resource.resourceUrl);
+				$("#resourceOrder").val(resource.resourceOrder);
+				$.post(contextPath+"system/resource_list_ajax",{"parentId":0},function(jsonObject){
+					var parentResourceList = jsonObject.data;
+					$.each(parentResourceList,function(i){
+						$("#pid").append("<option value='" + this.id + "'>" + this.resourceName + "</option>");
+					});
+					$("#pid").val(resource.pid);
+				});
+			});
+		}
+
+		
+		$("#saveButton").unbind();
+        $("#saveButton").bind("click",function(){
+			var resourceName = $("#resourceName").val();
+        	var resourceUrl = $("#resourceUrl").val();
+        	var resourceOrder = $("#resourceOrder").val();
+        	if(resourceName == ""){
+        		tips($("#resourceName"),"请输入菜单名称。");
+				return false;
+			}
+        	if(resourceUrl == ""){
+        		tips($("#resourceUrl"),"请输入菜单链接。");
+				return false;
+			}
+        	if(isNaN(resourceOrder) || resourceOrder == "" || eval(resourceOrder) < 0){
+        		tips($("#resourceOrder"),"请输入正确的序号。");
+				return false;
+			}
+	        $.ajax({
+	        	url : contextPath+"system/resource_update_ajax",
+				type : "POST",
+				dataType : "json",
+				data : $("#myForm").serialize(),
+				success : function(jsonObject) {
+					if(jsonObject.status == "2000"){
+						Dialog.alert(jsonObject.message,function(){
+							Dialog.close();
+						});
+					}else{
+						Dialog.alert(jsonObject.message);
+					}
+				}
+			});
+		});
+		
+		function tips(obj,message){
+        	obj.tips({
+				side:3,
+	            msg:message,
+	            bg:"#AE81FF",
+	            time:2
+	        });
+			obj.focus();
+			obj.val("");
+        }
+	</script>
+</body>
+</html>

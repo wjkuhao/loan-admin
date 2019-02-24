@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<body>
+<div class="container-fluid" id="main-container">
+    <div id="page-content" class="clearfix">
+        <div class="row-fluid">
+            <div class="row-fluid">
+                <!-- 检索  -->
+                <div>
+                    <span>状态:</span>
+                    <select id="status" name="status" class="form-control" onchange="this.blur()">
+                        <option value="">全部</option>
+                        <option value="0">初始</option>
+                        <option value="1">成功</option>
+                        <option value="2">失败</option>
+                    </select>
+                    <span>支付方式:</span>
+                    <select id="payWay" name="payWay" class="form-control" onchange="this.blur()">
+                        <option value="">全部</option>
+                        <option value="1">支付宝</option>
+                        <option value="2">微信</option>
+                    </select>
+                    <span>支付流水号:</span>
+                    <input id="payNo" name="payNo" type="text"/>
+                    <br>
+                    <span>第三方返回的流水号:</span>
+                    <input id="outPayNo" name="outPayNo" type="text"/>
+                    <button id="query" class="btn btn-small btn-success" onclick="search()"><i class="icon-search"></i> 查询</button>
+                </div>
+                <!-- 检索  -->
+                <table id="table_report" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">支付流水号</th>
+                        <th class="center">第三方返回的流水号</th>
+                        <th class="center">支付方式</th>
+                        <th class="center">买家支付账号</th>
+                        <th class="center">买家支付金额</th>
+                        <th class="center">卖家收款账号</th>
+                        <th class="center">状态</th>
+                        <th class="center">备注</th>
+                        <th class="center">支付时间</th>
+                        <th class="center">第三方返回的交易结束时间</th>
+                    </tr>
+                    </thead>
+                    <tbody id="myTable"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 返回顶部  -->
+<a href="#" id="btn-scroll-up" class="btn btn-small btn-inverse">
+    <i class="icon-double-angle-up icon-only"></i>
+</a>
+<script type="text/javascript">
+    var contextPath = "[[@{/}]]";
+    $(top.hangge());
+    var myTable = new MaxTable();
+    myTable.initialize({
+        table: "myTable",
+        id: "id",
+        queryUrl: contextPath + "product/pay_list_ajax",
+        headerColumns: [{
+            id: "pay_no",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "out_pay_no",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "pay_way",
+            renderer: function (idValue, value, record) {
+                if (value == 1) {
+                    return "<font color='blue'>支付宝</font>";
+                }
+                if (value == 2) {
+                    return "<font color='green'>微信</font>";
+
+                }
+                return "---";
+            }
+        }, {
+            id: "buyer_account",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "buyer_amount",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "seller_account",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "status",
+            renderer: function (idValue, value, record) {
+                if (value == 0) {
+                    return "<font color='orange'>初始</font>";
+                }
+                if (value == 1) {
+                    return "<font color='green'>成功</font>";
+                }
+                if (value == 2) {
+                    return "<font color='red'>失败</font>";
+                }
+                return "---";
+            }
+        }, {
+            id: "remark",
+            renderer: function (idValue, value, record) {
+                return value ? value  : "---";
+            }
+        }, {
+            id: "create_time",
+            renderer: function (idValue, value, record) {
+                return value ? moment(value).format("YYYY-MM-DD HH:mm:ss") : "---";
+            }
+        }, {
+            id: "pay_time",
+            renderer: function (idValue, value, record) {
+                return value ? moment(value).format("YYYY-MM-DD HH:mm:ss") : "---";
+            }
+        }]
+    });
+
+    function query() {
+        myTable.page.totalRowNum = 0;
+        myTable.onLoad({
+            payWay: $("#payWay").val(),
+            payNo: $("#payNo").val(),
+            outPayNo: $("#outPayNo").val(),
+            status: $("#status").val()
+        });
+    }
+    query();
+    function search() {
+        myTable.page.pageNo = 1;
+        query();
+    }
+</script>
+</body>
+</html>
+

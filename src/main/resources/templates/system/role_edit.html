@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<head>
+<link href="/static/css/bootstrap3.3.7.min.css" rel="stylesheet"  th:href="@{/static/css/bootstrap3.3.7.min.css}"/>
+</head>
+<body>
+	<div id="zhongxin" align="center">
+		<hr />
+		<form name="myForm" id="myForm">
+			<fieldset>
+				<legend>修改</legend>
+			</fieldset>
+				<table>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">角色名称</label>
+						</td>
+						<td>
+							<input name="id" id="id" type="hidden" />
+							<input name="roleType" id="roleType" type="hidden" value="0" />
+							<input name="roleStatus" id="roleStatus" type="hidden" value="0" />
+							<input name="roleName" id="roleName" maxlength="10" class="form-control" required="required" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">角色备注</label>
+						</td>
+						<td>
+							<input name="roleRemark" id="roleRemark" maxlength="10" class="form-control" required="required" />
+						</td>
+					</tr>
+				</table>
+				<label class="col-sm-2 control-label"><input id="type0" onclick="setType(0);" type="radio"><span class="lbl">普通用户</span></label>
+				<label class="col-sm-2 control-label"><input id="type1" onclick="setType(1);" type="radio"><span class="lbl">系统管理员</span></label>
+				<br />
+				<label class="col-sm-2 control-label"><input id="open" onclick="setStatus(0);" type="radio"><span class="lbl">正常</span></label>
+				<label class="col-sm-2 control-label"><input id="close" onclick="setStatus(1);" type="radio"><span class="lbl">停用</span></label>
+		</form>
+		<div>
+			<a class="btn btn-mini btn-primary" id="saveButton">保存</a>
+			<a class="btn btn-mini btn-danger" onclick="top.Dialog.close()">取消</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var contextPath="[[@{/}]]";
+		$(top.hangge());
+		$("#saveButton").unbind();
+		$("#saveButton").bind("click",function(){
+			if($("#roleName").val() == ""){
+				$("#roleName").tips({
+					side:3,
+		            msg:"输入角色名称",
+		            bg:"#AE81FF",
+		            time:2
+		        });
+				$("#roleName").focus();
+				return false;
+			}
+			if($("#roleRemark").val() == ""){
+				$("#roleRemark").tips({
+					side:3,
+		            msg:"输入角色备注",
+		            bg:"#AE81FF",
+		            time:2
+		        });
+				$("#roleRemark").focus();
+				return false;
+			}
+			$.ajax({
+        		url : contextPath+"system/role_update_ajax",
+        		type : "POST",
+				dataType : "json",
+				data : $("#myForm").serialize(),
+				success : function(jsonObject) {
+					if(jsonObject.status == "2000"){
+						Dialog.alert(jsonObject.message,function(){
+							Dialog.close();
+						});
+					}else{
+						Dialog.alert(jsonObject.message);
+					}
+				}
+			});
+		});
+		
+		var id = [[${id}]];
+		function getAllMessage(){
+			$.post(contextPath+"system/role_detail_ajax",{"id":id},function(jsonObject){
+				var role = jsonObject.data.role;
+				$("#id").val(role.id);
+				$("#roleType").val(role.roleType);
+				role.roleType == 0 ? $("#type0").attr("checked",true) : $("#type1").attr("checked",true);
+				$("#roleStatus").val(role.roleStatus);
+				role.roleStatus == 0 ? $("#open").attr("checked",true) : $("#close").attr("checked",true);
+				$("#roleName").val(role.roleName);
+				$("#roleRemark").val(role.roleRemark);
+			});
+		}
+		getAllMessage();
+		
+		function setType(value){
+			$("#roleType").val(value);
+			if(value == 0){
+				$("#type0").attr("checked", true);
+				$("#type1").attr("checked", false);
+			}else if(value == 1){
+				$("#type0").attr("checked", false);
+				$("#type1").attr("checked", true);
+			}
+		}
+		
+		function setStatus(value){
+			$("#roleStatus").val(value);
+			if(value == 0){
+				$("#open").attr("checked", true);
+				$("#close").attr("checked", false);
+			}else if(value == 1){
+				$("#open").attr("checked", false);
+				$("#close").attr("checked", true);
+			}
+		}
+	</script>
+</body>
+</html>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mod.loan.mapper.MarketFlowMapper">
+  <resultMap id="BaseResultMap" type="com.mod.loan.model.MarketFlow">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="product_id" jdbcType="BIGINT" property="productId" />
+    <result column="flow_date" jdbcType="DATE" property="flowDate" />
+    <result column="flow_uv" jdbcType="BIGINT" property="flowUv" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <select id="findFlowList"  resultType="map">
+    select a.id,a.product_id,b.product_name,b.product_type,a.flow_date,a.flow_uv from tb_market_flow a left join tb_market_product b on a.product_id=b.id
+    <where>
+        <if test="productId!=null">
+         and a.product_id=#{productId}
+        </if>
+        <if test="startDate!=null">
+         and a.flow_date>=#{startDate}
+        </if>
+        <if test="endDate!=null">
+         and a.flow_date &lt;=#{endDate}
+        </if>
+    </where>
+    order by a.id desc limit #{startIndex},#{pageSize}
+  </select>
+  <select id="countFlow"  resultType="int">
+    select count(*) from tb_market_flow a 
+    <where>
+        <if test="productId!=null">
+         and a.product_id=#{productId}
+        </if>
+        <if test="startDate!=null">
+         and a.flow_date>=#{startDate}
+        </if>
+        <if test="endDate!=null">
+         and a.flow_date &lt;=#{endDate}
+        </if>
+    </where>
+  </select>
+</mapper>

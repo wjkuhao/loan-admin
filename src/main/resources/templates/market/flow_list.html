@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<body>
+<div class="container-fluid" id="main-container">
+    <div id="page-content" class="clearfix">
+        <div class="row-fluid">
+            <div class="row-fluid">
+                <!-- 检索  -->
+                <div>
+                    <span>产品id:</span>
+                    <input id="productId" name="productId" type="text"/>
+                    <span>日期:</span>
+                    <input id="startDate" name="startDate" type="text" readonly="readonly" placeholder="开始时间" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"/>
+                    ~
+                    <input id="endDate" name="endDate" type="text" readonly="readonly" placeholder="结束时间" onclick="laydate({istime: true, format: 'YYYY-MM-DD'})"/>
+                    <button id="query" class="btn btn-small btn-success" onclick="search()"><i class="icon-search"></i> 查询</button>
+                    <button id="export_data" class="btn btn-small btn-success" onclick="export_data()">EXCEL导出</button>
+                </div>
+                <!-- 检索  -->
+                <table id="table_report" class="table table-striped table-bordered table-hover">
+                    <thead>
+                    <tr>
+                        <th class="center">序号</th>
+                        <th class="center">产品</th>
+                        <th class="center">流量</th>
+                        <th class="center">类型</th>
+                        <th class="center">日期</th>
+                    </tr>
+                    </thead>
+                    <tbody id="myTable"></tbody>
+                </table>
+                <div class="page-header position-relative">
+                    <table>
+                        <tr>
+                            <td>
+                                <!-- <a class="btn btn-small btn-success" onclick="add();">新增</a> -->
+                            </td>
+                        </tr>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- 返回顶部  -->
+<a href="#" id="btn-scroll-up" class="btn btn-small btn-inverse">
+    <i class="icon-double-angle-up icon-only"></i>
+</a>
+<script type="text/javascript">
+    var contextPath = "[[@{/}]]";
+    $(top.hangge());
+    var myTable = new MaxTable();
+    myTable.initialize({
+        table: "myTable",
+        id: "id",
+        queryUrl: contextPath + "market/flow_list_ajax",
+        headerColumns: [{
+            id: "id",
+            renderer: numRenderer
+        }, {
+            id: "product_name",
+            renderer: function (idValue, value, record) {
+                return value ? value + "(" + record.product_id + ")" : "---";
+            }
+        }, {
+            id: "flow_uv",
+            renderer: function (idValue, value, record) {
+                return (value == undefined) ? "---" : value;
+            }
+        }, {
+            id: "product_type",
+            renderer: function (idValue, value, record) {
+                if (value == 1){
+                    return "内部";
+                }
+                if (value == 2){
+                    return "外部";
+                }
+                return (value == undefined) ? "---" : value;
+            }
+        }, {
+            id: "flow_date",
+            renderer: function (idValue, value, record) {
+                return (value == undefined) ? "---" : moment(value).format("YYYY-MM-DD");
+            }
+        }]
+    });
+
+    function query() {
+        myTable.page.totalRowNum = 0;
+        myTable.onLoad({
+            productId: $("#productId").val(),
+            startDate: $("#startDate").val(),
+            endDate: $("#endDate").val()
+        });
+    }
+    query();
+    function search() {
+        myTable.page.pageNo = 1;
+        query();
+    }
+    function export_data() {
+        location.href = contextPath + "market/flow_export?productId=" + $("#productId").val() + "&startDate=" + $("#startDate").val() + "&endDate=" + $("#endDate").val();
+    }
+</script>
+</body>
+</html>
+

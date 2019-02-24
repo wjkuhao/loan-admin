@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<body>
+	<br />
+	<table class="table table-striped table-bordered table-hover">
+		<thead>
+			<tr>
+				<th class="center">序号</th>
+				<th class="center">名称</th>
+				<th class="center">资源路径</th>
+				<th class="center">状态</th>
+				<th class="center">排序</th>
+				<th class="center">操作</th>
+			</tr>
+		</thead>
+		<tbody id="tbody"></tbody>
+	</table>
+	<div class="page-header position-relative">
+		<table>
+			<tr>
+				<td>
+					<a class="btn btn-small btn-success" onclick="addMenu()">新增</a>
+				</td>
+			</tr>
+		</table>
+	</div>
+	
+	<script type="text/javascript">
+		var contextPath="[[@{/}]]";
+		$(top.hangge());
+		
+		//加载一级菜单列表
+		function getAllMessage(parentId){
+			$("#tbody").html("");
+			$.post(contextPath+"system/resource_list_ajax",{"parentId":0},function(jsonObject){
+				var parentResourceList = jsonObject.data;
+				$.each(parentResourceList,function(i){
+					//序号
+					var num = i + 1;
+					var resourceId = this.id;
+					var resourceName = this.resourceName;
+					var resourceUrl = this.resourceUrl == "#" ? "" : this.resourceUrl;
+					var resourceStatus = this.resourceStatus == 0 ? "<font color='green'>启用</font>" : "<font color='red'>停用</font>";
+					var resourceOrder = this.resourceOrder;
+					//每条最后操作部分
+					var opration = "<div class='btn-group'>"
+								 + "<a class='btn btn-mini btn-warning' id='obj" + resourceId + "' onclick=\"openClose('" + resourceId + "')\">展开</a>"
+								 + "<a class='btn btn-mini btn-info' title='编辑' onclick=\"updateMenu('" + resourceId + "')\"><i class='icon-edit'></i></a>"
+								 + "</div>";
+					//每条记录的所有内容
+					var content = "<tr id='tr" + resourceId + "'><td class='center'>"
+																+ num
+																+ "</td><td class='center'>"
+																+ resourceName
+																+ "</td><td class='center'>"
+																+ resourceUrl
+																+ "</td><td class='center'>"
+																+ resourceStatus
+																+ "</td><td class='center'>"
+																+ resourceOrder
+																+ "</td><td class='center'>"
+																+ opration
+																+ "</td><tr/>";
+					$("#tbody").append(content);
+				});
+				//加载完成后，展开上一次点击的顶级菜单
+				open(parentId);
+			});
+		}
+		getAllMessage();
+		
+		//根据点击加载二级列表
+		function openClose(parentId){
+			var txt = $("#obj" + parentId).text();
+			if(txt == "展开"){
+				open(parentId);
+			}else{
+				close(parentId);
+			}
+		}
+
+		//展开菜单
+		function open(parentId){
+			if(parentId != null){
+				$("#obj" + parentId).text("折叠");
+				$.post(contextPath+"system/resource_list_ajax",{"parentId":parentId},function(jsonObject){
+					var resourceList = jsonObject.data;
+					$("#tr" + parentId).after("<tr id='tempTr" + parentId + "'><td colspan='5'>数据载入中</td></tr>");
+					if(resourceList.length > 0){
+						var html = "";
+						$.each(resourceList,function(i){
+							html = "<tr name='subTr" + parentId + "'>";
+							html += "<td></td>";
+							html += "<td class='center'><span style='width:80px;display:inline-block;'></span>";
+							if(i == resourceList.length - 1){
+								html += "<img src='" + contextPath + "static/images/joinbottom.gif' style='vertical-align: middle;'/>";
+							}else{
+								html += "<img src='" + contextPath + "static/images/join.gif' style='vertical-align: middle;'/>";
+							}
+							html += "<span style='width:100px;text-align:left;display:inline-block;'>" + this.resourceName + "</span>";
+							html += "</td>";
+							html += "<td >"+this.resourceUrl+"</td>";
+							if (this.resourceStatus == 0) {
+								html += "<td class='center'><span><font color='green'>启用</font></span></td>";
+							}else{
+								html += "<td class='center'><span><font color='red'>停用</font></span></td>";
+							}
+							html += "<td class='center'>" + this.resourceOrder + "</td>";
+							html += "<td class='center'><a class='btn btn-mini btn-info' title='编辑' onclick='updateMenu(\"" + this.id + "\",\"" + parentId + "\")'><i class='icon-edit'></i></a></td>";
+							html += "</tr>";
+							$("#tempTr" + parentId).before(html);
+						});
+						$("#tempTr" + parentId).remove();
+					}else{
+						$("#tempTr" + parentId+" > td").html("没有相关数据");
+					}
+				});
+			}
+		}
+		
+		//折叠菜单
+		function close(parentId){
+			$("#tempTr" + parentId).remove();
+			$("tr[name='subTr" + parentId + "']").remove();
+			$("#obj"+parentId).text("展开");
+		}
+		
+		//新增
+		function addMenu(){
+			 var diag = new top.Dialog();
+			 diag.Drag=true;
+			 diag.Title ="新增";
+			 diag.URL = contextPath+"system/resource_add";
+			 diag.Width = 600;
+			 diag.Height = 600;
+			 diag.CancelEvent = function(){ //关闭事件
+				diag.close();
+				getAllMessage();
+			 };
+			 diag.show();
+		}
+		
+		//修改
+		function updateMenu(menuId,parentId){
+		   	 var diag = new top.Dialog();
+			 diag.Drag=true;
+			 diag.Title ="修改";
+			 diag.URL = contextPath+"system/resource_update?id=" + menuId;
+			 diag.Width = 600;
+			 diag.Height = 600;
+			 diag.CancelEvent = function(){ //关闭事件
+				diag.close();
+				getAllMessage(parentId);
+			 };
+			 diag.show();
+		}
+	</script>
+</body>
+</html>
