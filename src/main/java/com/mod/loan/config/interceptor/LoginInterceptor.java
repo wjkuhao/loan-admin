@@ -52,7 +52,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 		String ip = HttpUtils.getIpAddr(request, ".");
 		String ua = request.getHeader("User-Agent");
 		String host = request.getHeader("Host");
-		
+
 		// 非法ip拒绝请求
 		if (redisMapper.get(RedisConst.LOCK_ILLEGAL_IP + ip) != null) {
 			PrintWriter out = response.getWriter();
@@ -61,7 +61,7 @@ public class LoginInterceptor implements HandlerInterceptor {
 			out.close();
 			return false;
 		}
-		
+
 		if (StringUtils.isBlank(token)) {
 			response.sendRedirect(request.getContextPath() + "/system/login");
 			return false;

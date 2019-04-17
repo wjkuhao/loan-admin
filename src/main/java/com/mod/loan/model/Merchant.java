@@ -1,10 +1,9 @@
 package com.mod.loan.model;
 
-import java.util.Date;
-
 import javax.persistence.Column;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.util.Date;
 
 @Table(name = "tb_merchant")
 public class Merchant {
@@ -85,6 +84,17 @@ public class Merchant {
 
 	@Column(name = "bind_type")
 	private Integer bindType;
+
+	@Column(name = "mx_risk_token")
+	private String mxRiskToken;
+
+	public String getMxRiskToken() {
+		return mxRiskToken;
+	}
+
+	public void setMxRiskToken(String mxRiskToken) {
+		this.mxRiskToken = mxRiskToken;
+	}
 
 	public Integer getBindType() {
 		return bindType;
