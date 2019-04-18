@@ -23,12 +23,22 @@
         </fieldset>
         <table>
             <tr>
+                <label class="my_label_checkbox" style="margin-right: 20px"><input id="pay" type="checkbox"  onclick="payChecked()"/><span
+                        class="lbl"></span>放款</label>
+                <label class="my_label_checkbox"><input id="repay" type="checkbox"  onclick="repayChecked()"/><span
+                        class="lbl"></span>还款</label>
                 <td>
-                    <label class="col-sm-2 control-label">美象风控token</label>
+                    <input name="hlb_id" id="hlb_id"  type="hidden"/>
+                    <input name="hlb_rsa_private_key" id="hlb_rsa_private_key"  type="hidden"/>
+                    <input name="fuyou_merid" id="fuyou_merid" type="hidden"/>
+                    <input name="fuyou_secureid" id="fuyou_secureid" type="hidden"/>
+                    <input name="fuyou_h5key" id="fuyou_h5key" type="hidden"/>
+                    <input name="huiju_id" id="huiju_id" type="hidden"/>
+                    <input name="huiju_md5_key" id="huiju_md5_key" type="hidden"/>
+                    <label class="col-sm-2 control-label">易宝appKey</label>
                 </td>
                 <td>
-                    <textarea name="mxRiskToken" id="mx_risk_token" class="form-control"
-                              style="resize:none; width: 300px; height: 300px;" required="required"></textarea>
+                    <input name="yeepay_appkey" id="yeepay_appkey" maxlength="30" class="form-control" required="required"/>
                 </td>
             </tr>
         </table>
@@ -41,23 +51,43 @@
 <script type="text/javascript">
     var contextPath = "[[@{/}]]";
     var merchantAlias = '[[${merchantAlias}]]';
+    var merchantChannels;
+    function payChecked() {
+        if ($("#pay").prop("checked")) {
+            merchantChannels.yeepay.pay = 1;
+        } else {
+            merchantChannels.yeepay.pay = 0;
+        }
+    }
+
+    function repayChecked() {
+        if ($("#repay").prop("checked")) {
+            merchantChannels.yeepay.repay = 1;
+        } else {
+            merchantChannels.yeepay.repay = 0;
+        }
+    }
     $("#saveButton").unbind();
+
     $("#saveButton").bind("click", function () {
-        var $mxRiskToken = $("#mx_risk_token");
-        var mxRiskToken = $mxRiskToken.val();
-        if (!mxRiskToken) {
-            $mxRiskToken.tips({
+        var yeepay_appkey = $("#yeepay_appkey").val();
+        if (yeepay_appkey === "") {
+            $("#yeepay_appkey").tips({
                 side: 3,
-                msg: "请输入风控token",
+                msg: "请输入易宝appkey",
                 bg: "#AE81FF",
                 time: 2
             });
-            $mxRiskToken.focus();
+            $("#yeepay_appkey").focus();
             return false;
         }
-        var myTable = $("#myForm").serialize() + "&merchantAlias=" + merchantAlias;
+
+        console.log($("#myForm"));
+        console.log($("#myForm").serialize());
+        var myTable = $("#myForm").serialize() + "&merchantChannels=" + JSON.stringify(merchantChannels) + "&merchantAlias=" + merchantAlias;
+        console.log(myTable,'=====');
         $.ajax({
-            url: contextPath + "merchant/edit_merchant_mx_risk_token",
+            url: contextPath + "merchant/edit_merchant_channel_ajax",
             type: "POST",
             dataType: "json",
             data: myTable,
@@ -83,7 +113,7 @@
             $("#hlb_rsa_private_key").val(obj.hlb_rsa_private_key);
             $("#huiju_id").val(obj.huiju_id);
             $("#huiju_md5_key").val(obj.huiju_md5_key);
-            $("#mx_risk_token").val(obj.mxRiskToken);
+            $("#yeepay_appkey").val(obj.yeepay_appkey);
 
             merchantChannels = JSON.parse(obj.merchantChannel);
             if (merchantChannels == null) {
@@ -91,42 +121,14 @@
                 $("#pay").prop('checked', false);
                 $("#repay").prop('checked', false);
             }
-            if (merchantChannels.huiju == undefined) {
-                if (merchantChannels.helibao == 1 && merchantChannels.fuyou == 1) {
-                    merchantChannels = JSON.parse("{\"helibao\":{\"pay\":1,\"repay\":1},\"fuyou\":{\"pay\":1,\"repay\":1},\"huiju\":{\"pay\":0,\"repay\":0}}");
-                    $("#pay").prop('checked', false);
-                    $("#repay").prop('checked', false);
-                }
-                if (merchantChannels.helibao == 0 && merchantChannels.fuyou == 1) {
-                    merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":1,\"repay\":1},\"huiju\":{\"pay\":0,\"repay\":0}}");
-                    $("#pay").prop('checked', false);
-                    $("#repay").prop('checked', false);
-                }
-                if (merchantChannels.helibao == 1 && merchantChannels.fuyou == 0) {
-                    merchantChannels = JSON.parse("{\"helibao\":{\"pay\":1,\"repay\":1},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}}");
-                    $("#pay").prop('checked', false);
-                    $("#repay").prop('checked', false);
-                }
-                if (merchantChannels.helibao == 0 && merchantChannels.fuyou == 0) {
-                    merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}}");
-                    $("#pay").prop('checked', false);
-                    $("#repay").prop('checked', false);
-                }
-                if (merchantChannels.helibao != null && merchantChannels.fuyou != null) {
-                    merchantChannels.huiju = JSON.parse("{\"pay\":0,\"repay\":0}");
-                    $("#pay").prop('checked', false);
-                    $("#repay").prop('checked', false);
-                }
 
-
-            }
-            if (merchantChannels.huiju != undefined && merchantChannels.huiju.pay != null) {
-                if (merchantChannels.huiju.pay == 1) {
+            if (merchantChannels.yeepay.pay != undefined && merchantChannels.yeepay.pay != null) {
+                if (merchantChannels.yeepay.pay == 1) {
                     $("#pay").prop('checked', true);
                 } else {
                     $("#pay").prop('checked', false);
                 }
-                if (merchantChannels.huiju.repay == 1) {
+                if (merchantChannels.yeepay.repay == 1) {
                     $("#repay").prop('checked', true);
                 } else {
                     $("#repay").prop('checked', false);

@@ -32,6 +32,8 @@
                         <th class="center">商户状态</th>
                         <th class="center">贷款超市链接</th>
                         <th class="center">绑卡类型</th>
+                        <th class="center">易宝</th>
+                        <th class="center">易宝appkey</th>
                         <th class="center">合利宝id</th>
                         <th class="center">合利宝放款</th>
                         <th class="center">合利宝还款</th>
@@ -121,17 +123,56 @@
                 case 3:
                 	return "汇聚";
                 	break;
+                case 4:
+                    return "易宝";
+                    break;
                 default:
                 	return "---";
                 	break;
                 }
             }
         }, {
-            id: "hlb_id",
+            id: "merchant_channel",
+            renderer: function (idValue, value, record) {
+                if (value == null) {
+                    return "---";
+                }
+                if (JSON.parse(value).yeepay.pay == undefined) {
+                    if (JSON.parse(value).yeepay == 1) {
+                        return "<font color='green'>开通</font>";
+                        $("#repay").prop('checked', true);
+                    } else {
+                        return "<font color='red'>未开通</font>";
+                    }
+                } else {
+                    var valueStatus = JSON.parse(value);
+                    if (valueStatus.yeepay.pay == 1) {
+                        return "<font color='green'>开通</font>";
+                    }
+                    if (valueStatus.yeepay.pay == 0) {
+                        return "<font color='red'>未开通</font>";
+                    }
+                }
+                if (value.yeepay.pay == 1) {
+                    return "<font color='green'>开通</font>";
+                }
+                if (value.yeepay.pay == 0) {
+                    return "<font color='red'>未开通</font>";
+                }
+
+            }
+        },  {
+            id: "yeepay_appkey",
             renderer: function (idValue, value, record) {
                 return value ? value : "---";
             }
         }, {
+            id: "hlb_id",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        },
+            {
             id: "merchant_channel",
             renderer: function (idValue, value, record) {
                 if (value == null) {

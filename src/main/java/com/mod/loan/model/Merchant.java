@@ -88,6 +88,18 @@ public class Merchant {
 	@Column(name = "mx_risk_token")
 	private String mxRiskToken;
 
+	public String getYeepay_appkey() {
+		return yeepay_appkey;
+	}
+
+	public void setYeepay_appkey(String yeepay_appkey) {
+		this.yeepay_appkey = yeepay_appkey;
+	}
+
+	@Column(name = "yeepay_appkey")
+	private String yeepay_appkey;
+
+
 	public String getMxRiskToken() {
 		return mxRiskToken;
 	}

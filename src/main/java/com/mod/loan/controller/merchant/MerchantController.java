@@ -55,7 +55,7 @@ public class MerchantController {
         if (StringUtils.isBlank(merchant.getMerchantName())) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "商户公司名称不能为空");
         }
-        if (merchant.getBindType() != 1 && merchant.getBindType() != 2 && merchant.getBindType() != 3) {
+        if (merchant.getBindType() != 1 && merchant.getBindType() != 2 && merchant.getBindType() != 3 && merchant.getBindType() != 4) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "不支持的绑卡类型");
         }
         if ("add".equals(flag) && null != merchantService.selectByPrimaryKey(merchant.getMerchantAlias())) {
@@ -117,6 +117,13 @@ public class MerchantController {
         return view;
     }
 
+    @RequestMapping(value = "edit_yeepay_channel")
+    public ModelAndView edit_yeepay_channel(ModelAndView view, String merchantAlias) {
+        view.addObject("merchantAlias", merchantAlias);
+        view.setViewName("merchant/edit_yeepay_channel");
+        return view;
+    }
+
     @RequestMapping(value = "edit_merchant_channel_ajax")
     public ResultMessage edit_merchant_channel_ajax(Merchant merchant, String merchantChannels) {
         Merchant record = merchantService.selectByPrimaryKey(merchant.getMerchantAlias());
@@ -131,6 +138,7 @@ public class MerchantController {
         record.setFuyou_h5key(merchant.getFuyou_h5key());
         record.setHuiju_id(merchant.getHuiju_id());
         record.setHuiju_md5_key(merchant.getHuiju_md5_key());
+        record.setYeepay_appkey(merchant.getYeepay_appkey());
         merchantService.updateByPrimaryKeySelective(record);
         return new ResultMessage(ResponseEnum.M2000);
     }
