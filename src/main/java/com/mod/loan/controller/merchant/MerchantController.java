@@ -110,13 +110,6 @@ public class MerchantController {
         return view;
     }
 
-    @RequestMapping(value = "edit_mxrisk_channel")
-    public ModelAndView edit_mxrisk_channel(ModelAndView view, String merchantAlias) {
-        view.addObject("merchantAlias", merchantAlias);
-        view.setViewName("merchant/edit_mxrisk_channel");
-        return view;
-    }
-
     @RequestMapping(value = "edit_yeepay_channel")
     public ModelAndView edit_yeepay_channel(ModelAndView view, String merchantAlias) {
         view.addObject("merchantAlias", merchantAlias);
@@ -147,19 +140,6 @@ public class MerchantController {
     public ResultMessage find_merchant_channel_ajax(String merchantAlias) {
         Merchant merchant = merchantService.selectByPrimaryKey(merchantAlias);
         if (merchant == null) {
-            return new ResultMessage(ResponseEnum.M4000.getCode(), "商户不存在");
-        }
-        return new ResultMessage(ResponseEnum.M2000, merchant);
-    }
-
-    @PostMapping("/edit_merchant_mx_risk_token")
-    public ResultMessage updateMerchantMxRiskToken(@RequestParam String merchantAlias,
-                                                   @RequestParam(defaultValue = "") String mxRiskToken) {
-        Merchant merchant = new Merchant();
-        merchant.setMerchantAlias(merchantAlias);
-        merchant.setMxRiskToken(mxRiskToken);
-        int updateCount = merchantService.updateByPrimaryKeySelective(merchant);
-        if (updateCount < 1) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "商户不存在");
         }
         return new ResultMessage(ResponseEnum.M2000, merchant);
