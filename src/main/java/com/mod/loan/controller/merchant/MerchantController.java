@@ -139,6 +139,7 @@ public class MerchantController {
         record.setHuiju_id(merchant.getHuiju_id());
         record.setHuiju_md5_key(merchant.getHuiju_md5_key());
         record.setYeepay_appkey(merchant.getYeepay_appkey());
+        record.setYeepay_private_key(merchant.getYeepay_private_key());
         merchantService.updateByPrimaryKeySelective(record);
         return new ResultMessage(ResponseEnum.M2000);
     }
