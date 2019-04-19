@@ -82,8 +82,6 @@
             return false;
         }
 
-        console.log($("#myForm"));
-        console.log($("#myForm").serialize());
         var myTable = $("#myForm").serialize() + "&merchantChannels=" + JSON.stringify(merchantChannels) + "&merchantAlias=" + merchantAlias;
         console.log(myTable,'=====');
         $.ajax({
