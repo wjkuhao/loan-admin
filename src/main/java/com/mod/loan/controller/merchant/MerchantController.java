@@ -131,8 +131,11 @@ public class MerchantController {
         record.setFuyou_h5key(merchant.getFuyou_h5key());
         record.setHuiju_id(merchant.getHuiju_id());
         record.setHuiju_md5_key(merchant.getHuiju_md5_key());
-        record.setYeepay_appkey(merchant.getYeepay_appkey());
-        record.setYeepay_private_key(merchant.getYeepay_private_key());
+        record.setYeepay_repay_appkey(merchant.getYeepay_repay_appkey());
+        record.setYeepay_repay_private_key(merchant.getYeepay_repay_private_key());
+        record.setYeepay_loan_appkey(merchant.getYeepay_loan_appkey());
+        record.setYeepay_loan_private_key(merchant.getYeepay_loan_private_key());
+        record.setYeepay_group_no(merchant.getYeepay_group_no());
         merchantService.updateByPrimaryKeySelective(record);
         return new ResultMessage(ResponseEnum.M2000);
     }

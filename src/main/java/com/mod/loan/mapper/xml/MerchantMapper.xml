@@ -38,7 +38,9 @@
 	</select>
 	
 	<select id="findMerchantList" resultType="map">
-	select merchant_alias,merchant_app,merchant_app_ios,merchant_name,merchant_status,create_time,merchant_market,hlb_id,fuyou_merid,merchant_channel,huiju_id,bind_type, yeepay_appkey,yeepay_private_key from tb_merchant
+	select merchant_alias,merchant_app,merchant_app_ios,merchant_name,merchant_status,create_time,merchant_market,hlb_id,fuyou_merid,merchant_channel,huiju_id,bind_type,
+		yeepay_group_no, yeepay_repay_appkey, yeepay_repay_private_key, yeepay_loan_appkey, yeepay_loan_private_key
+		from tb_merchant
 	<where>
 		<if test="merchantAlias != null">
 			and merchant_alias = #{merchantAlias}

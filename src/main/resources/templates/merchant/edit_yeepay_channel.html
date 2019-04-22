@@ -36,22 +36,48 @@
                     <input name="fuyou_h5key" id="fuyou_h5key" type="hidden"/>
                     <input name="huiju_id" id="huiju_id" type="hidden"/>
                     <input name="huiju_md5_key" id="huiju_md5_key" type="hidden"/>
-                    <label class="col-sm-2 control-label">易宝appKey</label>
+                    <label class="col-sm-2 control-label">易宝商户编号</label>
                 </td>
                 <td>
-                    <input name="yeepay_appkey" id="yeepay_appkey" maxlength="30" class="form-control" required="required"/>
+                    <input name="yeepay_group_no" id="yeepay_group_no" maxlength="30" class="form-control" required="required"/>
                 </td>
                 </tr>
 
                 <tr>
                 <td>
-                    <label class="col-sm-2 control-label">易宝交易密钥</label>
+                    <label class="col-sm-2 control-label">易宝还款appkey</label>
                 </td>
                 <td>
-                    <textarea name="yeepay_private_key" id="yeepay_private_key" class="form-control"
-                              style="resize:none; width: 300px; height: 300px;" required="required"></textarea>
+                    <input name="yeepay_repay_appkey" id="yeepay_repay_appkey" maxlength="30" class="form-control" required="required"/>
                 </td>
                 </tr>
+                <tr>
+                <td>
+                    <label class="col-sm-2 control-label">易宝还款密钥</label>
+                </td>
+                <td>
+                    <textarea name="yeepay_repay_private_key" id="yeepay_repay_private_key" class="form-control"
+                          style="resize:none; width: 300px; height: 300px;" required="required"></textarea>
+                </td>
+                </tr>
+
+                <tr>
+                <td>
+                    <label class="col-sm-2 control-label">易宝放款appkey</label>
+                </td>
+                <td>
+                    <input name="yeepay_loan_appkey" id="yeepay_loan_appkey" maxlength="30" class="form-control" required="required"/>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                    <label class="col-sm-2 control-label">易宝放款密钥</label>
+                </td>
+                <td>
+                    <textarea name="yeepay_loan_private_key" id="yeepay_loan_private_key" class="form-control"
+                              style="resize:none; width: 300px; height: 300px;" required="required"></textarea>
+                </td>
+            </tr>
             </tr>
         </table>
     </form>
@@ -122,8 +148,11 @@
             $("#hlb_rsa_private_key").val(obj.hlb_rsa_private_key);
             $("#huiju_id").val(obj.huiju_id);
             $("#huiju_md5_key").val(obj.huiju_md5_key);
-            $("#yeepay_appkey").val(obj.yeepay_appkey);
-            $("#yeepay_private_key").val(obj.yeepay_private_key);
+            $("#yeepay_repay_appkey").val(obj.yeepay_repay_appkey);
+            $("#yeepay_repay_private_key").val(obj.yeepay_repay_private_key);
+            $("#yeepay_loan_appkey").val(obj.yeepay_loan_appkey);
+            $("#yeepay_loan_private_key").val(obj.yeepay_loan_private_key);
+            $("#yeepay_group_no").val(obj.yeepay_group_no);
 
             merchantChannels = JSON.parse(obj.merchantChannel);
             if (merchantChannels == null) {
