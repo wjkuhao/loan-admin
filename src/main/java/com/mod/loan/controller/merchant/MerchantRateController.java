@@ -60,7 +60,7 @@ public class MerchantRateController {
 			return new ResultMessage(ResponseEnum.M4000.getCode(), "请重新输入产品期限");
 		}
 		if (merchantRate.getProductMoney() == null
-				|| new BigDecimal(2000).compareTo(merchantRate.getProductMoney()) < 0) {
+				|| new BigDecimal(5000).compareTo(merchantRate.getProductMoney()) < 0) {
 			return new ResultMessage(ResponseEnum.M4000.getCode(), "请重新输入借款金额");
 		}
 		if (merchantRate.getProductLevel() == null) {
