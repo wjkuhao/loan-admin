@@ -41,6 +41,14 @@
             </tr>
             <tr>
                 <td>
+                    <label class="col-sm-2 control-label">合利宝商户签名</label>
+                </td>
+                <td>
+                    <input name="hlbMerchantSign" id="hlbMerchantSign" maxlength="30" class="form-control" required="required"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <label class="col-sm-2 control-label">合利宝rsa私钥</label>
                 </td>
                 <td>
@@ -81,6 +89,7 @@
     $("#saveButton").bind("click", function () {
         var hlb_id = $("#hlb_id").val();
         var hlb_rsa_private_key = $("#hlb_rsa_private_key").val();
+        var hlbMerchantSign = $("#hlbMerchantSign").val();
         if ($("#pay").prop("checked")) {
             if (hlb_id == "") {
                 $("#hlb_id").tips({
@@ -100,6 +109,16 @@
                     time: 2
                 });
                 $("#hlb_rsa_private_key").focus();
+                return false;
+            }
+            if (hlbMerchantSign == "") {
+                $("#hlbMerchantSign").tips({
+                    side: 3,
+                    msg: "请输入合利宝商户签名",
+                    bg: "#AE81FF",
+                    time: 2
+                });
+                $("#hlbMerchantSign").focus();
                 return false;
             }
         }
@@ -122,6 +141,16 @@
                     time: 2
                 });
                 $("#hlb_rsa_private_key").focus();
+                return false;
+            }
+            if (hlbMerchantSign == "") {
+                $("#hlb_merchant_sign").tips({
+                    side: 3,
+                    msg: "请输入合利宝商户签名",
+                    bg: "#AE81FF",
+                    time: 2
+                });
+                $("#hlbMerchantSign").focus();
                 return false;
             }
         }
@@ -155,6 +184,8 @@
             $("#hlb_rsa_private_key").val(obj.hlb_rsa_private_key);
             $("#huiju_id").val(obj.huiju_id);
             $("#huiju_md5_key").val(obj.huiju_md5_key);
+            $("#hlbMerchantSign").val(obj.hlbMerchantSign);
+
             merchantChannels = JSON.parse(obj.merchantChannel);
             if (merchantChannels == null) {
                 merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}}");

@@ -86,6 +86,9 @@ public class Merchant {
 	@Column(name = "bind_type")
 	private Integer bindType;
 
+	@Column(name = "hlb_merchant_sign")
+	private String hlbMerchantSign;
+
 	public Integer getBindType() {
 		return bindType;
 	}
@@ -296,4 +299,11 @@ public class Merchant {
 		this.huiju_md5_key = huiju_md5_key;
 	}
 
+	public String getHlbMerchantSign() {
+		return hlbMerchantSign;
+	}
+
+	public void setHlbMerchantSign(String hlbMerchantSign) {
+		this.hlbMerchantSign = hlbMerchantSign;
+	}
 }

@@ -127,6 +127,7 @@ public class MerchantController {
         record.setFuyou_h5key(merchant.getFuyou_h5key());
         record.setHuiju_id(merchant.getHuiju_id());
         record.setHuiju_md5_key(merchant.getHuiju_md5_key());
+        record.setHlbMerchantSign(merchant.getHlbMerchantSign());
         merchantService.updateByPrimaryKeySelective(record);
         return  new ResultMessage(ResponseEnum.M2000);
     }

@@ -23,6 +23,7 @@
     <result column="huiju_id" jdbcType="VARCHAR" property="huiju_id" />
 	<result column="huiju_md5_key" jdbcType="VARCHAR" property="huiju_md5_key" />
     <result column="merchant_channel" jdbcType="VARCHAR" property="merchantChannel" />
+	<result column="hlb_merchant_sign" jdbcType="VARCHAR" property="hlbMerchantSign" />
 	</resultMap>
 	
 	<select id="merchantCount" resultType="int">
@@ -38,7 +39,7 @@
 	</select>
 	
 	<select id="findMerchantList" resultType="map">
-	select merchant_alias,merchant_app,merchant_app_ios,merchant_name,merchant_status,create_time,merchant_market,hlb_id,fuyou_merid,merchant_channel,huiju_id,bind_type from tb_merchant
+	select merchant_alias,merchant_app,merchant_app_ios,merchant_name,merchant_status,create_time,merchant_market,hlb_id,fuyou_merid,merchant_channel,huiju_id,bind_type,hlb_merchant_sign from tb_merchant
 	<where>
 		<if test="merchantAlias != null">
 			and merchant_alias = #{merchantAlias}
