@@ -155,7 +155,7 @@
             $("#huiju_md5_key").val(obj.huiju_md5_key);
             merchantChannels = JSON.parse(obj.merchantChannel);
             if (merchantChannels == null) {
-                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}}");
+                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}, \"yeepay\":{\"pay\":0,\"repay\":0}}");
                 $("#pay").prop('checked', false);
                 $("#repay").prop('checked', false);
             }

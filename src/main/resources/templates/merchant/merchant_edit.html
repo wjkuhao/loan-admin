@@ -18,6 +18,9 @@
 <a class="btn btn-info" href='javascript:void(0);' id="helibao" onclick='openHelibao()'>合利宝</a>
 <a class="btn btn-info" href='javascript:void(0);' id="fuyou" onclick='openFuyou()'>富友</a>
 <a class="btn btn-info" href='javascript:void(0);' id="huiju" onclick='openHuiju()'>汇聚</a>
+<a class="btn btn-info" href='javascript:void(0);' id="yeepay" onclick='openYeepay()'>易宝</a>
+<a class="btn btn-info" href='javascript:void(0);' id="mxrisk" onclick='openMxRisk()'>风控</a>
+
 <div id="zhongxin" align="center">
     <hr/>
     <form name="myForm" id="myForm">
@@ -95,6 +98,7 @@
                         <option value="1">合利宝</option>
                         <option value="2">富友</option>
                         <option value="3">汇聚</option>
+                        <option value="4">易宝</option>
                     </select>
                 </td>
             </tr>
@@ -223,6 +227,37 @@
         };
         diag.show();
     }
+
+    // 美象风控token配置
+    function openMxRisk() {
+        var merchantAlias = $("#merchantAlias").val();
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "风控";
+        diag.URL = contextPath + "merchant_config/edit_mxrisk_channel?merchantAlias=" + merchantAlias;
+        diag.Width = 600;
+        diag.Height = 600;
+        diag.CancelEvent = function () { //关闭事件
+            diag.close();
+        };
+        diag.show();
+    }
+
+    // 易宝支付
+    function openYeepay() {
+        var merchantAlias = $("#merchantAlias").val();
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "易宝";
+        diag.URL = contextPath + "merchant/edit_yeepay_channel?merchantAlias=" + merchantAlias;
+        diag.Width = 600;
+        diag.Height = 600;
+        diag.CancelEvent = function () { //关闭事件
+            diag.close();
+        };
+        diag.show();
+    }
+
 </script>
 </body>
 </html>

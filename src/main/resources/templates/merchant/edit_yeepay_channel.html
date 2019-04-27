@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<head>
+    <link href="/static/css/bootstrap3.3.7.min.css" rel="stylesheet" th:href="@{/static/css/bootstrap3.3.7.min.css}"/>
+    <style type="text/css">
+        .hlb {
+            display: none;
+        }
+
+        .fy {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+<div id="zhongxin" align="center">
+    <hr/>
+    <form name="myForm" id="myForm">
+        <fieldset>
+            <legend>修改</legend>
+        </fieldset>
+        <table>
+            <tr>
+                <label class="my_label_checkbox" style="margin-right: 20px"><input id="pay" type="checkbox"  onclick="payChecked()"/><span
+                        class="lbl"></span>放款</label>
+                <label class="my_label_checkbox"><input id="repay" type="checkbox"  onclick="repayChecked()"/><span
+                        class="lbl"></span>还款</label>
+                <tr>
+                <td>
+                    <input name="hlb_id" id="hlb_id"  type="hidden"/>
+                    <input name="hlb_rsa_private_key" id="hlb_rsa_private_key"  type="hidden"/>
+                    <input name="fuyou_merid" id="fuyou_merid" type="hidden"/>
+                    <input name="fuyou_secureid" id="fuyou_secureid" type="hidden"/>
+                    <input name="fuyou_h5key" id="fuyou_h5key" type="hidden"/>
+                    <input name="huiju_id" id="huiju_id" type="hidden"/>
+                    <input name="huiju_md5_key" id="huiju_md5_key" type="hidden"/>
+                    <label class="col-sm-2 control-label">易宝商户编号</label>
+                </td>
+                <td>
+                    <input name="yeepay_group_no" id="yeepay_group_no" maxlength="30" class="form-control" required="required"/>
+                </td>
+                </tr>
+
+                <tr>
+                <td>
+                    <label class="col-sm-2 control-label">易宝还款appkey</label>
+                </td>
+                <td>
+                    <input name="yeepay_repay_appkey" id="yeepay_repay_appkey" maxlength="30" class="form-control" required="required"/>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                    <label class="col-sm-2 control-label">易宝还款密钥</label>
+                </td>
+                <td>
+                    <textarea name="yeepay_repay_private_key" id="yeepay_repay_private_key" class="form-control"
+                          style="resize:none; width: 300px; height: 300px;" required="required"></textarea>
+                </td>
+                </tr>
+
+                <tr>
+                <td>
+                    <label class="col-sm-2 control-label">易宝放款appkey</label>
+                </td>
+                <td>
+                    <input name="yeepay_loan_appkey" id="yeepay_loan_appkey" maxlength="30" class="form-control" required="required"/>
+                </td>
+                </tr>
+                <tr>
+                <td>
+                    <label class="col-sm-2 control-label">易宝放款密钥</label>
+                </td>
+                <td>
+                    <textarea name="yeepay_loan_private_key" id="yeepay_loan_private_key" class="form-control"
+                              style="resize:none; width: 300px; height: 300px;" required="required"></textarea>
+                </td>
+            </tr>
+            </tr>
+        </table>
+    </form>
+    <div>
+        <a class="btn btn-mini btn-primary" id="saveButton">保存</a>
+        <a class="btn btn-mini btn-danger" onclick="top.Dialog.close()">取消</a>
+    </div>
+</div>
+<script type="text/javascript">
+    var contextPath = "[[@{/}]]";
+    var merchantAlias = '[[${merchantAlias}]]';
+    var merchantChannels;
+    function payChecked() {
+        if ($("#pay").prop("checked")) {
+            merchantChannels.yeepay.pay = 1;
+        } else {
+            merchantChannels.yeepay.pay = 0;
+        }
+    }
+
+    function repayChecked() {
+        if ($("#repay").prop("checked")) {
+            merchantChannels.yeepay.repay = 1;
+        } else {
+            merchantChannels.yeepay.repay = 0;
+        }
+    }
+    $("#saveButton").unbind();
+
+    $("#saveButton").bind("click", function () {
+        var yeepay_appkey = $("#yeepay_appkey").val();
+        if (yeepay_appkey === "") {
+            $("#yeepay_appkey").tips({
+                side: 3,
+                msg: "请输入易宝appkey",
+                bg: "#AE81FF",
+                time: 2
+            });
+            $("#yeepay_appkey").focus();
+            return false;
+        }
+
+        var myTable = $("#myForm").serialize() + "&merchantChannels=" + JSON.stringify(merchantChannels) + "&merchantAlias=" + merchantAlias;
+        $.ajax({
+            url: contextPath + "merchant/edit_merchant_channel_ajax",
+            type: "POST",
+            dataType: "json",
+            data: myTable,
+            success: function (data) {
+                if (data.status == 2000) {
+                    Dialog.alert("操作成功", function () {
+                        Dialog.close();
+                    });
+                } else {
+                    Dialog.alert(data.message);
+                }
+            }
+        });
+    });
+
+    function getAllMessage() {
+        $.post(contextPath + "merchant/find_merchant_channel_ajax", {"merchantAlias": merchantAlias}, function (data) {
+            var obj = data.data;
+            $("#fuyou_merid").val(obj.fuyou_merid);
+            $("#fuyou_secureid").val(obj.fuyou_secureid);
+            $("#fuyou_h5key").val(obj.fuyou_h5key);
+            $("#hlb_id").val(obj.hlb_id);
+            $("#hlb_rsa_private_key").val(obj.hlb_rsa_private_key);
+            $("#huiju_id").val(obj.huiju_id);
+            $("#huiju_md5_key").val(obj.huiju_md5_key);
+            $("#yeepay_repay_appkey").val(obj.yeepay_repay_appkey);
+            $("#yeepay_repay_private_key").val(obj.yeepay_repay_private_key);
+            $("#yeepay_loan_appkey").val(obj.yeepay_loan_appkey);
+            $("#yeepay_loan_private_key").val(obj.yeepay_loan_private_key);
+            $("#yeepay_group_no").val(obj.yeepay_group_no);
+
+            merchantChannels = JSON.parse(obj.merchantChannel);
+            if (merchantChannels == null) {
+                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}, \"yeepay\":{\"pay\":0,\"repay\":0}}");
+                $("#pay").prop('checked', false);
+                $("#repay").prop('checked', false);
+            }
+
+            if (merchantChannels.yeepay.pay != undefined && merchantChannels.yeepay.pay != null) {
+                if (merchantChannels.yeepay.pay == 1) {
+                    $("#pay").prop('checked', true);
+                } else {
+                    $("#pay").prop('checked', false);
+                }
+                if (merchantChannels.yeepay.repay == 1) {
+                    $("#repay").prop('checked', true);
+                } else {
+                    $("#repay").prop('checked', false);
+                }
+            }
+
+        });
+    }
+
+    getAllMessage();
+</script>
+</body>
+</html>
