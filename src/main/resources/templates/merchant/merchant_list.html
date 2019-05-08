@@ -30,6 +30,7 @@
                         <th class="center">苹果名称</th>
                         <th class="center">商户名称</th>
                         <th class="center">商户状态</th>
+                        <th class="center">展期状态</th>
                         <th class="center">贷款超市链接</th>
                         <th class="center">绑卡类型</th>
                         <th class="center">易宝</th>
@@ -96,6 +97,17 @@
             }
         }, {
             id: "merchant_status",
+            renderer: function (idValue, value, record) {
+                if (value == 0) {
+                    return "<font color='red'>停用</font>";
+                }
+                if (value == 1) {
+                    return "<font color='green'>启用</font>";
+                }
+                return "---";
+            }
+        }, {
+            id: "defer_status",
             renderer: function (idValue, value, record) {
                 if (value == 0) {
                     return "<font color='red'>停用</font>";

@@ -39,18 +39,18 @@
 	</select>
 	
 	<select id="findMerchantList" resultType="map">
-	select merchant_alias,merchant_app,merchant_app_ios,merchant_name,merchant_status,create_time,merchant_market,hlb_id,fuyou_merid,merchant_channel,huiju_id,bind_type,
-		yeepay_group_no, yeepay_repay_appkey, yeepay_repay_private_key, yeepay_loan_appkey, yeepay_loan_private_key,hlb_merchant_sign
-		from tb_merchant
-
+		select m.merchant_alias,m.merchant_app,m.merchant_app_ios,m.merchant_name,m.merchant_status,m.create_time,m.merchant_market,m.hlb_id,m.fuyou_merid,m.merchant_channel,
+		m.huiju_id,bind_type,m.yeepay_group_no, m.yeepay_repay_appkey, m.yeepay_repay_private_key, m.yeepay_loan_appkey, m.yeepay_loan_private_key,m.hlb_merchant_sign,
+		defer.status defer_status
+		from tb_merchant m left join tb_merchant_defer_config defer on m.merchant_alias=defer.merchant
 	<where>
 		<if test="merchantAlias != null">
-			and merchant_alias = #{merchantAlias}
+			and m.merchant_alias = #{merchantAlias}
 		</if>
 		<if test="merchantStatus != null">
-			and merchant_status = #{merchantStatus}
+			and m.merchant_status = #{merchantStatus}
 		</if>
 	</where>
-	order by create_time desc limit #{startIndex},#{pageSize}
+	order by m.create_time desc limit #{startIndex},#{pageSize}
 	</select>
 </mapper>

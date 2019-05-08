@@ -3,6 +3,7 @@
 <head th:insert="common/top :: head">
 </head>
 <body>
+	<a class="btn btn-info" href='javascript:void(0);' id="defer" onclick='deferConfig()'>续期配置</a>
 	<div class="container-fluid" id="main-container">
 		<div id="page-content" class="clearfix">
   			<div class="row-fluid">
@@ -191,6 +192,21 @@
 				diag.close();
 			 };
 			 diag.show();
+		}
+
+		//续期配置
+		function deferConfig(id){
+			var diag = new top.Dialog();
+			diag.Drag = true;
+			diag.Title = "续期配置";
+			diag.URL = contextPath + "merchant/merchant_defer_edit?merchant=" + merchant;
+			diag.Width = 600;
+			diag.Height = 600;
+			diag.CancelEvent = function(){ //关闭事件
+				query();
+				diag.close();
+			};
+			diag.show();
 		}
 	</script>
 </body>
