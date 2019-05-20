@@ -33,6 +33,7 @@ public class MerchantDeferConfig {
     private Double dailyDeferFee;
     private Double dailyOtherFee;
     private Integer maxDeferTimes;
+    private Integer deferDay;
     private String createTime;
     private String updateTime;
     private String remark;
@@ -91,6 +92,14 @@ public class MerchantDeferConfig {
 
     public void setMaxDeferTimes(Integer maxDeferTimes) {
         this.maxDeferTimes = maxDeferTimes;
+    }
+
+    public Integer getDeferDay() {
+        return deferDay;
+    }
+
+    public void setDeferDay(Integer deferDay) {
+        this.deferDay = deferDay;
     }
 
     public String getCreateTime() {

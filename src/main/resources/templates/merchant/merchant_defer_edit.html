@@ -47,6 +47,14 @@
             </tr>
             <tr>
                 <td>
+                    <label class="control-label">续期天数(天)</label>
+                </td>
+                <td>
+                    <input name="deferDay" id="deferDay" value="" class="form-control" required="required" onkeyup="value=/^\d+\.?\d{0,2}$/.test(value)?value:''" onblur="value=/^\d+\.?\d{0,2}$/.test(value)?value:''" />
+                </td>
+            </tr>
+            <tr>
+                <td>
                     <label class="control-label">最大续期次数</label>
                 </td>
                 <td>
@@ -87,6 +95,8 @@
             $("#dailyDeferRate").val(obj.dailyDeferRate);
             $("#dailyOtherFee").val(obj.dailyOtherFee);
             $("#maxDeferTimes").val(obj.maxDeferTimes);
+            $("#deferDay").val(obj.deferDay);
+
             if(obj.status == 0){
                 $("#closeStatus").attr("checked","true");
             }else{
