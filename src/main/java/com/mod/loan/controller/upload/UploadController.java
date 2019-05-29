@@ -56,8 +56,8 @@ public class UploadController {
 		if (!".apk".equalsIgnoreCase(suffixName)) {
 			return new ResultMessage(ResponseEnum.M4000.getCode(), "文件格式不正确！").toString();
 		}
-		// 大小不超过20MB
-		if (file.getSize() > 1024 * 1024 * 20) {
+		// 大小不超过40MB
+		if (file.getSize() > 1024 * 1024 * 40) {
 			return new ResultMessage(ResponseEnum.M4000.getCode(), "文件大小超过限制！").toString();
 		}
 		return this.fileUpload(file, suffixName).toString();
@@ -76,8 +76,8 @@ public class UploadController {
 		if (!".ipa".equalsIgnoreCase(suffixName)) {
 			return new ResultMessage(ResponseEnum.M4000.getCode(), "文件格式不正确！").toString();
 		}
-		// 大小不超过20MB
-		if (file.getSize() > 1024 * 1024 * 20) {
+		// 大小不超过40MB
+		if (file.getSize() > 1024 * 1024 * 40) {
 			return new ResultMessage(ResponseEnum.M4000.getCode(), "文件大小超过限制！").toString();
 		}
 
