@@ -55,6 +55,12 @@ public class Manager {
 
     @Column(name = "account_type")
     private Integer accountType;
+
+    /**
+     * 0-不安全，1-安全。默认1
+     */
+    @Column(name = "user_security")
+    private Integer userSecurity;
     
     /**
      * @return id
@@ -252,4 +258,11 @@ public class Manager {
         this.accountType = accountType;
     }
 
+    public Integer getUserSecurity() {
+        return userSecurity;
+    }
+
+    public void setUserSecurity(Integer userSecurity) {
+        this.userSecurity = userSecurity;
+    }
 }
