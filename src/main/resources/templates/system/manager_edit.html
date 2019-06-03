@@ -83,6 +83,17 @@
 							<input name="userQq" id="userQq" maxlength="20" class="form-control" onkeyup="value=value.replace(/[^\d]/,'')" />
 						</td>
 					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">是否需要安全验证</label>
+						</td>
+						<td>
+							<select name="userSecurity" id="userSecurity" class="form-control">
+								<option value="0">不需要</option>
+								<option value="1" selected="selected">需要</option>
+							</select>
+						</td>
+					</tr>
 				</table>
 				<label class="col-sm-2 control-label"><input id="open" onclick="setStatus(0);" type="radio"><span class="lbl">正常</span></label>
 				<label class="col-sm-2 control-label"><input id="close" onclick="setStatus(1);" type="radio"><span class="lbl">停用</span></label>
@@ -150,6 +161,7 @@
 				$("#companyId").val(manager.companyId);
 				$("#departmentId").val(manager.departmentId);
 				$("#userQq").val(manager.userQq);
+                $("#userSecurity").val(manager.userSecurity);
 			});
 		}
 		
