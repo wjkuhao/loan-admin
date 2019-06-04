@@ -97,6 +97,17 @@
 							<input name="userQq" id="userQq" maxlength="20" class="form-control" onkeyup="value=value.replace(/[^\d]/,'')" />
 						</td>
 					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">是否需要安全验证</label>
+						</td>
+						<td>
+							<select name="userSecurity" id="userSecurity" class="form-control">
+								<option value="0">不需要</option>
+								<option value="1" selected="selected">需要</option>
+							</select>
+						</td>
+					</tr>
 				</table>
 			</fieldset>
 		</form>

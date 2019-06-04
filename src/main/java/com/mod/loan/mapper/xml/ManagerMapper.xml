@@ -25,7 +25,7 @@
 		select account.id,account.login_name as 'loginName',account.user_phone as 'userPhone',
 			   account.user_name as 'userName',account.user_qq as 'userQq',account.user_work_number as 'userWorkNumber',
      		   account.last_login_time as 'lastLoginTime',account.last_login_ip as 'lastLoginIp',account.account_status as 'accountStatus',
-     		   role.role_name as 'roleName',company.company_name as 'companyName',department.department_name as 'departmentName'
+     		   role.role_name as 'roleName',company.company_name as 'companyName',department.department_name as 'departmentName',user_security as 'userSecurity'
 		from tb_manager account 
 		left join tb_manager_role role on account.user_role_id = role.id
 		left join tb_manager_company company on account.company_id = company.id

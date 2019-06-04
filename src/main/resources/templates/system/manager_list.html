@@ -31,6 +31,7 @@
 								<th class="center">手机号</th>						
 								<th class="center">最后登录时间</th>
 								<th class="center">账号状态</th>
+								<th class="center">安全验证</th>
 								<th class="center">操作</th>
 							</tr>
 						</thead>
@@ -116,6 +117,17 @@
 			            return "---";
 		            }
 	        	},{
+					id : "userSecurity",
+					renderer : function(idValue,value,record){
+						if (value == 0){
+							return "<font color='red'>不需要</font>";
+						}
+						if(value == 1){
+							return "<font color='green'>需要</font>";
+						}
+						return "---";
+					}
+            	},{
 		            id : "id",
 		            renderer : function(idValue,value,record){
 			            var html = "<div class='btn-group'>";
