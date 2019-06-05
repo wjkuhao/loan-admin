@@ -10,7 +10,9 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
@@ -123,21 +125,29 @@ public class MerchantController {
         if (record == null) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "商户不存在");
         }
-        record.setMerchantChannel(merchantChannels);
-        record.setHlb_id(merchant.getHlb_id());
-        record.setHlb_rsa_private_key(merchant.getHlb_rsa_private_key());
-        record.setFuyou_merid(merchant.getFuyou_merid());
-        record.setFuyou_secureid(merchant.getFuyou_secureid());
-        record.setFuyou_h5key(merchant.getFuyou_h5key());
-        record.setHuiju_id(merchant.getHuiju_id());
-        record.setHuiju_md5_key(merchant.getHuiju_md5_key());
-        record.setYeepay_repay_appkey(merchant.getYeepay_repay_appkey());
-        record.setYeepay_repay_private_key(merchant.getYeepay_repay_private_key());
-        record.setYeepay_loan_appkey(merchant.getYeepay_loan_appkey());
-        record.setYeepay_loan_private_key(merchant.getYeepay_loan_private_key());
-        record.setYeepay_group_no(merchant.getYeepay_group_no());
-        record.setHlbMerchantSign(merchant.getHlbMerchantSign());
-        merchantService.updateByPrimaryKeySelective(record);
+        try {
+            record.setMerchantChannel(merchantChannels);
+            record.setHlb_id(merchant.getHlb_id());
+            record.setHlb_rsa_private_key(merchant.getHlb_rsa_private_key());
+            record.setFuyou_merid(merchant.getFuyou_merid());
+            record.setFuyou_secureid(merchant.getFuyou_secureid());
+            record.setFuyou_h5key(merchant.getFuyou_h5key());
+            record.setHuiju_id(merchant.getHuiju_id());
+            record.setHuiju_md5_key(merchant.getHuiju_md5_key());
+
+            record.setYeepay_repay_appkey(merchantService.encodeKey(record.getYeepay_repay_appkey(), merchant.getYeepay_repay_appkey()));
+            record.setYeepay_repay_private_key(merchantService.encodeKey(record.getYeepay_repay_appkey(), merchant.getYeepay_repay_private_key()));
+            record.setYeepay_loan_appkey(merchantService.encodeKey(record.getYeepay_loan_appkey(), merchant.getYeepay_loan_appkey()));
+            record.setYeepay_loan_private_key(merchantService.encodeKey(record.getYeepay_loan_private_key(), merchant.getYeepay_loan_private_key()));
+            record.setYeepay_group_no(merchantService.encodeKey(record.getYeepay_group_no(), merchant.getYeepay_group_no()));
+
+            record.setHlbMerchantSign(merchant.getHlbMerchantSign());
+            merchantService.updateByPrimaryKeySelective(record);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultMessage(ResponseEnum.M4000.getCode(), "encode error");
+        }
+
         return new ResultMessage(ResponseEnum.M2000);
     }
 
@@ -149,5 +159,4 @@ public class MerchantController {
         }
         return new ResultMessage(ResponseEnum.M2000, merchant);
     }
-
 }

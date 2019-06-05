@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.mod.loan.util.DesUtil;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -53,6 +54,19 @@ public class MerchantServiceImpl extends BaseServiceImpl<Merchant, String> imple
 		merchantManager.setAccountType(1);
 		merchantManagerMapper.insertSelective(merchantManager);
 		merchantMapper.insertSelective(merchant);
+	}
+
+	@Override
+	public String encodeKey(String oldKey, String newKey) {
+		if (StringUtils.isNotEmpty(newKey) && !newKey.equals(oldKey)){
+			try {
+				return DesUtil.encryption(newKey);
+			} catch (Exception e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		return null;
 	}
 
 }

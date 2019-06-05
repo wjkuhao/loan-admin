@@ -18,4 +18,11 @@ public interface MerchantService extends BaseService<Merchant, String> {
 	 */
 	void insertMerchantAndMerchantManager(Merchant merchant,String userPhone);
 
+	/**
+	 * 新设置的值不为空并且和原来的值不相等才更新值
+	 * @param oldKey 旧值
+	 * @param newKey 新值
+	 * @return 加密后的数据
+	 */
+	String encodeKey(String oldKey, String newKey);
 }
