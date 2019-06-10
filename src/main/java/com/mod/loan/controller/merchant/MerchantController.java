@@ -120,6 +120,20 @@ public class MerchantController {
         return view;
     }
 
+    @RequestMapping(value = "edit_changjie_channel")
+    public ModelAndView edit_changjie_channel(ModelAndView view, String merchantAlias) {
+        view.addObject("merchantAlias", merchantAlias);
+        view.setViewName("merchant/edit_changjie_channel");
+        return view;
+    }
+
+    @RequestMapping(value = "edit_kuaiqian_channel")
+    public ModelAndView edit_kuaiqian_channel(ModelAndView view, String merchantAlias) {
+        view.addObject("merchantAlias", merchantAlias);
+        view.setViewName("merchant/edit_kuaiqian_channel");
+        return view;
+    }
+
     @RequestMapping(value = "edit_merchant_channel_ajax")
     public ResultMessage edit_merchant_channel_ajax(Merchant merchant, String merchantChannels) {
         Merchant record = merchantService.selectByPrimaryKey(merchant.getMerchantAlias());
