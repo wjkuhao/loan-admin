@@ -57,7 +57,8 @@ public class MerchantController {
         if (StringUtils.isBlank(merchant.getMerchantName())) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "商户公司名称不能为空");
         }
-        if (merchant.getBindType() != 1 && merchant.getBindType() != 2 && merchant.getBindType() != 3 && merchant.getBindType() != 4) {
+        if (merchant.getBindType() != 1 && merchant.getBindType() != 2 && merchant.getBindType() != 3
+                && merchant.getBindType() != 4 && merchant.getBindType() != 5 && merchant.getBindType() != 6) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "不支持的绑卡类型");
         }
         if ("add".equals(flag) && null != merchantService.selectByPrimaryKey(merchant.getMerchantAlias())) {
