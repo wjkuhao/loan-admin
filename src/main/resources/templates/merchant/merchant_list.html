@@ -44,6 +44,11 @@
                         <th class="center">汇聚id</th>
                         <th class="center">汇聚放款</th>
                         <th class="center">汇聚还款</th>
+                        <th class="center">畅捷id</th>
+                        <th class="center">畅捷放款</th>
+                        <th class="center">畅捷还款</th>
+                        <th class="center">快钱放款</th>
+                        <th class="center">快钱还款</th>
                         <th class="center">创建时间</th>
                         <th class="center">操作</th>
                     </tr>
@@ -138,6 +143,12 @@
                 case 4:
                     return "易宝";
                     break;
+                case 5:
+                    return "畅捷";
+                    break;
+                case 5:
+                    return "快钱";
+                    break;
                 default:
                 	return "---";
                 	break;
@@ -183,8 +194,7 @@
             renderer: function (idValue, value, record) {
                 return value ? value : "---";
             }
-        },
-            {
+        }, {
             id: "merchant_channel",
             renderer: function (idValue, value, record) {
                 if (value == null) {
@@ -341,6 +351,85 @@
                         return "<font color='green'>开通</font>";
                     }
                     if (JSON.parse(value).huiju.repay == 0) {
+                        return "<font color='red'>未开通</font>";
+                    }
+                }
+            }
+        },{
+            id: "cj_partnerId",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "merchant_channel",
+            renderer: function (idValue, value, record) {
+                if (value == null) {
+                    return "---";
+                }
+                if (JSON.parse(value).changjie == undefined) {
+                    return "<font color='red'>未开通</font>";
+                }
+                if (JSON.parse(value).changjie != undefined) {
+                    if (JSON.parse(value).changjie.pay == 1) {
+                        return "<font color='green'>开通</font>";
+                    }
+                    if (JSON.parse(value).changjie.pay == 0) {
+                        return "<font color='red'>未开通</font>";
+                    }
+                }
+
+            }
+        }, {
+            id: "merchant_channel",
+            renderer: function (idValue, value, record) {
+                if (value == null) {
+                    return "---";
+                }
+                if (JSON.parse(value).changjie == undefined) {
+                    return "<font color='red'>未开通</font>";
+                }
+                if(JSON.parse(value).changjie != undefined) {
+                    if (JSON.parse(value).changjie.repay == 1) {
+                        return "<font color='green'>开通</font>";
+                    }
+                    if (JSON.parse(value).changjie.repay == 0) {
+                        return "<font color='red'>未开通</font>";
+                    }
+                }
+            }
+        },{
+            id: "merchant_channel",
+            renderer: function (idValue, value, record) {
+                if (value == null) {
+                    return "---";
+                }
+                if (JSON.parse(value).kuaiqian == undefined) {
+                    return "<font color='red'>未开通</font>";
+                }
+                if (JSON.parse(value).kuaiqian != undefined) {
+                    if (JSON.parse(value).kuaiqian.pay == 1) {
+                        return "<font color='green'>开通</font>";
+                    }
+                    if (JSON.parse(value).kuaiqian.pay == 0) {
+                        return "<font color='red'>未开通</font>";
+                    }
+                }
+
+            }
+        }, {
+            id: "merchant_channel",
+            renderer: function (idValue, value, record) {
+                if (value == null) {
+                    return "---";
+                }
+                if (JSON.parse(value).kuaiqian == undefined) {
+                    return "<font color='red'>未开通</font>";
+                }
+                if(JSON.parse(value).kuaiqian != undefined) {
+                    if (JSON.parse(value).kuaiqian.repay == 1) {
+                        return "<font color='green'>开通</font>";
+                    }
+                    if (JSON.parse(value).kuaiqian.repay == 0) {
                         return "<font color='red'>未开通</font>";
                     }
                 }

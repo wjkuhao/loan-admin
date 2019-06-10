@@ -104,6 +104,33 @@ public class Merchant {
     @Column(name = "hlb_merchant_sign")
     private String hlbMerchantSign;
 
+    @Column(name = "kq_merchant_id")
+    private String kqMerchantId;
+
+    @Column(name = "kq_terminal_id")
+    private String kqTerminalId;
+
+    @Column(name = "kq_merchant_code")
+    private String kqMerchantCode;
+
+    @Column(name = "kq_cert_path")
+    private String kqCertPath;
+
+    @Column(name = "kq_cert_pwd")
+    private String kqCertPwd;
+
+    @Column(name = "kq_cer_pfx_path")
+    private String kqCerPfxPath;
+
+    @Column(name = "cj_partnerId")
+    private String cjPartnerId;
+
+    @Column(name = "cj_public_key")
+    private String cjPublicKey;
+
+    @Column(name = "cj_merchant_private_key")
+    private String cjMerchantPrivateKey;
+
     public String getYeepay_loan_appkey() {
         return yeepay_loan_appkey;
     }
@@ -357,6 +384,75 @@ public class Merchant {
 		this.hlbMerchantSign = hlbMerchantSign;
 	}
 
+    public String getKqMerchantId() {
+        return kqMerchantId;
+    }
 
+    public void setKqMerchantId(String kqMerchantId) {
+        this.kqMerchantId = kqMerchantId;
+    }
 
+    public String getKqTerminalId() {
+        return kqTerminalId;
+    }
+
+    public void setKqTerminalId(String kqTerminalId) {
+        this.kqTerminalId = kqTerminalId;
+    }
+
+    public String getKqMerchantCode() {
+        return kqMerchantCode;
+    }
+
+    public void setKqMerchantCode(String kqMerchantCode) {
+        this.kqMerchantCode = kqMerchantCode;
+    }
+
+    public String getKqCertPath() {
+        return kqCertPath;
+    }
+
+    public void setKqCertPath(String kqCertPath) {
+        this.kqCertPath = kqCertPath;
+    }
+
+    public String getKqCertPwd() {
+        return kqCertPwd;
+    }
+
+    public void setKqCertPwd(String kqCertPwd) {
+        this.kqCertPwd = kqCertPwd;
+    }
+
+    public String getKqCerPfxPath() {
+        return kqCerPfxPath;
+    }
+
+    public void setKqCerPfxPath(String kqCerPfxPath) {
+        this.kqCerPfxPath = kqCerPfxPath;
+    }
+
+    public String getCjPartnerId() {
+        return cjPartnerId;
+    }
+
+    public void setCjPartnerId(String cjPartnerId) {
+        this.cjPartnerId = cjPartnerId;
+    }
+
+    public String getCjPublicKey() {
+        return cjPublicKey;
+    }
+
+    public void setCjPublicKey(String cjPublicKey) {
+        this.cjPublicKey = cjPublicKey;
+    }
+
+    public String getCjMerchantPrivateKey() {
+        return cjMerchantPrivateKey;
+    }
+
+    public void setCjMerchantPrivateKey(String cjMerchantPrivateKey) {
+        this.cjMerchantPrivateKey = cjMerchantPrivateKey;
+    }
 }

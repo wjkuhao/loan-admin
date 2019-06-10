@@ -19,6 +19,8 @@
 <a class="btn btn-info" href='javascript:void(0);' id="fuyou" onclick='openFuyou()'>富友</a>
 <a class="btn btn-info" href='javascript:void(0);' id="huiju" onclick='openHuiju()'>汇聚</a>
 <a class="btn btn-info" href='javascript:void(0);' id="yeepay" onclick='openYeepay()'>易宝</a>
+<a class="btn btn-info" href='javascript:void(0);' id="changjie" onclick='openChangjie()'>畅捷</a>
+<a class="btn btn-info" href='javascript:void(0);' id="kuaiqian" onclick='openKuaiqian()'>快钱</a>
 <a class="btn btn-info" href='javascript:void(0);' id="mxrisk" onclick='openMxRisk()'>风控</a>
 
 <div id="zhongxin" align="center">
@@ -99,6 +101,8 @@
                         <option value="2">富友</option>
                         <option value="3">汇聚</option>
                         <option value="4">易宝</option>
+                        <option value="5">畅捷</option>
+                        <option value="6">快钱</option>
                     </select>
                 </td>
             </tr>
@@ -250,6 +254,36 @@
         diag.Drag = true;
         diag.Title = "易宝";
         diag.URL = contextPath + "merchant/edit_yeepay_channel?merchantAlias=" + merchantAlias;
+        diag.Width = 600;
+        diag.Height = 600;
+        diag.CancelEvent = function () { //关闭事件
+            diag.close();
+        };
+        diag.show();
+    }
+
+    // 畅捷支付
+    function openChangjie() {
+        var merchantAlias = $("#merchantAlias").val();
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "畅捷";
+        diag.URL = contextPath + "merchant/edit_changjie_channel?merchantAlias=" + merchantAlias;
+        diag.Width = 600;
+        diag.Height = 600;
+        diag.CancelEvent = function () { //关闭事件
+            diag.close();
+        };
+        diag.show();
+    }
+
+    // 快钱支付
+    function openKuaiqian() {
+        var merchantAlias = $("#merchantAlias").val();
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "快钱";
+        diag.URL = contextPath + "merchant/edit_kuaiqian_channel?merchantAlias=" + merchantAlias;
         diag.Width = 600;
         diag.Height = 600;
         diag.CancelEvent = function () { //关闭事件
