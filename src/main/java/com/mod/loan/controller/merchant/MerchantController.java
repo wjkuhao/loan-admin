@@ -10,7 +10,9 @@ import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 @RestController
@@ -55,8 +57,7 @@ public class MerchantController {
         if (StringUtils.isBlank(merchant.getMerchantName())) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "商户公司名称不能为空");
         }
-        if (merchant.getBindType() != 1 && merchant.getBindType() != 2 && merchant.getBindType() != 3
-                && merchant.getBindType() != 4 && merchant.getBindType() != 5 && merchant.getBindType() != 6) {
+        if (merchant.getBindType() != 1 && merchant.getBindType() != 2 && merchant.getBindType() != 3 && merchant.getBindType() != 4) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "不支持的绑卡类型");
         }
         if ("add".equals(flag) && null != merchantService.selectByPrimaryKey(merchant.getMerchantAlias())) {
@@ -118,50 +119,45 @@ public class MerchantController {
         return view;
     }
 
-    @RequestMapping(value = "edit_changjie_channel")
-    public ModelAndView edit_changjie_channel(ModelAndView view, String merchantAlias) {
-        view.addObject("merchantAlias", merchantAlias);
-        view.setViewName("merchant/edit_changjie_channel");
-        return view;
-    }
-
-    @RequestMapping(value = "edit_kuaiqian_channel")
-    public ModelAndView edit_kuaiqian_channel(ModelAndView view, String merchantAlias) {
-        view.addObject("merchantAlias", merchantAlias);
-        view.setViewName("merchant/edit_kuaiqian_channel");
-        return view;
-    }
-
     @RequestMapping(value = "edit_merchant_channel_ajax")
     public ResultMessage edit_merchant_channel_ajax(Merchant merchant, String merchantChannels) {
         Merchant record = merchantService.selectByPrimaryKey(merchant.getMerchantAlias());
         if (record == null) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "商户不存在");
         }
-        record.setMerchantChannel(merchantChannels);
-        record.setHlb_id(merchant.getHlb_id());
-        record.setHlb_rsa_private_key(merchant.getHlb_rsa_private_key());
-        record.setFuyou_merid(merchant.getFuyou_merid());
-        record.setFuyou_secureid(merchant.getFuyou_secureid());
-        record.setFuyou_h5key(merchant.getFuyou_h5key());
-        record.setHuiju_id(merchant.getHuiju_id());
-        record.setHuiju_md5_key(merchant.getHuiju_md5_key());
-        record.setYeepay_repay_appkey(merchant.getYeepay_repay_appkey());
-        record.setYeepay_repay_private_key(merchant.getYeepay_repay_private_key());
-        record.setYeepay_loan_appkey(merchant.getYeepay_loan_appkey());
-        record.setYeepay_loan_private_key(merchant.getYeepay_loan_private_key());
-        record.setYeepay_group_no(merchant.getYeepay_group_no());
-        record.setHlbMerchantSign(merchant.getHlbMerchantSign());
-        record.setKqCerPfxPath(merchant.getKqCerPfxPath());
-        record.setKqCertPath(merchant.getKqCertPath());
-        record.setKqCertPwd(merchant.getKqCertPwd());
-        record.setKqMerchantCode(merchant.getKqMerchantCode());
-        record.setKqMerchantId(merchant.getKqMerchantId());
-        record.setKqTerminalId(merchant.getKqTerminalId());
-        record.setCjPartnerId(merchant.getCjPartnerId());
-        record.setCjPublicKey(merchant.getCjPublicKey());
-        record.setCjMerchantPrivateKey(merchant.getCjMerchantPrivateKey());
-        merchantService.updateByPrimaryKeySelective(record);
+        try {
+            record.setMerchantChannel(merchantChannels);
+            record.setHlb_id(merchant.getHlb_id());
+            record.setHlb_rsa_private_key(merchant.getHlb_rsa_private_key());
+            record.setFuyou_merid(merchant.getFuyou_merid());
+            record.setFuyou_secureid(merchant.getFuyou_secureid());
+            record.setFuyou_h5key(merchant.getFuyou_h5key());
+            record.setHuiju_id(merchant.getHuiju_id());
+            record.setHuiju_md5_key(merchant.getHuiju_md5_key());
+
+            record.setYeepay_repay_appkey(merchantService.encodeKey(record.getYeepay_repay_appkey(), merchant.getYeepay_repay_appkey()));
+            record.setYeepay_repay_private_key(merchantService.encodeKey(record.getYeepay_repay_appkey(), merchant.getYeepay_repay_private_key()));
+            record.setYeepay_loan_appkey(merchantService.encodeKey(record.getYeepay_loan_appkey(), merchant.getYeepay_loan_appkey()));
+            record.setYeepay_loan_private_key(merchantService.encodeKey(record.getYeepay_loan_private_key(), merchant.getYeepay_loan_private_key()));
+            record.setYeepay_group_no(merchantService.encodeKey(record.getYeepay_group_no(), merchant.getYeepay_group_no()));
+
+            record.setHlbMerchantSign(merchant.getHlbMerchantSign());
+            record.setKqCerPfxPath(merchant.getKqCerPfxPath());
+            record.setKqCertPath(merchant.getKqCertPath());
+            record.setKqCertPwd(merchant.getKqCertPwd());
+            record.setKqMerchantCode(merchant.getKqMerchantCode());
+            record.setKqMerchantId(merchant.getKqMerchantId());
+            record.setKqTerminalId(merchant.getKqTerminalId());
+
+            record.setCjPartnerId(merchant.getCjPartnerId());
+            record.setCjPublicKey(merchant.getCjPublicKey());
+            record.setCjMerchantPrivateKey(merchant.getCjMerchantPrivateKey());
+            merchantService.updateByPrimaryKeySelective(record);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ResultMessage(ResponseEnum.M4000.getCode(), "encode error");
+        }
+
         return new ResultMessage(ResponseEnum.M2000);
     }
 
@@ -173,5 +169,4 @@ public class MerchantController {
         }
         return new ResultMessage(ResponseEnum.M2000, merchant);
     }
-
 }
