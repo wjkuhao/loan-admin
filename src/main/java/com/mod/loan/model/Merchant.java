@@ -55,16 +55,10 @@ public class Merchant {
     
     @Column(name = "hlb_rsa_private_key")
     private String hlb_rsa_private_key;
-    
-    @Column(name = "hlb_rsa_public_key")
-    private String hlb_rsa_public_key;
-    
-    @Column(name = "hlb_md5_key")
-    private String hlb_md5_key;
-    
-    @Column(name = "hlb_des_key")
-    private String hlb_des_key;
 
+    @Column(name = "hlb_merchant_sign")
+    private String hlbMerchantSign;
+    
     @Column(name = "merchant_market")
     private String merchantMarket;
 
@@ -101,9 +95,6 @@ public class Merchant {
     @Column(name = "yeepay_loan_private_key")
     private String yeepay_loan_private_key;
 
-    @Column(name = "hlb_merchant_sign")
-    private String hlbMerchantSign;
-
     @Column(name = "kq_merchant_id")
     private String kqMerchantId;
 
@@ -118,9 +109,6 @@ public class Merchant {
 
     @Column(name = "kq_cert_pwd")
     private String kqCertPwd;
-
-    @Column(name = "kq_cer_pfx_path")
-    private String kqCerPfxPath;
 
     @Column(name = "cj_partnerId")
     private String cjPartnerId;
@@ -280,30 +268,6 @@ public class Merchant {
 		this.hlb_rsa_private_key = hlb_rsa_private_key;
 	}
 
-	public String getHlb_rsa_public_key() {
-		return hlb_rsa_public_key;
-	}
-
-	public void setHlb_rsa_public_key(String hlb_rsa_public_key) {
-		this.hlb_rsa_public_key = hlb_rsa_public_key;
-	}
-
-	public String getHlb_md5_key() {
-		return hlb_md5_key;
-	}
-
-	public void setHlb_md5_key(String hlb_md5_key) {
-		this.hlb_md5_key = hlb_md5_key;
-	}
-
-	public String getHlb_des_key() {
-		return hlb_des_key;
-	}
-
-	public void setHlb_des_key(String hlb_des_key) {
-		this.hlb_des_key = hlb_des_key;
-	}
-
 	public String getMerchantAppIos() {
 		return merchantAppIos;
 	}
@@ -422,14 +386,6 @@ public class Merchant {
 
     public void setKqCertPwd(String kqCertPwd) {
         this.kqCertPwd = kqCertPwd;
-    }
-
-    public String getKqCerPfxPath() {
-        return kqCerPfxPath;
-    }
-
-    public void setKqCerPfxPath(String kqCerPfxPath) {
-        this.kqCerPfxPath = kqCerPfxPath;
     }
 
     public String getCjPartnerId() {

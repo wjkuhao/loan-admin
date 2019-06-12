@@ -1,66 +1,63 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.mod.loan.mapper.MerchantMapper">
-	<resultMap id="BaseResultMap" type="com.mod.loan.model.Merchant">
-		<!-- WARNING - @mbg.generated -->
-	<id column="merchant_alias" jdbcType="VARCHAR" property="merchantAlias" />
-	<result column="merchant_name" jdbcType="VARCHAR" property="merchantName" />
-    <result column="merchant_app" jdbcType="VARCHAR" property="merchantApp" />
-    <result column="merchant_app_ios" jdbcType="VARCHAR" property="merchantAppIos" />
-    <result column="merchant_zfb" jdbcType="VARCHAR" property="merchantZfb" />
-    <result column="merchant_status" jdbcType="TINYINT" property="merchantStatus" />
-    <result column="bind_type" jdbcType="TINYINT" property="bindType" />
-    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
-    <result column="hlb_id" jdbcType="VARCHAR" property="hlb_id" />
-    <result column="hlb_rsa_private_key" jdbcType="VARCHAR" property="hlb_rsa_private_key" />
-    <result column="hlb_rsa_public_key" jdbcType="VARCHAR" property="hlb_rsa_public_key" />
-    <result column="hlb_md5_key" jdbcType="VARCHAR" property="hlb_md5_key" />
-    <result column="hlb_des_key" jdbcType="VARCHAR" property="hlb_des_key" />
-    <result column="merchant_market" jdbcType="VARCHAR" property="merchantMarket" />
-    <result column="fuyou_merid" jdbcType="VARCHAR" property="fuyou_merid" />
-    <result column="fuyou_secureid" jdbcType="VARCHAR" property="fuyou_secureid" />
-    <result column="fuyou_h5key" jdbcType="VARCHAR" property="fuyou_h5key" />
-    <result column="huiju_id" jdbcType="VARCHAR" property="huiju_id" />
-	<result column="huiju_md5_key" jdbcType="VARCHAR" property="huiju_md5_key" />
-    <result column="merchant_channel" jdbcType="VARCHAR" property="merchantChannel" />
-	<result column="hlb_merchant_sign" jdbcType="VARCHAR" property="hlbMerchantSign" />
-	<result column="cj_partnerId" jdbcType="VARCHAR" property="cjPartnerId" />
-	<result column="cj_public_key" jdbcType="VARCHAR" property="cjPublicKey" />
-	<result column="cj_merchant_private_key" jdbcType="VARCHAR" property="cjMerchantPrivateKey" />
-	<result column="kq_merchant_id" jdbcType="VARCHAR" property="kqMerchantId" />
-	<result column="kq_terminal_id" jdbcType="VARCHAR" property="kqTerminalId" />
-	<result column="kq_merchant_code" jdbcType="VARCHAR" property="kqMerchantCode" />
-	<result column="kq_cert_path" jdbcType="VARCHAR" property="kqCertPath" />
-	<result column="kq_cert_pwd" jdbcType="VARCHAR" property="kqCertPwd" />
-	<result column="kq_cer_pfx_path" jdbcType="VARCHAR" property="kqCerPfxPath" />
+    <resultMap id="BaseResultMap" type="com.mod.loan.model.Merchant">
+        <!-- WARNING - @mbg.generated -->
+        <id column="merchant_alias" jdbcType="VARCHAR" property="merchantAlias"/>
+        <result column="merchant_name" jdbcType="VARCHAR" property="merchantName"/>
+        <result column="merchant_app" jdbcType="VARCHAR" property="merchantApp"/>
+        <result column="merchant_app_ios" jdbcType="VARCHAR" property="merchantAppIos"/>
+        <result column="merchant_zfb" jdbcType="VARCHAR" property="merchantZfb"/>
+        <result column="merchant_status" jdbcType="TINYINT" property="merchantStatus"/>
+        <result column="bind_type" jdbcType="TINYINT" property="bindType"/>
+        <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="hlb_id" jdbcType="VARCHAR" property="hlb_id"/>
+        <result column="hlb_rsa_private_key" jdbcType="VARCHAR" property="hlb_rsa_private_key"/>
+        <result column="hlb_merchant_sign" jdbcType="VARCHAR" property="hlbMerchantSign"/>
+        <result column="merchant_market" jdbcType="VARCHAR" property="merchantMarket"/>
+        <result column="fuyou_merid" jdbcType="VARCHAR" property="fuyou_merid"/>
+        <result column="fuyou_secureid" jdbcType="VARCHAR" property="fuyou_secureid"/>
+        <result column="fuyou_h5key" jdbcType="VARCHAR" property="fuyou_h5key"/>
+        <result column="huiju_id" jdbcType="VARCHAR" property="huiju_id"/>
+        <result column="huiju_md5_key" jdbcType="VARCHAR" property="huiju_md5_key"/>
+        <result column="merchant_channel" jdbcType="VARCHAR" property="merchantChannel"/>
+        <result column="cj_partnerId" jdbcType="VARCHAR" property="cjPartnerId"/>
+        <result column="cj_public_key" jdbcType="VARCHAR" property="cjPublicKey"/>
+        <result column="cj_merchant_private_key" jdbcType="VARCHAR" property="cjMerchantPrivateKey"/>
+        <result column="kq_merchant_id" jdbcType="VARCHAR" property="kqMerchantId"/>
+        <result column="kq_terminal_id" jdbcType="VARCHAR" property="kqTerminalId"/>
+        <result column="kq_merchant_code" jdbcType="VARCHAR" property="kqMerchantCode"/>
+        <result column="kq_cert_path" jdbcType="VARCHAR" property="kqCertPath"/>
+        <result column="kq_cert_pwd" jdbcType="VARCHAR" property="kqCertPwd"/>
+    </resultMap>
 
-	</resultMap>
-	
-	<select id="merchantCount" resultType="int">
-	select count(1) from tb_merchant
-	<where>
-		<if test="merchantAlias != null">
-			and merchant_alias = #{merchantAlias}
-		</if>
-		<if test="merchantStatus != null">
-			and merchant_status = #{merchantStatus}
-		</if>
-	</where>
-	</select>
-	
-	<select id="findMerchantList" resultType="map">
-		select m.merchant_alias,m.merchant_app,m.merchant_app_ios,m.merchant_name,m.merchant_status,m.create_time,m.merchant_market,m.hlb_id,m.fuyou_merid,m.merchant_channel,
-		m.huiju_id,bind_type,m.yeepay_group_no, m.yeepay_repay_appkey, m.yeepay_repay_private_key, m.yeepay_loan_appkey, m.yeepay_loan_private_key,m.hlb_merchant_sign,m.cj_partnerId,
-		defer.status defer_status
-		from tb_merchant m left join tb_merchant_defer_config defer on m.merchant_alias=defer.merchant
-	<where>
-		<if test="merchantAlias != null">
-			and m.merchant_alias = #{merchantAlias}
-		</if>
-		<if test="merchantStatus != null">
-			and m.merchant_status = #{merchantStatus}
-		</if>
-	</where>
-	order by m.create_time desc limit #{startIndex},#{pageSize}
-	</select>
+    <select id="merchantCount" resultType="int">
+        select count(1) from tb_merchant
+        <where>
+            <if test="merchantAlias != null">
+                and merchant_alias = #{merchantAlias}
+            </if>
+            <if test="merchantStatus != null">
+                and merchant_status = #{merchantStatus}
+            </if>
+        </where>
+    </select>
+
+    <select id="findMerchantList" resultType="map">
+        select
+        m.merchant_alias,m.merchant_app,m.merchant_app_ios,m.merchant_name,m.merchant_status,m.create_time,m.merchant_market,m.hlb_id,m.fuyou_merid,m.merchant_channel,
+        m.huiju_id,bind_type,m.yeepay_group_no, m.yeepay_repay_appkey, m.yeepay_repay_private_key, m.yeepay_loan_appkey,
+        m.yeepay_loan_private_key,m.hlb_merchant_sign,m.cj_partnerId,
+        defer.status defer_status
+        from tb_merchant m left join tb_merchant_defer_config defer on m.merchant_alias=defer.merchant
+        <where>
+            <if test="merchantAlias != null">
+                and m.merchant_alias = #{merchantAlias}
+            </if>
+            <if test="merchantStatus != null">
+                and m.merchant_status = #{merchantStatus}
+            </if>
+        </where>
+        order by m.create_time desc limit #{startIndex},#{pageSize}
+    </select>
 </mapper>
