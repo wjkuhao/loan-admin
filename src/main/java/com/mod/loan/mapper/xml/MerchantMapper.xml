@@ -32,7 +32,11 @@
 	<result column="kq_merchant_code" jdbcType="VARCHAR" property="kqMerchantCode" />
 	<result column="kq_cert_path" jdbcType="VARCHAR" property="kqCertPath" />
 	<result column="kq_cert_pwd" jdbcType="VARCHAR" property="kqCertPwd" />
-	<result column="kq_cer_pfx_path" jdbcType="VARCHAR" property="kqCerPfxPath" />
+    <result column="huichao_merid" jdbcType="VARCHAR" property="huichaoMerid" />
+    <result column="huichao_public_key" jdbcType="VARCHAR" property="huichaoPublicKey" />
+    <result column="huichao_merchant_repay_private_key" jdbcType="VARCHAR" property="huichaoMerchantPepayPrivateKey" />
+    <result column="huichao_merchant_pay_private_key" jdbcType="VARCHAR" property="huichaoMerchantPayPrivateKey" />
+
 
 	</resultMap>
 	

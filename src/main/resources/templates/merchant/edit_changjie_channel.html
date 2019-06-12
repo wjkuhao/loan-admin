@@ -60,6 +60,7 @@
 <script type="text/javascript">
     var contextPath = "[[@{/}]]";
     var merchantAlias = '[[${merchantAlias}]]';
+    var merchantArr = ['helibao','fuyou','huiju','yeepay','changjie','kuaiqian','huichao'];
     var merchantChannels;
 
     function payChecked() {
@@ -176,9 +177,22 @@
 
             merchantChannels = JSON.parse(obj.merchantChannel);
             if (merchantChannels == null) {
-                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}, \"yeepay\":{\"pay\":0,\"repay\":0}, \"changjie\":{\"pay\":0,\"repay\":0}, \"kuaiqian\":{\"pay\":0,\"repay\":0}}");
+                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}, \"yeepay\":{\"pay\":0,\"repay\":0}, \"changjie\":{\"pay\":0,\"repay\":0}, \"kuaiqian\":{\"pay\":0,\"repay\":0},\"huichao\":{\"weixinpay\":0,\"weixinrepay\":0,\"alipaypay\":0,\"alipayrepay\":0,\"pay\":0,\"repay\":0}}");
                 $("#pay").prop('checked', false);
                 $("#repay").prop('checked', false);
+            }
+
+            for(var key in merchantArr) {
+                if (merchantArr[key] == 'huichao') {
+                    if (merchantChannels.huichao == undefined) {
+                        merchantChannels[merchantArr[key]] = {weixinpay:0,weixinrepay:0,alipaypay:0,alipayrepay:0,pay:0,repay:0};
+                    }
+                } else {
+                    if (merchantChannels.helibao == undefined || merchantChannels.fuyou == undefined || merchantChannels.huiju == undefined
+                        || merchantChannels.yeepay == undefined || merchantChannels.changjie == undefined || merchantChannels.kuaiqian == undefined) {
+                        merchantChannels[merchantArr[key]] = {pay:0,repay:0};
+                    }
+                }
             }
 
             if (merchantChannels.changjie.pay != undefined && merchantChannels.changjie.pay != null) {

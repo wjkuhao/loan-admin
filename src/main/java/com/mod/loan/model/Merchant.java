@@ -119,9 +119,6 @@ public class Merchant {
     @Column(name = "kq_cert_pwd")
     private String kqCertPwd;
 
-    @Column(name = "kq_cer_pfx_path")
-    private String kqCerPfxPath;
-
     @Column(name = "cj_partnerId")
     private String cjPartnerId;
 
@@ -130,6 +127,18 @@ public class Merchant {
 
     @Column(name = "cj_merchant_private_key")
     private String cjMerchantPrivateKey;
+
+    @Column(name = "huichao_merid")
+    private String huichaoMerid;
+
+    @Column(name = "huichao_public_key")
+    private String huichaoPublicKey;
+
+    @Column(name = "huichao_merchant_repay_private_key")
+    private String huichaoMerchantRepayPrivateKey;
+
+    @Column(name = "huichao_merchant_pay_private_key")
+    private String huichaoMerchantPayPrivateKey;
 
     public String getYeepay_loan_appkey() {
         return yeepay_loan_appkey;
@@ -424,14 +433,6 @@ public class Merchant {
         this.kqCertPwd = kqCertPwd;
     }
 
-    public String getKqCerPfxPath() {
-        return kqCerPfxPath;
-    }
-
-    public void setKqCerPfxPath(String kqCerPfxPath) {
-        this.kqCerPfxPath = kqCerPfxPath;
-    }
-
     public String getCjPartnerId() {
         return cjPartnerId;
     }
@@ -454,5 +455,37 @@ public class Merchant {
 
     public void setCjMerchantPrivateKey(String cjMerchantPrivateKey) {
         this.cjMerchantPrivateKey = cjMerchantPrivateKey;
+    }
+
+    public String getHuichaoMerid() {
+        return huichaoMerid;
+    }
+
+    public void setHuichaoMerid(String huichaoMerid) {
+        this.huichaoMerid = huichaoMerid;
+    }
+
+    public String getHuichaoPublicKey() {
+        return huichaoPublicKey;
+    }
+
+    public void setHuichaoPublicKey(String huichaoPublicKey) {
+        this.huichaoPublicKey = huichaoPublicKey;
+    }
+
+    public String getHuichaoMerchantRepayPrivateKey() {
+        return huichaoMerchantRepayPrivateKey;
+    }
+
+    public void setHuichaoMerchantRepayPrivateKey(String huichaoMerchantRepayPrivateKey) {
+        this.huichaoMerchantRepayPrivateKey = huichaoMerchantRepayPrivateKey;
+    }
+
+    public String getHuichaoMerchantPayPrivateKey() {
+        return huichaoMerchantPayPrivateKey;
+    }
+
+    public void setHuichaoMerchantPayPrivateKey(String huichaoMerchantPayPrivateKey) {
+        this.huichaoMerchantPayPrivateKey = huichaoMerchantPayPrivateKey;
     }
 }

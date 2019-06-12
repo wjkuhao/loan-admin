@@ -21,6 +21,7 @@
 <a class="btn btn-info" href='javascript:void(0);' id="yeepay" onclick='openYeepay()'>易宝</a>
 <a class="btn btn-info" href='javascript:void(0);' id="changjie" onclick='openChangjie()'>畅捷</a>
 <a class="btn btn-info" href='javascript:void(0);' id="kuaiqian" onclick='openKuaiqian()'>快钱</a>
+<a class="btn btn-info" href='javascript:void(0);' id="huichao" onclick='openHuichao()'>汇潮</a>
 <a class="btn btn-info" href='javascript:void(0);' id="mxrisk" onclick='openMxRisk()'>风控</a>
 
 <div id="zhongxin" align="center">
@@ -103,6 +104,7 @@
                         <option value="4">易宝</option>
                         <option value="5">畅捷</option>
                         <option value="6">快钱</option>
+                        <option value="7">汇潮</option>
                     </select>
                 </td>
             </tr>
@@ -292,6 +294,20 @@
         diag.show();
     }
 
+    // 汇潮支付
+    function openHuichao() {
+        var merchantAlias = $("#merchantAlias").val();
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "汇潮";
+        diag.URL = contextPath + "merchant/edit_huichao_channel?merchantAlias=" + merchantAlias;
+        diag.Width = 600;
+        diag.Height = 600;
+        diag.CancelEvent = function () { //关闭事件
+            diag.close();
+        };
+        diag.show();
+    }
 </script>
 </body>
 </html>

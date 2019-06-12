@@ -58,7 +58,8 @@ public class MerchantController {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "商户公司名称不能为空");
         }
         if (merchant.getBindType() != 1 && merchant.getBindType() != 2 && merchant.getBindType() != 3
-                && merchant.getBindType() != 4 && merchant.getBindType() != 5 && merchant.getBindType() != 6) {
+                && merchant.getBindType() != 4 && merchant.getBindType() != 5 && merchant.getBindType() != 6
+                && merchant.getBindType() != 7) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "不支持的绑卡类型");
         }
         if ("add".equals(flag) && null != merchantService.selectByPrimaryKey(merchant.getMerchantAlias())) {
@@ -134,6 +135,13 @@ public class MerchantController {
         return view;
     }
 
+    @RequestMapping(value = "edit_huichao_channel")
+    public ModelAndView edit_huichao_channel(ModelAndView view, String merchantAlias) {
+        view.addObject("merchantAlias", merchantAlias);
+        view.setViewName("merchant/edit_huichao_channel");
+        return view;
+    }
+
     @RequestMapping(value = "edit_merchant_channel_ajax")
     public ResultMessage edit_merchant_channel_ajax(Merchant merchant, String merchantChannels) {
         Merchant record = merchantService.selectByPrimaryKey(merchant.getMerchantAlias());
@@ -157,7 +165,6 @@ public class MerchantController {
             record.setYeepay_group_no(merchantService.encodeKey(record.getYeepay_group_no(), merchant.getYeepay_group_no()));
 
             record.setHlbMerchantSign(merchant.getHlbMerchantSign());
-            record.setKqCerPfxPath(merchant.getKqCerPfxPath());
             record.setKqCertPath(merchant.getKqCertPath());
             record.setKqCertPwd(merchant.getKqCertPwd());
             record.setKqMerchantCode(merchant.getKqMerchantCode());
@@ -167,6 +174,11 @@ public class MerchantController {
             record.setCjPartnerId(merchant.getCjPartnerId());
             record.setCjPublicKey(merchant.getCjPublicKey());
             record.setCjMerchantPrivateKey(merchant.getCjMerchantPrivateKey());
+
+            record.setHuichaoMerid(merchant.getHuichaoMerid());
+            record.setHuichaoPublicKey(merchant.getHuichaoPublicKey());
+            record.setHuichaoMerchantPayPrivateKey(merchant.getHuichaoMerchantPayPrivateKey());
+            record.setHuichaoMerchantRepayPrivateKey(merchant.getHuichaoMerchantRepayPrivateKey());
             merchantService.updateByPrimaryKeySelective(record);
         } catch (Exception e) {
             e.printStackTrace();

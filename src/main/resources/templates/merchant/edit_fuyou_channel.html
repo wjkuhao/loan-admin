@@ -28,10 +28,6 @@
                 <label class="my_label_checkbox"><input id="repay" type="checkbox" onclick="repayChecked()"/><span
                         class="lbl"></span>还款</label>
                 <td>
-                    <input name="hlb_id" id="hlb_id"  type="hidden"/>
-                    <input name="hlb_rsa_private_key" id="hlb_rsa_private_key"  type="hidden"/>
-                    <input name="huiju_id" id="huiju_id"  type="hidden"/>
-                    <input name="huiju_md5_key" id="huiju_md5_key"  type="hidden"/>
                     <label class="col-sm-2 control-label">富友商户id</label>
                 </td>
                 <td>
@@ -65,7 +61,9 @@
 <script type="text/javascript">
     var contextPath = "[[@{/}]]";
     var merchantAlias = '[[${merchantAlias}]]';
+    var merchantArr = ['helibao','fuyou','huiju','yeepay','changjie','kuaiqian','huichao'];
     var merchantChannels;
+
     function payChecked() {
         if ($("#pay").prop("checked")) {
             merchantChannels.fuyou.pay = 1;
@@ -177,13 +175,9 @@
             $("#fuyou_merid").val(obj.fuyou_merid);
             $("#fuyou_secureid").val(obj.fuyou_secureid);
             $("#fuyou_h5key").val(obj.fuyou_h5key);
-            $("#hlb_id").val(obj.hlb_id);
-            $("#hlb_rsa_private_key").val(obj.hlb_rsa_private_key);
-            $("#huiju_id").val(obj.huiju_id);
-            $("#huiju_md5_key").val(obj.huiju_md5_key);
             merchantChannels = JSON.parse(obj.merchantChannel);
             if (merchantChannels == null) {
-                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}, \"yeepay\":{\"pay\":0,\"repay\":0}, \"changjie\":{\"pay\":0,\"repay\":0}, \"kuaiqian\":{\"pay\":0,\"repay\":0}}");
+                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}, \"yeepay\":{\"pay\":0,\"repay\":0}, \"changjie\":{\"pay\":0,\"repay\":0}, \"kuaiqian\":{\"pay\":0,\"repay\":0},\"huichao\":{\"weixinpay\":0,\"weixinrepay\":0,\"alipaypay\":0,\"alipayrepay\":0,\"pay\":0,\"repay\":0}}");
                 $("#pay").prop('checked', false);
                 $("#repay").prop('checked', false);
             }
@@ -193,20 +187,17 @@
                     $("#pay").prop('checked', true);
                     $("#repay").prop('checked', true);
                 }
-                if (merchantChannels.helibao == 0 && merchantChannels.fuyou == 1) {
-                    merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":1,\"repay\":1},\"fuyou\":{\"pay\":0,\"repay\":0}}");
-                    $("#pay").prop('checked', false);
-                    $("#repay").prop('checked', false);
-                }
-                if (merchantChannels.helibao == 1 && merchantChannels.fuyou == 0) {
-                    merchantChannels = JSON.parse("{\"helibao\":{\"pay\":1,\"repay\":1},\"fuyou\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0}}");
-                    $("#pay").prop('checked', true);
-                    $("#repay").prop('checked', true);
-                }
-                if (merchantChannels.helibao == 0 && merchantChannels.fuyou == 0) {
-                    merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0}}");
-                    $("#pay").prop('checked', false);
-                    $("#repay").prop('checked', false);
+                for(var key in merchantArr) {
+                    if (merchantArr[key] == 'huichao') {
+                        if (merchantChannels.huichao == undefined) {
+                            merchantChannels[merchantArr[key]] = {weixinpay:0,weixinrepay:0,alipaypay:0,alipayrepay:0,pay:0,repay:0};
+                        }
+                    } else {
+                        if (merchantChannels.helibao == undefined || merchantChannels.fuyou == undefined || merchantChannels.huiju == undefined
+                            || merchantChannels.yeepay == undefined || merchantChannels.changjie == undefined || merchantChannels.kuaiqian == undefined) {
+                            merchantChannels[merchantArr[key]] = {pay:0,repay:0};
+                        }
+                    }
                 }
             }
             if (merchantChannels.fuyou.pay != undefined && merchantChannels.fuyou.pay != null) {

@@ -60,14 +60,6 @@
             </tr>
             <tr>
                 <td>
-                    <label class="col-sm-2 control-label">公私钥路径</label>
-                </td>
-                <td>
-                    <input name="kqCerPfxPath" id="kqCerPfxPath" maxlength="128" class="form-control" required="required"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
                     <label class="col-sm-2 control-label">证书密码</label>
                 </td>
                 <td>
@@ -84,6 +76,7 @@
 <script type="text/javascript">
     var contextPath = "[[@{/}]]";
     var merchantAlias = '[[${merchantAlias}]]';
+    var merchantArr = ['helibao','fuyou','huiju','yeepay','changjie','kuaiqian','huichao'];
     var merchantChannels;
 
     function payChecked() {
@@ -109,8 +102,6 @@
         var kqTerminalId = $("#kqTerminalId").val();
         var kqMerchantId = $("#kqMerchantId").val();
         var kqCertPath = $("#kqCertPath").val();
-        var kqCerPath = $("#kqCerPath").val();
-        var kqPfxPath = $("#kqPfxPath").val();
         var kqCertPwd = $("#kqCertPwd").val();
         if ($("#pay").prop("checked")) {
             if (kqMerchantCode == "") {
@@ -153,16 +144,6 @@
                 $("#kqCertPath").focus();
                 return false;
             }
-            if (kqCerPfxPath == "") {
-                $("#kqCerPfxPath").tips({
-                    side: 3,
-                    msg: "请输入快钱公私钥路径",
-                    bg: "#AE81FF",
-                    time: 2
-                });
-                $("#kqCerPfxPath").focus();
-                return false;
-            }
             if (kqCertPwd == "") {
                 $("#kqCertPwd").tips({
                     side: 3,
@@ -215,16 +196,6 @@
                 $("#kqCertPath").focus();
                 return false;
             }
-            if (kqCerPfxPath == "") {
-                $("#kqCerPfxPath").tips({
-                    side: 3,
-                    msg: "请输入快钱公私钥路径",
-                    bg: "#AE81FF",
-                    time: 2
-                });
-                $("#kqCerPfxPath").focus();
-                return false;
-            }
             if (kqCertPwd == "") {
                 $("#kqCertPwd").tips({
                     side: 3,
@@ -262,16 +233,26 @@
             $("#kqTerminalId").val(obj.kqTerminalId);
             $("#kqMerchantId").val(obj.kqMerchantId);
             $("#kqCertPath").val(obj.kqCertPath);
-            $("#kqCerPfxPath").val(obj.kqCerPfxPath);
             $("#kqCertPwd").val(obj.kqCertPwd);
 
             merchantChannels = JSON.parse(obj.merchantChannel);
             if (merchantChannels == null) {
-                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}, \"yeepay\":{\"pay\":0,\"repay\":0}, \"changjie\":{\"pay\":0,\"repay\":0}, \"kuaiqian\":{\"pay\":0,\"repay\":0}}");
+                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}, \"yeepay\":{\"pay\":0,\"repay\":0}, \"changjie\":{\"pay\":0,\"repay\":0}, \"kuaiqian\":{\"pay\":0,\"repay\":0},\"huichao\":{\"weixinpay\":0,\"weixinrepay\":0,\"alipaypay\":0,\"alipayrepay\":0,\"pay\":0,\"repay\":0}}");
                 $("#pay").prop('checked', false);
                 $("#repay").prop('checked', false);
             }
-
+            for(var key in merchantArr) {
+                if (merchantArr[key] == 'huichao') {
+                    if (merchantChannels.huichao == undefined) {
+                        merchantChannels[merchantArr[key]] = {weixinpay:0,weixinrepay:0,alipaypay:0,alipayrepay:0,pay:0,repay:0};
+                    }
+                } else {
+                    if (merchantChannels.helibao == undefined || merchantChannels.fuyou == undefined || merchantChannels.huiju == undefined
+                    || merchantChannels.yeepay == undefined || merchantChannels.changjie == undefined || merchantChannels.kuaiqian == undefined) {
+                        merchantChannels[merchantArr[key]] = {pay:0,repay:0};
+                    }
+                }
+            }
             if (merchantChannels.kuaiqian.pay != undefined && merchantChannels.kuaiqian.pay != null) {
                 if (merchantChannels.kuaiqian.pay == 1) {
                     $("#pay").prop('checked', true);
@@ -284,6 +265,7 @@
                     $("#repay").prop('checked', false);
                 }
             }
+            console.log(merchantChannels);
         });
     }
     getAllMessage();
