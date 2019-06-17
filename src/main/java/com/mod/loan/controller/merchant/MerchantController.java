@@ -2,8 +2,11 @@ package com.mod.loan.controller.merchant;
 
 import com.mod.loan.common.enums.ResponseEnum;
 import com.mod.loan.common.model.Page;
+import com.mod.loan.common.model.RequestThread;
 import com.mod.loan.common.model.ResultMessage;
 import com.mod.loan.model.Merchant;
+import com.mod.loan.model.MerchantQuotaConfig;
+import com.mod.loan.service.MerchantQuotaConfigService;
 import com.mod.loan.service.MerchantService;
 import com.mod.loan.util.StringUtil;
 import org.apache.commons.lang.StringUtils;
@@ -15,6 +18,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 @RequestMapping(value = "merchant")
 public class MerchantController {
@@ -24,9 +31,19 @@ public class MerchantController {
     @Autowired
     private MerchantService merchantService;
 
+
+    @Autowired
+    private MerchantQuotaConfigService merchantQuotaConfigService;
+
     @RequestMapping(value = "merchant_list")
     public ModelAndView merchant_list(ModelAndView view) {
         view.setViewName("merchant/merchant_list");
+        return view;
+    }
+
+    @RequestMapping(value = "merchant_quota")
+    public ModelAndView merchant_quota(ModelAndView view) {
+        view.setViewName("merchant/merchant_quota");
         return view;
     }
 
@@ -34,6 +51,7 @@ public class MerchantController {
     public ResultMessage merchant_list_ajax(Merchant merchant, Page page) {
         return new ResultMessage(ResponseEnum.M2000, merchantService.findMerchantList(merchant, page), page);
     }
+
 
     @RequestMapping(value = "merchant_edit")
     public ModelAndView merchant_edit(ModelAndView view, String merchantAlias) {
@@ -195,4 +213,87 @@ public class MerchantController {
         }
         return new ResultMessage(ResponseEnum.M2000, merchant);
     }
+
+    /**
+     * 商户提额配置
+     * @param page
+     * @return
+     */
+    @RequestMapping(value = "merchant_quota_ajax")
+    public ResultMessage merchant_quota_ajax(MerchantQuotaConfig merchantQuotaConfig,Page page) {
+        Map<String, Object> param = new HashMap<>();
+        if (merchantQuotaConfig.getStatus()!=null){
+            param.put("status", merchantQuotaConfig.getStatus());
+        }else{
+            param.put("status", null);
+        }
+        param.put("merchant",  StringUtils.isNotEmpty(merchantQuotaConfig.getMerchant())? merchantQuotaConfig.getMerchant():null);
+        param.put("quotaName",  StringUtils.isNotEmpty(merchantQuotaConfig.getQuotaName())? merchantQuotaConfig.getQuotaName():null);
+        return new ResultMessage(ResponseEnum.M2000, merchantQuotaConfigService.findMerchantQuotaConfigList(param, page), page);
+    }
+
+    @RequestMapping(value = "quota_get")
+    public ModelAndView quota_get(ModelAndView mv, MerchantQuotaConfig merchantQuotaConfig) {
+        if (merchantQuotaConfig.getId() == null) {
+            mv.setViewName("merchant/quota_add");
+        } else {
+            merchantQuotaConfig = merchantQuotaConfigService.selectOne(merchantQuotaConfig);
+            mv.addObject("QuotaConfig", merchantQuotaConfig);
+            mv.setViewName("merchant/quota_edit");
+        }
+        return mv;
+    }
+
+    /**
+     * 商户提额配置增加/修改
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "quota_edit_ajax")
+    public ResultMessage quota_add_ajax(MerchantQuotaConfig merchantQuotaConfig) {
+        if (StringUtils.isBlank(merchantQuotaConfig.getQuotaName())) {
+            return new ResultMessage(ResponseEnum.M4000.getCode(), "额度名称不能为空");
+        }
+        if (merchantQuotaConfig.getQuotaValue()==null) {
+            return new ResultMessage(ResponseEnum.M4000.getCode(), "提升额度不能为空");
+        }
+        if (StringUtils.isBlank(merchantQuotaConfig.getPresetValue())) {
+            return new ResultMessage(ResponseEnum.M4000.getCode(), "预设值不能为空");
+        }
+        if (StringUtils.isBlank(merchantQuotaConfig.getMerchant())) {
+            return new ResultMessage(ResponseEnum.M4000.getCode(), "商户别名不能为空");
+        }
+        if ("天机分".equals(merchantQuotaConfig.getQuotaName())){
+            merchantQuotaConfig.setQuotaType(1);
+        }else if ("展期次数".equals(merchantQuotaConfig.getQuotaName())){
+            merchantQuotaConfig.setQuotaType(2);
+        }
+        if (merchantQuotaConfig.getId() != null) {
+            merchantQuotaConfig.setUpdateTime(new Date());
+            merchantQuotaConfigService.updateByPrimaryKeySelective(merchantQuotaConfig);
+        } else {
+            merchantQuotaConfig.setCreateTime(new Date());
+            merchantQuotaConfig.setUpdateTime(new Date());
+            merchantQuotaConfigService.insertSelective(merchantQuotaConfig);
+        }
+        return new ResultMessage(ResponseEnum.M2000);
+    }
+
+
+    /**
+     * 商户提额配置删除
+     * @param
+     * @return
+     */
+    @RequestMapping(value = "quota_del_ajax")
+    public ResultMessage quota_del_ajax(Long id) {
+        MerchantQuotaConfig merchantQuotaConfig = merchantQuotaConfigService.selectByPrimaryKey(id);
+        if (merchantQuotaConfig==null){
+            return new ResultMessage(ResponseEnum.M4000.getCode(), "非法操作");
+        }
+        merchantQuotaConfigService.deleteByPrimaryKey(id);
+        return new ResultMessage(ResponseEnum.M2000);
+    }
+
+
 }

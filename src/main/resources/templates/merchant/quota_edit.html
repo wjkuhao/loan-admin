@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<head>
+<link href="/static/css/bootstrap3.3.7.min.css" rel="stylesheet"  th:href="@{/static/css/bootstrap3.3.7.min.css}"/>
+</head>
+<body>
+	<div id="zhongxin" align="center">
+		<hr />
+		<form action="" name="myForm" id="myForm" method="post">
+			<fieldset>
+				<legend>修改商户提额配置</legend>
+				<table style="border-collapse:separate; border-spacing:10px;">
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">额度名称</label>
+						</td>
+						<td>
+							<input name="id" id="id" maxlength="32" class="form-control" th:value="${QuotaConfig.id}" type="hidden"/>
+							<select th:field="${QuotaConfig.quotaName}" name="quotaName" id="quotaName" class="form-control" >
+								<option th:selected="${QuotaConfig.quotaName=='天机分'}" value="天机分">天机分</option>
+								<option th:selected="${QuotaConfig.quotaName=='展期次数'}" value="展期次数">展期次数</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">提升额度</label>
+						</td>
+						<td>
+							<input name="quotaValue" id="quotaValue" maxlength="32" class="form-control" th:value="${QuotaConfig.quotaValue}" />						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">字段比较符</label>
+						</td>
+						<td>
+							<select th:field="${QuotaConfig.comparator}" name="comparator" id="comparator" class="form-control" >
+								<option th:selected="${QuotaConfig.comparator=='eq'}" value="eq">eq</option>
+								<option th:selected="${QuotaConfig.comparator=='gt'}" value="gt">gt</option>
+								<option th:selected="${QuotaConfig.comparator=='lt'}" value="lt">lt</option>
+								<option th:selected="${QuotaConfig.comparator=='gte'}" value="gte">gte</option>
+								<option th:selected="${QuotaConfig.comparator=='lte'}" value="lte">lte</option>
+								<option th:selected="${QuotaConfig.comparator=='range'}" value="range">range</option>
+								<option th:selected="${QuotaConfig.comparator=='in'}" value="in">in</option>
+								<option th:selected="${QuotaConfig.comparator=='exists'}" value="exists">exists</option>
+							</select>
+						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">预设值</label>
+						</td>
+						<td>
+							<input name="presetValue" id="presetValue" maxlength="32" class="form-control" th:value="${QuotaConfig.presetValue}" />						</td>
+					</tr>
+
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">商户别名</label>
+						</td>
+						<td>
+							<input name="merchant" id="merchant" maxlength="32" class="form-control" th:value="${QuotaConfig.merchant}" />						</td>
+					</tr>
+
+
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">状态</label>
+						</td>
+						<td>
+							<select th:field="${QuotaConfig.status}" name="status" id="status" class="form-control" >
+								<option th:selected="${QuotaConfig.status==0}" value="1">正常</option>
+                                <option th:selected="${QuotaConfig.status==1}" value="0">停用</option>
+							</select>
+						</td>
+					</tr>
+
+				</table>
+			</fieldset>
+		</form>
+		<div>
+			<a class="btn btn-mini btn-primary" id="saveButton">保存</a>
+			<a class="btn btn-mini btn-danger" onclick="top.Dialog.close()">取消</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var contextPath="[[@{/}]]";
+		$(top.hangge());
+		$("#saveButton").unbind();
+		$("#saveButton").bind("click",function(){
+            if(!$("#quotaName").val()){
+                Dialog.alert("请输入额度名称");
+                return;
+            }
+            if(!$("#quotaValue").val()){
+                Dialog.alert("请输入提升额度");
+                return;
+            }
+
+            if(!$("#presetValue").val()){
+                Dialog.alert("请输入预设值");
+                return;
+            }
+
+            if(!$("#merchant").val()){
+                Dialog.alert("请输入商户别名");
+                return;
+            }
+			$.ajax({
+        		url : contextPath+"merchant/quota_edit_ajax",
+        		type : "POST",
+				dataType : "json",
+				data : $("#myForm").serialize(),
+				success : function(jsonObject) {
+					if(jsonObject.status == "2000"){
+							Dialog.close();
+					}else{
+						Dialog.alert(jsonObject.message);
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>
