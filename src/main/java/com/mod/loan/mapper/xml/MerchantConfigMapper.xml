@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mod.loan.mapper.MerchantConfigMapper">
+    <resultMap id="BaseResultMap" type="com.mod.loan.model.MerchantConfig">
+        <!-- WARNING - @mbg.generated -->
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="merchant" jdbcType="VARCHAR" property="merchant" />
+        <result column="mx_risk_token" jdbcType="VARCHAR" property="mxRiskToken" />
+        <result column="mx_risk_renew_token" jdbcType="VARCHAR" property="mxRiskRenewToken" />
+        <result column="h5_url" jdbcType="VARCHAR" property="h5Url" />
+        <result column="overdue_blacklist_day" jdbcType="TINYINT" property="overdueBlacklistDay" />
+        <result column="reject_keyword" jdbcType="VARCHAR" property="rejectKeyword" />
+        <result column="ident_invalid_day" jdbcType="TINYINT" property="identInvalidDay" />
+        <result column="auto_apply_order" jdbcType="TINYINT" property="autoApplyOrder" />
+        <result column="service_phone" jdbcType="VARCHAR" property="servicePhone" />
+        <result column="default_origin_status" jdbcType="TINYINT" property="defaultOriginStatus" />
+        <result column="create_time" jdbcType="CHAR" property="createTime" />
+        <result column="update_time" jdbcType="CHAR" property="updateTime" />
+        <result column="max_overdue_fee_rate" jdbcType="TINYINT" property="maxOverdueFeeRate" />
+    </resultMap>
+    <select id="findMerchantConfigList" resultMap="BaseResultMap">
+        select * from tb_merchant_config
+        <where>
+            <if test="autoApplyOrder!=null">
+                and auto_apply_order=#{autoApplyOrder}
+            </if>
+            <if test="merchant!=null and merchant!=''">
+                and merchant=#{merchant}
+            </if>
+        </where>
+        limit #{startIndex},#{pageSize}
+    </select>
+</mapper>

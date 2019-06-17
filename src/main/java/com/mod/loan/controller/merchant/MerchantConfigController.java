@@ -1,9 +1,11 @@
 package com.mod.loan.controller.merchant;
 
 import com.mod.loan.common.enums.ResponseEnum;
+import com.mod.loan.common.model.Page;
 import com.mod.loan.common.model.ResultMessage;
 import com.mod.loan.model.MerchantConfig;
 import com.mod.loan.service.MerchantConfigService;
+import com.mod.loan.util.StringUtil;
 import com.mod.loan.util.TimeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -11,6 +13,10 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.List;
 
 @RestController
 @RequestMapping(value = "/merchant_config")
@@ -25,6 +31,81 @@ public class MerchantConfigController {
         this.merchantConfigService = merchantConfigService;
     }
 
+    @RequestMapping("/merchant_config_list")
+    public ModelAndView merchant_list(ModelAndView view) {
+        view.setViewName("merchant/merchant_config_list");
+
+        return view;
+    }
+    // 查找全部商户配置
+    @RequestMapping(value = "/merchant_config_list_ajax", method = { RequestMethod.POST })
+    public ResultMessage merchant_congfig_list_ajax(MerchantConfig merchantConfig,Page page){
+        return new ResultMessage(ResponseEnum.M2000, merchantConfigService.findMerchantConfigList(merchantConfig,page),page);
+    }
+
+    @RequestMapping(value = "/merchant_config_edit")
+    public ModelAndView merchant_config_edit(ModelAndView view, Long id) {
+        if (id == null) {
+            view.setViewName("merchant/merchant_config_add");
+        } else {
+            view.setViewName("merchant/merchant_config_edit");
+            view.addObject("id", id);
+        }
+        return view;
+    }
+
+    // 新增一个
+    @RequestMapping(value = "/merchant_config_add_ajax",method = {RequestMethod.POST})
+    public ResultMessage merchant_config_add(MerchantConfig merchantConfig){
+        if(StringUtils.isBlank(merchantConfig.getMxRiskToken())){
+            return new ResultMessage(ResponseEnum.M4000.getCode(),"风控默认token不能为空");
+        }
+        if(StringUtils.isBlank(merchantConfig.getMxRiskRenewToken())){
+            return new ResultMessage(ResponseEnum.M4000.getCode(),"风控续借token不能为空");
+        }
+        if(StringUtils.isBlank(merchantConfig.getH5Url())){
+            return new ResultMessage(ResponseEnum.M4000.getCode(),"h5地址不能为空");
+        }
+        if(merchantConfig.getOverdueBlacklistDay()==null ){
+            return new ResultMessage(ResponseEnum.M4000.getCode(),"加入黑名单逾期天数不能为空");
+        }
+        if(StringUtils.isBlank(merchantConfig.getRejectKeyword())){
+            return new ResultMessage(ResponseEnum.M4000.getCode(),"关键字不能为空");
+        }
+        if(StringUtils.isBlank(merchantConfig.getServicePhone())){
+            return new ResultMessage(ResponseEnum.M4000.getCode(),"客服电话不能为空");
+        }
+        if(merchantConfig.getMaxOverdueFeeRate()==null){
+            return new ResultMessage(ResponseEnum.M4000.getCode(),"最大逾期费费率不能为空");
+        }else {
+            Date date = new Date();
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            System.out.println(merchantConfig.getId());
+            if(merchantConfig.getId()==null){
+                merchantConfig.setCreateTime(sdf.format(date));
+                merchantConfig.setUpdateTime(sdf.format(date));
+                merchantConfigService.insert(merchantConfig);
+                return new ResultMessage(ResponseEnum.M2000);
+            }else {
+                merchantConfig.setUpdateTime(sdf.format(date));
+                merchantConfigService.updateByPrimaryKey(merchantConfig);
+            }
+
+        }
+        return new ResultMessage(ResponseEnum.M2000);
+    }
+    // 通过ID进行查找
+    @RequestMapping("/find_merchant_config_byId")
+    public ResultMessage findMerchantConfigById(ModelAndView view,Integer id){
+        return new ResultMessage(ResponseEnum.M2000,merchantConfigService.selectByPrimaryKey(id));
+    }
+
+
+    // 通过ID进行删除
+    @RequestMapping("/del_merchant_config_byId")
+    public ResultMessage delMerchantConfigById(Integer id){
+        return new ResultMessage(ResponseEnum.M2000,merchantConfigService.deleteByPrimaryKey(id));
+    }
 
     @GetMapping("/edit_mxrisk_channel")
     public ModelAndView editMxriskChannel(ModelAndView view, String merchantAlias) {
@@ -33,7 +114,7 @@ public class MerchantConfigController {
         return view;
     }
 
-    @GetMapping("/find_merchant_config")
+    @GetMapping("/find_merchnat_config")
     public ResultMessage findMerchantConfig(String merchantAlias) {
         MerchantConfig _merchantConfig = new MerchantConfig();
         _merchantConfig.setMerchant(merchantAlias);

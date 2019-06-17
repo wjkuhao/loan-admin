@@ -39,13 +39,13 @@ public class ProductController {
 
 	@RequestMapping(value = "product_edit")
 	public ModelAndView product_edit(ModelAndView view, Long id) {
-		if (id == null) {
-			view.setViewName("market/product_add");
-		} else {
-			view.setViewName("market/product_edit");
-			view.addObject("id", id);
-		}
-		return view;
+			if (id == null) {
+				view.setViewName("market/product_add");
+			} else {
+				view.setViewName("market/product_edit");
+				view.addObject("id", id);
+			}
+			return view;
 	}
 
 	@RequestMapping(value = "product_edit_ajax", method = { RequestMethod.POST })
