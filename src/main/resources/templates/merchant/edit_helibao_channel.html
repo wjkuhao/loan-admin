@@ -48,7 +48,25 @@
                 </td>
                 <td>
                     <textarea name="hlb_rsa_private_key" id="hlb_rsa_private_key" class="form-control"
-                              style="resize:none; width: 300px; height: 300px;" required="required"></textarea>
+                              style="resize:none; width: 300px; height: 140px;" required="required"></textarea>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="col-sm-2 control-label">委托代付签名</label>
+                </td>
+                <td>
+                    <input name="hlbEntrustedSignKey" id="hlbEntrustedSignKey" class="form-control" maxlength="64"
+                           placeholder="合利宝委托代付签名signKey" required="required"></input>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="col-sm-2 control-label">委托代付私钥</label>
+                </td>
+                <td>
+                    <textarea name="hlbEntrustedPrivateKey" id="hlbEntrustedPrivateKey" class="form-control" maxlength="1024"
+                              style="resize:none; width: 300px; height: 140px;" placeholder="合利宝委托代付私钥" required="required"></textarea>
                 </td>
             </tr>
         </table>
@@ -86,6 +104,8 @@
         var hlb_id = $("#hlb_id").val();
         var hlb_rsa_private_key = $("#hlb_rsa_private_key").val();
         var hlbMerchantSign = $("#hlbMerchantSign").val();
+        var hlbEntrustedSignKey = $("#hlbEntrustedSignKey").val();
+        var hlbEntrustedPrivateKey = $("#hlbEntrustedPrivateKey").val();
         if ($("#pay").prop("checked")) {
             if (hlb_id == "") {
                 $("#hlb_id").tips({
@@ -115,6 +135,26 @@
                     time: 2
                 });
                 $("#hlbMerchantSign").focus();
+                return false;
+            }
+            if (hlbEntrustedSignKey == "" && hlbEntrustedPrivateKey != ""){
+                $("#hlb_entrusted_sign_key").tips({
+                    side: 3,
+                    msg: "请输入合利宝代付签名",
+                    bg: "#AE81FF",
+                    time: 2
+                });
+                $("#hlbEntrustedSignKey").focus();
+                return false;
+            }
+            if(hlbEntrustedSignKey != "" && hlbEntrustedPrivateKey == ""){
+                $("#hlb_entrusted_private_key").tips({
+                    side: 3,
+                    msg: "请输入合利宝代付私钥",
+                    bg: "#AE81FF",
+                    time: 2
+                });
+                $("#hlbEntrustedPrivateKey").focus();
                 return false;
             }
         }
@@ -149,6 +189,26 @@
                 $("#hlbMerchantSign").focus();
                 return false;
             }
+            if (hlbEntrustedSignKey == "" && hlbEntrustedPrivateKey != ""){
+                    $("#hlb_entrusted_sign_key").tips({
+                        side: 3,
+                        msg: "请输入合利宝代付签名",
+                        bg: "#AE81FF",
+                        time: 2
+                    });
+                    $("#hlbEntrustedSignKey").focus();
+                    return false;
+            }
+            if(hlbEntrustedSignKey != "" && hlbEntrustedPrivateKey == ""){
+                    $("#hlb_entrusted_private_key").tips({
+                        side: 3,
+                        msg: "请输入合利宝代付私钥",
+                        bg: "#AE81FF",
+                        time: 2
+                    });
+                    $("#hlbEntrustedPrivateKey").focus();
+                    return false;
+            }
         }
 
 
@@ -177,6 +237,8 @@
             $("#hlb_rsa_private_key").val(obj.hlb_rsa_private_key);
             $("#hlbMerchantSign").val(obj.hlbMerchantSign);
 
+            $("#hlbEntrustedSignKey").val(obj.hlbEntrustedSignKey);
+            $("#hlbEntrustedPrivateKey").val(obj.hlbEntrustedPrivateKey);
             merchantChannels = JSON.parse(obj.merchantChannel);
             if (merchantChannels == null) {
                 merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}, \"yeepay\":{\"pay\":0,\"repay\":0}, \"changjie\":{\"pay\":0,\"repay\":0}, \"kuaiqian\":{\"pay\":0,\"repay\":0},\"huichao\":{\"weixinpay\":0,\"weixinrepay\":0,\"alipaypay\":0,\"alipayrepay\":0,\"pay\":0,\"repay\":0}}");

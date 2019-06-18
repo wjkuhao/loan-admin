@@ -58,6 +58,12 @@ public class Merchant {
 
     @Column(name = "hlb_merchant_sign")
     private String hlbMerchantSign;
+
+    @Column(name = "hlb_entrusted_sign_key")
+    private String hlbEntrustedSignKey;
+
+    @Column(name = "hlb_entrusted_private_key")
+    private String hlbEntrustedPrivateKey;
     
     @Column(name = "merchant_market")
     private String merchantMarket;
@@ -280,7 +286,23 @@ public class Merchant {
 		this.hlb_rsa_private_key = hlb_rsa_private_key;
 	}
 
-	public String getMerchantAppIos() {
+    public String getHlbEntrustedSignKey() {
+        return hlbEntrustedSignKey;
+    }
+
+    public void setHlbEntrustedSignKey(String hlbEntrustedSignKey) {
+        this.hlbEntrustedSignKey = hlbEntrustedSignKey;
+    }
+
+    public String getHlbEntrustedPrivateKey() {
+        return hlbEntrustedPrivateKey;
+    }
+
+    public void setHlbEntrustedPrivateKey(String hlbEntrustedPrivateKey) {
+        this.hlbEntrustedPrivateKey = hlbEntrustedPrivateKey;
+    }
+
+    public String getMerchantAppIos() {
 		return merchantAppIos;
 	}
 

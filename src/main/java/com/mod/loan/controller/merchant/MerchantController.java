@@ -2,7 +2,6 @@ package com.mod.loan.controller.merchant;
 
 import com.mod.loan.common.enums.ResponseEnum;
 import com.mod.loan.common.model.Page;
-import com.mod.loan.common.model.RequestThread;
 import com.mod.loan.common.model.ResultMessage;
 import com.mod.loan.model.Merchant;
 import com.mod.loan.model.MerchantQuotaConfig;
@@ -64,6 +63,7 @@ public class MerchantController {
         return view;
     }
 
+    // 编辑merchant的基本信息
     @RequestMapping(value = "merchant_edit_ajax", method = {RequestMethod.POST})
     public ResultMessage merchant_edit_ajax(Merchant merchant, String flag, String merchantChannel, String userPhone) {
         if (StringUtils.isBlank(merchant.getMerchantAlias())) {
@@ -98,11 +98,13 @@ public class MerchantController {
         return new ResultMessage(ResponseEnum.M2000);
     }
 
+    // 查找某一个
     @RequestMapping(value = "merchant_detail_ajax", method = {RequestMethod.POST})
     public ResultMessage merchant_detail_ajax(String merchantAlias) {
         return new ResultMessage(ResponseEnum.M2000, merchantService.selectByPrimaryKey(merchantAlias));
     }
 
+    // 查找所有
     @RequestMapping(value = "merchant_all_list_ajax", method = {RequestMethod.POST})
     public ResultMessage merchant_all_list_ajax() {
         Merchant merchant = new Merchant();
@@ -110,6 +112,7 @@ public class MerchantController {
         return new ResultMessage(ResponseEnum.M2000, merchantService.select(merchant));
     }
 
+    // 返回每个修改的代付页面。
     @RequestMapping(value = "edit_helibao_channel")
     public ModelAndView edit_merchant_channel(ModelAndView view, String merchantAlias) {
         view.addObject("merchantAlias", merchantAlias);
@@ -159,6 +162,8 @@ public class MerchantController {
         return view;
     }
 
+
+    // 编辑代付
     @RequestMapping(value = "edit_merchant_channel_ajax")
     public ResultMessage edit_merchant_channel_ajax(Merchant merchant, String merchantChannels) {
         Merchant record = merchantService.selectByPrimaryKey(merchant.getMerchantAlias());
@@ -169,6 +174,10 @@ public class MerchantController {
             record.setMerchantChannel(merchantChannels);
             record.setHlb_id(merchant.getHlb_id());
             record.setHlb_rsa_private_key(merchant.getHlb_rsa_private_key());
+            // 新添加的两个字段
+            record.setHlbEntrustedSignKey(merchant.getHlbEntrustedSignKey());
+            record.setHlbEntrustedPrivateKey(merchant.getHlbEntrustedPrivateKey());
+
             record.setFuyou_merid(merchant.getFuyou_merid());
             record.setFuyou_secureid(merchant.getFuyou_secureid());
             record.setFuyou_h5key(merchant.getFuyou_h5key());
