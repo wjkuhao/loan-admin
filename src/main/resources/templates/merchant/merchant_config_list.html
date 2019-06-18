@@ -3,22 +3,22 @@
 <head th:insert="common/top :: head">
 </head>
 <body>
-	<div class="container-fluid" id="main-container">
-		<div id="page-content" class="clearfix">
-  			<div class="row-fluid">
-				<div class="row-fluid">
-					<!-- 检索  -->
+<div class="container-fluid" id="main-container">
+	<div id="page-content" class="clearfix">
+		<div class="row-fluid">
+			<div class="row-fluid">
+				    <!-- 检索  -->
 					<div>
-					<span>自动提单:</span>
-					<select id="autoApplyOrder" name="autoApplyOrder" class="form-control" onchange="this.blur()">
-						<option value=""  selected="selected">全部</option>
-						<option value="0">手动</option>
-						<option value="1">自动</option>
-					</select>
-					<!--<span>商户名:</span>-->
-					<!--<input id="merchant"  name="merchant" type="text" />-->
-					<button id="query" class="btn btn-small btn-success" onclick="search()"><i class="icon-search"></i> 查询</button>
-				</div>
+						<span>自动提单:</span>
+						<select id="autoApplyOrder" name="autoApplyOrder" class="form-control" onchange="this.blur()">
+							<option value=""  selected="selected">全部</option>
+							<option value="0">手动</option>
+							<option value="1">自动</option>
+						</select>
+						<span>商户名:</span>
+						<input id="merchant" name="merchant" type="text"/>
+						<button id="query" class="btn btn-small btn-success" onclick="search()"><i class="icon-search"></i> 查询</button>
+					</div>
 					<!-- 检索  -->
 					<table id="table_report" class="table table-striped table-bordered table-hover">
 						<thead>
@@ -61,7 +61,7 @@
 	</a>
 	<script type="text/javascript">
 		var contextPath="[[@{/}]]";
-		// var server_h5_url="[(${server_h5_url})]";
+		var server_h5_url="[(${server_h5_url})]";
 		$(top.hangge());
 		var myTable = new MaxTable();
 		myTable.initialize({
@@ -170,8 +170,8 @@
 			myTable.page.totalRowNum = 0;
 			myTable.page.pageSize = 20;
 			myTable.onLoad({
-				autoApplyOrder:$("#autoApplyOrder").val(),
-				// merchant:$("#merchant").val()
+				merchant:$("#merchant").val(),
+				autoApplyOrder:$("#autoApplyOrder").val()
 			});
 		}
 		query();

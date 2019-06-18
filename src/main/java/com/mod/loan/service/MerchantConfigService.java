@@ -5,7 +5,8 @@ import com.mod.loan.common.model.Page;
 import com.mod.loan.model.MerchantConfig;
 
 import java.util.List;
+import java.util.Map;
 
 public interface MerchantConfigService extends BaseService<MerchantConfig, Integer> {
-    List<MerchantConfig> findMerchantConfigList(MerchantConfig merchantConfig, Page page);
+    List<Map<String,Object>> findMerchantConfigList(MerchantConfig merchantConfig, Page page);
 }

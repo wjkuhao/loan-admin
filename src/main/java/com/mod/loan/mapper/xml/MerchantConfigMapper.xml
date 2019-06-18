@@ -21,13 +21,24 @@
     <select id="findMerchantConfigList" resultMap="BaseResultMap">
         select * from tb_merchant_config
         <where>
-            <if test="autoApplyOrder!=null">
-                and auto_apply_order=#{autoApplyOrder}
-            </if>
             <if test="merchant!=null and merchant!=''">
                 and merchant=#{merchant}
             </if>
+            <if test="autoApplyOrder!=null">
+                and auto_apply_order=#{autoApplyOrder}
+            </if>
         </where>
         limit #{startIndex},#{pageSize}
+    </select>
+    <select id="findMerchantConfigCount" resultType="int">
+        select COUNT(1) from tb_merchant_config
+        <where>
+            <if test="merchant!=null and merchant!=''">
+                and merchant=#{merchant}
+            </if>
+            <if test="autoApplyOrder!=null">
+                and auto_apply_order=#{autoApplyOrder}
+            </if>
+        </where>
     </select>
 </mapper>

@@ -6,7 +6,9 @@ import com.mod.loan.model.MerchantConfig;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public interface MerchantConfigMapper extends MyBaseMapper<MerchantConfig> {
-    List<MerchantConfig> findMerchantConfigList(HashMap<String,Object> params);
+    List<Map<String,Object>> findMerchantConfigList(Map<String,Object> params);
+    int findMerchantConfigCount(Map<String,Object> params);
 }

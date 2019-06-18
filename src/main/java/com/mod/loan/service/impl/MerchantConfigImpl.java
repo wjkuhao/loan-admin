@@ -10,19 +10,21 @@ import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service("merchantConfigService")
 public class MerchantConfigImpl extends BaseServiceImpl<MerchantConfig, Integer> implements MerchantConfigService {
     @Autowired
     private MerchantConfigMapper merchantConfigMapper;
+
     @Override
-    public List<MerchantConfig> findMerchantConfigList(MerchantConfig merchantConfig, Page page) {
-        HashMap<String,Object> hashMap = new HashMap<>();
-        hashMap.put("autoApplyOrder",merchantConfig.getAutoApplyOrder());
-        hashMap.put("merchant",merchantConfig.getMerchant());
-        hashMap.put("startIndex",page.getStartIndex());
-        hashMap.put("pageSize",page.getPageSize());
-        page.setTotalCount(merchantConfigMapper.selectCount(merchantConfig));
-        return merchantConfigMapper.findMerchantConfigList(hashMap);
+    public List<Map<String, Object>> findMerchantConfigList(MerchantConfig merchantConfig, Page page) {
+        Map<String,Object> params = new HashMap<>();
+        params.put("autoApplyOrder",merchantConfig.getAutoApplyOrder());
+        params.put("merchant", merchantConfig.getMerchant());
+        params.put("startIndex",page.getStartIndex());
+        params.put("pageSize",page.getPageSize());
+        page.setTotalCount(merchantConfigMapper.findMerchantConfigCount(params));
+        return merchantConfigMapper.findMerchantConfigList(params);
     }
 }
