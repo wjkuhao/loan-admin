@@ -3,6 +3,7 @@ package com.mod.loan.controller.merchant;
 import com.mod.loan.common.enums.ResponseEnum;
 import com.mod.loan.common.model.Page;
 import com.mod.loan.common.model.ResultMessage;
+import com.mod.loan.config.Constant;
 import com.mod.loan.model.MerchantRate;
 import com.mod.loan.service.MerchantRateService;
 import org.apache.commons.lang.StringUtils;
@@ -59,16 +60,16 @@ public class MerchantRateController {
 			return new ResultMessage(ResponseEnum.M4000.getCode(), "请重新输入产品期限");
 		}
 		if (merchantRate.getProductMoney() == null
-				|| new BigDecimal(5000).compareTo(merchantRate.getProductMoney()) < 0) {
+				|| new BigDecimal(Constant.MERCHANT_MAX_PRODUCT_MONEY).compareTo(merchantRate.getProductMoney()) < 0) {
 			return new ResultMessage(ResponseEnum.M4000.getCode(), "请重新输入借款金额");
 		}
 		if (merchantRate.getProductLevel() == null) {
 			return new ResultMessage(ResponseEnum.M4000.getCode(), "优先级不能为空");
 		}
-        if (merchantRate.getTotalRate() == null || new BigDecimal(100).compareTo(merchantRate.getTotalRate()) < 0) {
+        if (merchantRate.getTotalRate() == null || new BigDecimal(Constant.MERCHANT_MAX_PRODUCT_TOTAL_RATE).compareTo(merchantRate.getTotalRate()) < 0) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "请重新输入综合费率");
 		}
-        if (merchantRate.getOverdueRate() == null || new BigDecimal(100).compareTo(merchantRate.getOverdueRate()) < 0) {
+        if (merchantRate.getOverdueRate() == null || new BigDecimal(Constant.MERCHANT_MAX_PRODUCT_OVERDUE_RATE).compareTo(merchantRate.getOverdueRate()) < 0) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "请重新输入逾期费率");
 		}
 		if (merchantRate.getBorrowType() == null
