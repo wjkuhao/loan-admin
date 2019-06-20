@@ -1,7 +1,10 @@
 package com.mod.loan.controller.merchant;
 
-import java.math.BigDecimal;
-
+import com.mod.loan.common.enums.ResponseEnum;
+import com.mod.loan.common.model.Page;
+import com.mod.loan.common.model.ResultMessage;
+import com.mod.loan.model.MerchantRate;
+import com.mod.loan.service.MerchantRateService;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,11 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.mod.loan.common.enums.ResponseEnum;
-import com.mod.loan.common.model.Page;
-import com.mod.loan.common.model.ResultMessage;
-import com.mod.loan.model.MerchantRate;
-import com.mod.loan.service.MerchantRateService;
+import java.math.BigDecimal;
 
 @RestController
 @RequestMapping(value = "merchant")
@@ -66,11 +65,11 @@ public class MerchantRateController {
 		if (merchantRate.getProductLevel() == null) {
 			return new ResultMessage(ResponseEnum.M4000.getCode(), "优先级不能为空");
 		}
-		if (merchantRate.getTotalRate() == null || new BigDecimal(30).compareTo(merchantRate.getTotalRate()) < 0) {
-			return new ResultMessage(ResponseEnum.M4000.getCode(), "请重新输入综合费率");
+        if (merchantRate.getTotalRate() == null || new BigDecimal(100).compareTo(merchantRate.getTotalRate()) < 0) {
+            return new ResultMessage(ResponseEnum.M4000.getCode(), "请重新输入综合费率");
 		}
-		if (merchantRate.getOverdueRate() == null || new BigDecimal(6).compareTo(merchantRate.getOverdueRate()) < 0) {
-			return new ResultMessage(ResponseEnum.M4000.getCode(), "请重新输入逾期费率");
+        if (merchantRate.getOverdueRate() == null || new BigDecimal(100).compareTo(merchantRate.getOverdueRate()) < 0) {
+            return new ResultMessage(ResponseEnum.M4000.getCode(), "请重新输入逾期费率");
 		}
 		if (merchantRate.getBorrowType() == null
 				|| (merchantRate.getBorrowType() > 4 && merchantRate.getBorrowType() != 99)) {
