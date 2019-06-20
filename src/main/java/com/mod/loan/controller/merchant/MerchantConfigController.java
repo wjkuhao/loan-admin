@@ -5,7 +5,6 @@ import com.mod.loan.common.model.Page;
 import com.mod.loan.common.model.ResultMessage;
 import com.mod.loan.model.MerchantConfig;
 import com.mod.loan.service.MerchantConfigService;
-import com.mod.loan.util.StringUtil;
 import com.mod.loan.util.TimeUtils;
 import org.apache.commons.lang.StringUtils;
 import org.slf4j.Logger;
@@ -16,9 +15,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping(value = "/merchant_config")
@@ -116,7 +112,7 @@ public class MerchantConfigController {
         return view;
     }
 
-    @GetMapping("/find_merchnat_config")
+    @GetMapping("/find_merchant_config")
     public ResultMessage findMerchantConfig(String merchantAlias) {
         MerchantConfig _merchantConfig = new MerchantConfig();
         _merchantConfig.setMerchant(merchantAlias);
