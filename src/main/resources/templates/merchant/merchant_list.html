@@ -51,6 +51,9 @@
                         <th class="center">快钱还款</th>
                         <th class="center">汇潮微信还款</th>
                         <th class="center">汇潮支付宝还款</th>
+                        <th class="center">金运通id</th>
+                        <th class="center">金运通放款</th>
+                        <th class="center">金运通还款</th>
                         <th class="center">创建时间</th>
                         <th class="center">操作</th>
                     </tr>
@@ -468,6 +471,48 @@
                         return "<font color='green'>开通</font>";
                     }
                     if (JSON.parse(value).huichao.alipayrepay == 0) {
+                        return "<font color='red'>未开通</font>";
+                    }
+                }
+            }
+        }, {
+            id: "jinyuntong_merchant_id",
+            renderer: function (idValue, value, record) {
+                return value ? value : "---";
+            }
+        }, {
+            id: "merchant_channel",
+            renderer: function (idValue, value, record) {
+                if (value == null) {
+                    return "---";
+                }
+                if (JSON.parse(value).jinyuntong == undefined) {
+                    return "<font color='red'>未开通</font>";
+                }
+                if (JSON.parse(value).jinyuntong != undefined) {
+                    if (JSON.parse(value).jinyuntong.pay == 1) {
+                        return "<font color='green'>开通</font>";
+                    }
+                    if (JSON.parse(value).jinyuntong.pay == 0) {
+                        return "<font color='red'>未开通</font>";
+                    }
+                }
+
+            }
+        }, {
+            id: "merchant_channel",
+            renderer: function (idValue, value, record) {
+                if (value == null) {
+                    return "---";
+                }
+                if (JSON.parse(value).jinyuntong == undefined) {
+                    return "<font color='red'>未开通</font>";
+                }
+                if (JSON.parse(value).jinyuntong != undefined) {
+                    if (JSON.parse(value).jinyuntong.repay == 1) {
+                        return "<font color='green'>开通</font>";
+                    }
+                    if (JSON.parse(value).jinyuntong.repay == 0) {
                         return "<font color='red'>未开通</font>";
                     }
                 }

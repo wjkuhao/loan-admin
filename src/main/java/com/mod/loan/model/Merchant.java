@@ -137,6 +137,15 @@ public class Merchant {
     @Column(name = "huichao_merchant_pay_private_key")
     private String huichaoMerchantPayPrivateKey;
 
+    @Column(name = "jinyuntong_merchant_id")
+    private String jinyuntongMerchantId;
+
+    @Column(name = "jinyuntong_public_key")
+    private String jinyuntongPublicKey;
+
+    @Column(name = "jinyuntong_merchant_private_key")
+    private String jinyuntongMerchantPrivateKey;
+
     public String getYeepay_loan_appkey() {
         return yeepay_loan_appkey;
     }
@@ -476,5 +485,29 @@ public class Merchant {
 
     public void setHuichaoMerchantPayPrivateKey(String huichaoMerchantPayPrivateKey) {
         this.huichaoMerchantPayPrivateKey = huichaoMerchantPayPrivateKey;
+    }
+
+    public String getJinyuntongMerchantId() {
+        return jinyuntongMerchantId;
+    }
+
+    public void setJinyuntongMerchantId(String jinyuntongMerchantId) {
+        this.jinyuntongMerchantId = jinyuntongMerchantId;
+    }
+
+    public String getJinyuntongPublicKey() {
+        return jinyuntongPublicKey;
+    }
+
+    public void setJinyuntongPublicKey(String jinyuntongPublicKey) {
+        this.jinyuntongPublicKey = jinyuntongPublicKey;
+    }
+
+    public String getJinyuntongMerchantPrivateKey() {
+        return jinyuntongMerchantPrivateKey;
+    }
+
+    public void setJinyuntongMerchantPrivateKey(String jinyuntongMerchantPrivateKey) {
+        this.jinyuntongMerchantPrivateKey = jinyuntongMerchantPrivateKey;
     }
 }

@@ -78,7 +78,7 @@
 <script type="text/javascript">
     var contextPath = "[[@{/}]]";
     var merchantAlias = '[[${merchantAlias}]]';
-    var merchantArr = ['helibao', 'fuyou', 'huiju', 'yeepay', 'changjie', 'kuaiqian', 'huichao'];
+    var merchantArr = ['helibao', 'fuyou', 'huiju', 'yeepay', 'changjie', 'kuaiqian', 'huichao', 'jinyuntong'];
     var merchantChannels;
 
     function payChecked() {
@@ -245,7 +245,7 @@
 
             merchantChannels = JSON.parse(obj.merchantChannel);
             if (merchantChannels == null) {
-                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0},\"fuyou\":{\"pay\":0,\"repay\":0},\"huiju\":{\"pay\":0,\"repay\":0}, \"yeepay\":{\"pay\":0,\"repay\":0}, \"changjie\":{\"pay\":0,\"repay\":0}, \"kuaiqian\":{\"pay\":0,\"repay\":0},\"huichao\":{\"weixinpay\":0,\"weixinrepay\":0,\"alipaypay\":0,\"alipayrepay\":0,\"pay\":0,\"repay\":0}}");
+                merchantChannels = JSON.parse("{\"helibao\":{\"pay\":0,\"repay\":0}, \"fuyou\":{\"pay\":0,\"repay\":0}, \"huiju\":{\"pay\":0,\"repay\":0}, \"yeepay\":{\"pay\":0,\"repay\":0}, \"changjie\":{\"pay\":0,\"repay\":0}, \"kuaiqian\":{\"pay\":0,\"repay\":0}, \"huichao\":{\"weixinpay\":0,\"weixinrepay\":0,\"alipaypay\":0,\"alipayrepay\":0,\"pay\":0,\"repay\":0}, \"jinyuntong\":{\"pay\":0,\"repay\":0}}");
                 $("#pay").prop('checked', false);
                 $("#repay").prop('checked', false);
                 $("#weixinrepay").prop('checked', false);
@@ -266,7 +266,8 @@
                     }
                 } else {
                     if (merchantChannels.helibao == undefined || merchantChannels.fuyou == undefined || merchantChannels.huiju == undefined
-                        || merchantChannels.yeepay == undefined || merchantChannels.changjie == undefined || merchantChannels.kuaiqian == undefined) {
+                        || merchantChannels.yeepay == undefined || merchantChannels.changjie == undefined || merchantChannels.kuaiqian == undefined
+                        || merchantChannels.jinyuntong == undefined) {
                         merchantChannels[merchantArr[key]] = {pay: 0, repay: 0};
                     }
                 }

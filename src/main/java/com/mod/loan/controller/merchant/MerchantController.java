@@ -76,7 +76,8 @@ public class MerchantController {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "商户公司名称不能为空");
         }
         if (merchant.getBindType() != 1 && merchant.getBindType() != 2 && merchant.getBindType() != 3
-                && merchant.getBindType() != 4 && merchant.getBindType() != 5 && merchant.getBindType() != 6) {
+                && merchant.getBindType() != 4 && merchant.getBindType() != 5 && merchant.getBindType() != 6
+                && merchant.getBindType() != 7 && merchant.getBindType() != 8) {
             return new ResultMessage(ResponseEnum.M4000.getCode(), "不支持的绑卡类型");
         }
         if ("add".equals(flag) && null != merchantService.selectByPrimaryKey(merchant.getMerchantAlias())) {
@@ -162,6 +163,12 @@ public class MerchantController {
         return view;
     }
 
+    @RequestMapping(value = "edit_jinyuntong_channel")
+    public ModelAndView edit_jinyuntong_channel(ModelAndView view, String merchantAlias) {
+        view.addObject("merchantAlias", merchantAlias);
+        view.setViewName("merchant/edit_jinyuntong_channel");
+        return view;
+    }
 
     // 编辑代付
     @RequestMapping(value = "edit_merchant_channel_ajax")
@@ -205,6 +212,10 @@ public class MerchantController {
             record.setHuichaoPublicKey(merchant.getHuichaoPublicKey());
             record.setHuichaoMerchantPayPrivateKey(merchant.getHuichaoMerchantPayPrivateKey());
             record.setHuichaoMerchantRepayPrivateKey(merchant.getHuichaoMerchantRepayPrivateKey());
+
+            record.setJinyuntongMerchantId(merchant.getJinyuntongMerchantId());
+            record.setJinyuntongPublicKey(merchant.getJinyuntongPublicKey());
+            record.setJinyuntongMerchantPrivateKey(merchant.getJinyuntongMerchantPrivateKey());
             merchantService.updateByPrimaryKeySelective(record);
         } catch (Exception e) {
             e.printStackTrace();

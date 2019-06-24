@@ -23,47 +23,35 @@
         </fieldset>
         <table>
             <tr>
-                <label class="my_label_checkbox" style="margin-right: 20px"><input id="pay" type="checkbox" onclick="payChecked()"/><span
+                <label class="my_label_checkbox" style="margin-right: 20px"><input id="pay" type="checkbox"
+                                                                                   onclick="payChecked()"/><span
                         class="lbl"></span>放款</label>
                 <label class="my_label_checkbox"><input id="repay" type="checkbox" onclick="repayChecked()"/><span
                         class="lbl"></span>还款</label>
                 <td>
-                    <label class="col-sm-2 control-label">商户会员号</label>
+                    <label class="col-sm-2 control-label">金运通商户id</label>
                 </td>
                 <td>
-                    <input name="kqMerchantCode" id="kqMerchantCode" maxlength="30" class="form-control" required="required"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="col-sm-2 control-label">终端号</label>
-                </td>
-                <td>
-                    <input name="kqTerminalId" id="kqTerminalId" maxlength="128" class="form-control" required="required"/>
+                    <input name="jinyuntongMerchantId" id="jinyuntongMerchantId" maxlength="30" class="form-control"
+                           required="required"/>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label class="col-sm-2 control-label">商户号</label>
+                    <label class="col-sm-2 control-label">金运通公钥</label>
                 </td>
                 <td>
-                    <input name="kqMerchantId" id="kqMerchantId" maxlength="128" class="form-control" required="required"/>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <label class="col-sm-2 control-label">证书路径</label>
-                </td>
-                <td>
-                    <input name="kqCertPath" id="kqCertPath" maxlength="128" class="form-control" required="required"/>
+                    <textarea name="jinyuntongPublicKey" id="jinyuntongPublicKey" class="form-control"
+                              style="resize:none; width: 300px; height: 300px;" required="required"></textarea>
                 </td>
             </tr>
             <tr>
                 <td>
-                    <label class="col-sm-2 control-label">证书密码</label>
+                    <label class="col-sm-2 control-label">商户私钥</label>
                 </td>
                 <td>
-                    <input name="kqCertPwd" id="kqCertPwd" maxlength="128" class="form-control" required="required"/>
+                    <textarea name="jinyuntongMerchantPrivateKey" id="jinyuntongMerchantPrivateKey" class="form-control"
+                              style="resize:none; width: 300px; height: 300px;" required="required"></textarea>
                 </td>
             </tr>
         </table>
@@ -81,129 +69,87 @@
 
     function payChecked() {
         if ($("#pay").prop("checked")) {
-            merchantChannels.kuaiqian.pay = 1;
+            merchantChannels.jinyuntong.pay = 1;
         } else {
-            merchantChannels.kuaiqian.pay = 0;
+            merchantChannels.jinyuntong.pay = 0;
         }
     }
 
     function repayChecked() {
         if ($("#repay").prop("checked")) {
-            merchantChannels.kuaiqian.repay = 1;
+            merchantChannels.jinyuntong.repay = 1;
         } else {
-            merchantChannels.kuaiqian.repay = 0;
+            merchantChannels.jinyuntong.repay = 0;
         }
     }
 
     $("#saveButton").unbind();
 
     $("#saveButton").bind("click", function () {
-        var kqMerchantCode = $("#kqMerchantCode").val();
-        var kqTerminalId = $("#kqTerminalId").val();
-        var kqMerchantId = $("#kqMerchantId").val();
-        var kqCertPath = $("#kqCertPath").val();
-        var kqCertPwd = $("#kqCertPwd").val();
+        var jinyuntongMerchantId = $("#jinyuntongMerchantId").val();
+        var jinyuntongPublicKey = $("#jinyuntongPublicKey").val();
+        var jinyuntongMerchantPrivateKey = $("#jinyuntongMerchantPrivateKey").val();
         if ($("#pay").prop("checked")) {
-            if (kqMerchantCode == "") {
-                $("#kqMerchantCode").tips({
+            if (jinyuntongMerchantId == "") {
+                $("#jinyuntongMerchantId").tips({
                     side: 3,
                     msg: "请输入快钱商户会员号",
                     bg: "#AE81FF",
                     time: 2
                 });
-                $("#kqMerchantCode").focus();
+                $("#jinyuntongMerchantId").focus();
                 return false;
             }
-            if (kqTerminalId == "") {
-                $("#kqTerminalId").tips({
+            if (jinyuntongPublicKey == "") {
+                $("#jinyuntongPublicKey").tips({
                     side: 3,
                     msg: "请输入快钱终端号",
                     bg: "#AE81FF",
                     time: 2
                 });
-                $("#kqTerminalId").focus();
+                $("#jinyuntongPublicKey").focus();
                 return false;
             }
-            if (kqMerchantId == "") {
-                $("#kqMerchantId").tips({
+            if (jinyuntongMerchantPrivateKey == "") {
+                $("#jinyuntongMerchantPrivateKey").tips({
                     side: 3,
                     msg: "请输入快钱商户号",
                     bg: "#AE81FF",
                     time: 2
                 });
-                $("#kqMerchantId").focus();
-                return false;
-            }
-            if (kqCertPath == "") {
-                $("#kqCertPath").tips({
-                    side: 3,
-                    msg: "请输入快钱证书路径",
-                    bg: "#AE81FF",
-                    time: 2
-                });
-                $("#kqCertPath").focus();
-                return false;
-            }
-            if (kqCertPwd == "") {
-                $("#kqCertPwd").tips({
-                    side: 3,
-                    msg: "请输入快钱证书密码",
-                    bg: "#AE81FF",
-                    time: 2
-                });
-                $("#kqCertPwd").focus();
+                $("#jinyuntongMerchantPrivateKey").focus();
                 return false;
             }
         }
         if ($("#repay").prop("checked")) {
-            if (kqMerchantCode == "") {
-                $("#kqMerchantCode").tips({
+            if (jinyuntongMerchantId == "") {
+                $("#jinyuntongMerchantId").tips({
                     side: 3,
                     msg: "请输入快钱商户会员号",
                     bg: "#AE81FF",
                     time: 2
                 });
-                $("#kqMerchantCode").focus();
+                $("#jinyuntongMerchantId").focus();
                 return false;
             }
-            if (kqTerminalId == "") {
-                $("#kqTerminalId").tips({
+            if (jinyuntongPublicKey == "") {
+                $("#jinyuntongPublicKey").tips({
                     side: 3,
                     msg: "请输入快钱终端号",
                     bg: "#AE81FF",
                     time: 2
                 });
-                $("#kqTerminalId").focus();
+                $("#jinyuntongPublicKey").focus();
                 return false;
             }
-            if (kqMerchantId == "") {
-                $("#kqMerchantId").tips({
+            if (jinyuntongMerchantPrivateKey == "") {
+                $("#jinyuntongMerchantPrivateKey").tips({
                     side: 3,
                     msg: "请输入快钱商户号",
                     bg: "#AE81FF",
                     time: 2
                 });
-                $("#kqMerchantId").focus();
-                return false;
-            }
-            if (kqCertPath == "") {
-                $("#kqCertPath").tips({
-                    side: 3,
-                    msg: "请输入快钱证书路径",
-                    bg: "#AE81FF",
-                    time: 2
-                });
-                $("#kqCertPath").focus();
-                return false;
-            }
-            if (kqCertPwd == "") {
-                $("#kqCertPwd").tips({
-                    side: 3,
-                    msg: "请输入快钱证书密码",
-                    bg: "#AE81FF",
-                    time: 2
-                });
-                $("#kqCertPwd").focus();
+                $("#jinyuntongMerchantPrivateKey").focus();
                 return false;
             }
         }
@@ -229,11 +175,9 @@
     function getAllMessage() {
         $.post(contextPath + "merchant/find_merchant_channel_ajax", {"merchantAlias": merchantAlias}, function (data) {
             var obj = data.data;
-            $("#kqMerchantCode").val(obj.kqMerchantCode);
-            $("#kqTerminalId").val(obj.kqTerminalId);
-            $("#kqMerchantId").val(obj.kqMerchantId);
-            $("#kqCertPath").val(obj.kqCertPath);
-            $("#kqCertPwd").val(obj.kqCertPwd);
+            $("#cjPartnerId").val(obj.cjPartnerId);
+            $("#cjPublicKey").val(obj.cjPublicKey);
+            $("#cjMerchantPrivateKey").val(obj.cjMerchantPrivateKey);
 
             merchantChannels = JSON.parse(obj.merchantChannel);
             if (merchantChannels == null) {
@@ -241,34 +185,43 @@
                 $("#pay").prop('checked', false);
                 $("#repay").prop('checked', false);
             }
-            for(var key in merchantArr) {
+
+            for (var key in merchantArr) {
                 if (merchantArr[key] == 'huichao') {
                     if (merchantChannels.huichao == undefined) {
-                        merchantChannels[merchantArr[key]] = {weixinpay:0,weixinrepay:0,alipaypay:0,alipayrepay:0,pay:0,repay:0};
+                        merchantChannels[merchantArr[key]] = {
+                            weixinpay: 0,
+                            weixinrepay: 0,
+                            alipaypay: 0,
+                            alipayrepay: 0,
+                            pay: 0,
+                            repay: 0
+                        };
                     }
                 } else {
                     if (merchantChannels.helibao == undefined || merchantChannels.fuyou == undefined || merchantChannels.huiju == undefined
                         || merchantChannels.yeepay == undefined || merchantChannels.changjie == undefined || merchantChannels.kuaiqian == undefined
                         || merchantChannels.jinyuntong == undefined) {
-                        merchantChannels[merchantArr[key]] = {pay:0,repay:0};
+                        merchantChannels[merchantArr[key]] = {pay: 0, repay: 0};
                     }
                 }
             }
-            if (merchantChannels.kuaiqian.pay != undefined && merchantChannels.kuaiqian.pay != null) {
-                if (merchantChannels.kuaiqian.pay == 1) {
+
+            if (merchantChannels.jinyuntong.pay != undefined && merchantChannels.jinyuntong.pay != null) {
+                if (merchantChannels.jinyuntong.pay == 1) {
                     $("#pay").prop('checked', true);
                 } else {
                     $("#pay").prop('checked', false);
                 }
-                if (merchantChannels.kuaiqian.repay == 1) {
+                if (merchantChannels.jinyuntong.repay == 1) {
                     $("#repay").prop('checked', true);
                 } else {
                     $("#repay").prop('checked', false);
                 }
             }
-            console.log(merchantChannels);
         });
     }
+
     getAllMessage();
 </script>
 </body>

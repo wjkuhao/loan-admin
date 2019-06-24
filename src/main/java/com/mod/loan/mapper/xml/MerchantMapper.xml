@@ -33,6 +33,10 @@
         <result column="huichao_public_key" jdbcType="VARCHAR" property="huichaoPublicKey" />
         <result column="huichao_merchant_repay_private_key" jdbcType="VARCHAR" property="huichaoMerchantPepayPrivateKey" />
         <result column="huichao_merchant_pay_private_key" jdbcType="VARCHAR" property="huichaoMerchantPayPrivateKey" />
+        <result column="jinyuntong_merchant_id" jdbcType="VARCHAR" property="jinyuntongMerchantId"/>
+        <result column="jinyuntong_public_key" jdbcType="VARCHAR" property="jinyuntongPublicKey"/>
+        <result column="jinyuntong_merchant_private_key" jdbcType="VARCHAR" property="jinyuntongMerchantPrivateKey"/>
+
     </resultMap>
 
     <select id="merchantCount" resultType="int">
@@ -49,9 +53,11 @@
 
     <select id="findMerchantList" resultType="map">
         select
-        m.merchant_alias,m.merchant_app,m.merchant_app_ios,m.merchant_name,m.merchant_status,m.create_time,m.merchant_market,m.hlb_id,m.fuyou_merid,m.merchant_channel,
-        m.huiju_id,bind_type,m.yeepay_group_no, m.yeepay_repay_appkey, m.yeepay_repay_private_key, m.yeepay_loan_appkey,
-        m.yeepay_loan_private_key,m.hlb_merchant_sign,m.cj_partnerId,
+        m.merchant_alias, m.merchant_app, m.merchant_app_ios, m.merchant_name, m.merchant_status, m.create_time,
+        m.merchant_market, m.hlb_id,
+        m.fuyou_merid, m.merchant_channel, m.huiju_id,bind_type, m.yeepay_group_no, m.yeepay_repay_appkey,
+        m.yeepay_repay_private_key,
+        m.yeepay_loan_appkey, m.yeepay_loan_private_key, m.hlb_merchant_sign, m.cj_partnerId, m.jinyuntong_merchant_id,
         defer.status defer_status
         from tb_merchant m left join tb_merchant_defer_config defer on m.merchant_alias=defer.merchant
         <where>
