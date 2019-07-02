@@ -31,6 +31,7 @@
 								<th class="center">加入黑名单逾期天数</th>
 								<th class="center">地址、公司拒绝关键字</th>
 								<th class="center">自动提单</th>
+                                <th class="center">确认借款</th>
 								<th class="center">客服电话</th>
 								<th class="center">认证失效天数</th>
 								<th class="center">流量注册</th>
@@ -114,7 +115,18 @@
 						}
 						return "---";
 		            }
-	        	},
+            }, {
+                id: "userPayConfirm",
+                renderer: function (idValue, value, record) {
+                    if (value == 1) {
+                        return "<font color='green'>是</font>";
+                    }
+                    if (value == 0) {
+                        return "<font color='red'>否</font>";
+                    }
+                    return "---";
+                }
+            },
 				{
 					id : "servicePhone",
 					renderer : function(idValue,value,record){
