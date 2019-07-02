@@ -10,6 +10,7 @@
         <result column="merchant_zfb" jdbcType="VARCHAR" property="merchantZfb"/>
         <result column="merchant_status" jdbcType="TINYINT" property="merchantStatus"/>
         <result column="bind_type" jdbcType="TINYINT" property="bindType"/>
+        <result column="user_pay_confirm" jdbcType="TINYINT" property="userPayConfirm"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="hlb_id" jdbcType="VARCHAR" property="hlb_id"/>
         <result column="hlb_rsa_private_key" jdbcType="VARCHAR" property="hlb_rsa_private_key"/>
@@ -53,7 +54,8 @@
 
     <select id="findMerchantList" resultType="map">
         select
-        m.merchant_alias, m.merchant_app, m.merchant_app_ios, m.merchant_name, m.merchant_status, m.create_time,
+        m.merchant_alias, m.merchant_app, m.merchant_app_ios, m.merchant_name, m.merchant_status, m.user_pay_confirm,
+        m.create_time,
         m.merchant_market, m.hlb_id,
         m.fuyou_merid, m.merchant_channel, m.huiju_id,bind_type, m.yeepay_group_no, m.yeepay_repay_appkey,
         m.yeepay_repay_private_key,
