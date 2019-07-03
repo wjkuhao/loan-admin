@@ -36,7 +36,7 @@
 						<label class="col-sm-2 control-label">风控默认token</label>
 					</td>
 					<td>
-						<textarea  name="mxRiskToken" id="mxRiskToken"  rows="1"  style="height: 150px;" class="form-control" required="required"></textarea>
+						<textarea  name="mxRiskToken" id="mxRiskToken"  rows="1"  style="height: 150px;" class="form-control" ></textarea>
 					</td>
 				</tr>
 				<tr>
@@ -44,7 +44,7 @@
 						<label class="col-sm-2 control-label">风控续借token</label>
 					</td>
 					<td>
-						<input name="mxRiskRenewToken" id="mxRiskRenewToken"  class="form-control" required="required" />
+						<input name="mxRiskRenewToken" id="mxRiskRenewToken"  class="form-control" />
 					</td>
 				</tr>
 				<tr>
@@ -52,7 +52,7 @@
 						<label class="col-sm-2 control-label">h5地址</label>
 					</td>
 					<td>
-						<input name="h5Url" id="h5Url"  class="form-control"  placeholder="产品链接"></input>
+						<input name="h5Url" id="h5Url"  class="form-control"  placeholder="产品链接">
 					</td>
 				</tr>
 				<tr>
@@ -99,7 +99,7 @@
 						<label class="col-sm-2 control-label">客服电话</label>
 					</td>
 					<td>
-						<input name="servicePhone" id="servicePhone" maxlength="11" class="form-control" required="required" />
+						<input name="servicePhone" id="servicePhone" maxlength="11" class="form-control"  />
 
 					</td>
 				</tr>
@@ -129,6 +129,24 @@
 					<td>
 
 						<input name="maxOverdueFeeRate" id="maxOverdueFeeRate"  class="form-control" required="required" />
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="col-sm-2 control-label">公债检查商户</label>
+					</td>
+					<td>
+
+						<input name="multiLoanMerchant" id="multiLoanMerchant"  class="form-control" placeholder="多个商户请用，号隔开"/>
+					</td>
+				</tr>
+				<tr>
+					<td>
+						<label class="col-sm-2 control-label">允许的公债系统个数</label>
+					</td>
+					<td>
+
+						<input name="multiLoanCount" id="multiLoanCount"  class="form-control"  value="0" required="required" />
 					</td>
 				</tr>
 			</table>

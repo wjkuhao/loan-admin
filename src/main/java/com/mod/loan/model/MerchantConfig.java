@@ -2,6 +2,9 @@ package com.mod.loan.model;
 
 import javax.persistence.*;
 
+/**
+ * @author wj
+ */
 @Table(name = "tb_merchant_config")
 public class MerchantConfig {
 
@@ -9,35 +12,77 @@ public class MerchantConfig {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String merchant;
+    /**
+     * 默认风控token
+     */
     @Column(name = "mx_risk_token")
-    private String mxRiskToken;// 默认风控token
+    private String mxRiskToken;
+    /**
+     * 老客风控token
+     */
     @Column(name = "mx_risk_renew_token")
-    private String mxRiskRenewToken;// 老客风控token
+    private String mxRiskRenewToken;
+    /**
+     * h5地址
+     */
     @Column(name = "h5_url")
-    private String h5Url;//h5地址
+    private String h5Url;
+    /**
+     * 加入黑名单逾期天数
+     */
     @Column(name = "overdue_blacklist_day")
-    private Integer overdueBlacklistDay;// 加入黑名单逾期天数
+    private Integer overdueBlacklistDay;
+    /**
+     * // 地址、公司拒绝关键字
+     */
     @Column(name = "reject_keyword")
-    private String rejectKeyword;// 地址、公司拒绝关键字
+    private String rejectKeyword;
+    /**
+     * 认证失效天数
+     */
     @Column(name = "ident_invalid_day")
-    private Integer identInvalidDay;// 认证失效天数
+    private Integer identInvalidDay;
+    /**
+     * 自动提单 0 no 1 yes
+     */
     @Column(name = "auto_apply_order")
-    private Integer autoApplyOrder;// 自动提单 0 no 1 yes
+    private Integer autoApplyOrder;
+    /**
+     * 客服电话
+     */
     @Column(name = "service_phone")
-    private String servicePhone;// 客服电话
+    private String servicePhone;
+    /**
+     * 自然流量注册 0 拒绝 1 允许
+     */
     @Column(name = "default_origin_status")
-    private Integer defaultOriginStatus;// 自然流量注册 0 拒绝 1 允许
+    private Integer defaultOriginStatus;
+    /**
+     * 创建时间
+     */
     @Column(name = "create_time")
-    private String createTime;// 创建时间
+    private String createTime;
+    /**
+     * 修改时间
+     */
     @Column(name = "update_time")
-    private String updateTime; // 修改时间
+    private String updateTime;
+    /**
+     * 最大逾期费费率
+     */
     @Column(name = "max_overdue_fee_rate")
-    private Integer maxOverdueFeeRate;// 最大逾期费费率
+    private Integer maxOverdueFeeRate;
     /**
      * 是否需要放款，0：不需要，1：需要
      */
     @Column(name = "user_pay_confirm")
     private Integer userPayConfirm;
+
+    @Column(name =  "multi_loan_merchant")
+    private String multiLoanMerchant;
+
+    @Column(name = "multi_loan_count")
+    private Integer multiLoanCount;
 
     public Integer getId() {
         return id;
@@ -157,5 +202,21 @@ public class MerchantConfig {
 
     public void setUserPayConfirm(Integer userPayConfirm) {
         this.userPayConfirm = userPayConfirm;
+    }
+
+    public String getMultiLoanMerchant() {
+        return multiLoanMerchant;
+    }
+
+    public void setMultiLoanMerchant(String multiLoanMerchant) {
+        this.multiLoanMerchant = multiLoanMerchant;
+    }
+
+    public Integer getMultiLoanCount() {
+        return multiLoanCount;
+    }
+
+    public void setMultiLoanCount(Integer multiLoanCount) {
+        this.multiLoanCount = multiLoanCount;
     }
 }
