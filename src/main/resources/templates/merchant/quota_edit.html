@@ -67,6 +67,14 @@
 							<input name="merchant" id="merchant" maxlength="32" class="form-control" th:value="${QuotaConfig.merchant}" />						</td>
 					</tr>
 
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">借款次数</label>
+						</td>
+						<td>
+							<input name="borrowType" id="borrowType" maxlength="32" class="form-control" th:value="${QuotaConfig.borrowType}" />						</td>
+					</tr>
+
 
 					<tr>
 						<td>
@@ -109,6 +117,11 @@
 
             if(!$("#merchant").val()){
                 Dialog.alert("请输入商户别名");
+                return;
+            }
+
+            if(!$("#borrowType").val()){
+                Dialog.alert("请输入借款次数");
                 return;
             }
 			$.ajax({

@@ -55,6 +55,12 @@ public class MerchantQuotaConfig {
     private Integer status;
 
     /**
+     * 借款次数
+     */
+    @Column(name = "borrow_type")
+    private Integer borrowType;
+
+    /**
      * 创建时间
      */
     @Column(name = "create_time")
@@ -145,5 +151,13 @@ public class MerchantQuotaConfig {
 
     public void setUpdateTime(Date updateTime) {
         this.updateTime = updateTime;
+    }
+
+    public Integer getBorrowType() {
+        return borrowType;
+    }
+
+    public void setBorrowType(Integer borrowType) {
+        this.borrowType = borrowType;
     }
 }

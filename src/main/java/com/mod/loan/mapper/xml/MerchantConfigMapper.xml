@@ -13,6 +13,8 @@
         <result column="ident_invalid_day" jdbcType="TINYINT" property="identInvalidDay" />
         <result column="auto_apply_order" jdbcType="TINYINT" property="autoApplyOrder" />
         <result column="user_pay_confirm" jdbcType="TINYINT" property="userPayConfirm"/>
+        <result column="multi_loan_merchant" jdbcType="VARCHAR" property="multiLoanMerchant"/>
+        <result column="multi_loan_count" jdbcType="TINYINT" property="multiLoanCount"/>
         <result column="service_phone" jdbcType="VARCHAR" property="servicePhone" />
         <result column="default_origin_status" jdbcType="TINYINT" property="defaultOriginStatus" />
         <result column="create_time" jdbcType="CHAR" property="createTime" />

@@ -11,8 +11,9 @@
         <result column="comparator" jdbcType="VARCHAR" property="comparator"/>
         <result column="preset_value" jdbcType="VARCHAR" property="presetValue"/>
         <result column="merchant" jdbcType="VARCHAR" property="merchant"/>
-        <result column="quota_type" jdbcType="INTEGER" property="quota_type"/>
+        <result column="quota_type" jdbcType="INTEGER" property="quotaType"/>
         <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="borrow_type" jdbcType="TINYINT" property="borrowType"/>
         <result column="create_time" jdbcType="TIMESTAMP" property="createTime"/>
         <result column="update_time" jdbcType="TIMESTAMP" property="updateTime"/>
     </resultMap>
