@@ -529,6 +529,7 @@
                 html += "<a class='btn btn-mini btn-info' title='修改' onclick=\"edit('" + value + "');\"><i class='icon-edit'></i></a>";
                 html += "<a class='btn btn-mini btn-info' title='商户App' onclick=\"merchantApp('" + value + "');\">商户APP</a>";
                 html += "<a class='btn btn-mini btn-info' title='商户费率' onclick=\"merchantRate('" + value + "');\">商户费率</a>";
+                html += "<a class='btn btn-mini btn-info' title='商户参数限制' onclick=\"merchantRange('" + value + "');\">商户参数限制</a>";
                 html += "</div>";
                 return html;
             }
@@ -601,6 +602,20 @@
         diag.Drag = true;
         diag.Title = "商户费率";
         diag.URL = contextPath + "merchant/merchant_rate_list?merchantAlias=" + merchantAlias;
+        diag.Width = 1200;
+        diag.Height = 600;
+        diag.CancelEvent = function () { //关闭事件
+            query();
+            diag.close();
+        };
+        diag.show();
+    }
+    //商户费率范围
+    function merchantRange(merchantAlias) {
+        var diag = new top.Dialog();
+        diag.Drag = true;
+        diag.Title = "商户费率范围";
+        diag.URL = contextPath + "merchant/merchant_config_range_edit?merchantAlias=" + merchantAlias;
         diag.Width = 1200;
         diag.Height = 600;
         diag.CancelEvent = function () { //关闭事件

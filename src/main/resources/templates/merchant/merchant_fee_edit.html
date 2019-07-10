@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<head>
+<link href="/static/css/bootstrap3.3.7.min.css" rel="stylesheet"  th:href="@{/static/css/bootstrap3.3.7.min.css}"/>
+</head>
+<body>
+	<div id="zhongxin" align="center">
+		<hr />
+		<form name="myForm" id="myForm">
+			<fieldset>
+				<legend>修改</legend>
+			</fieldset>
+			<table>
+				<tbody>
+					<tr>
+						<td>
+							<label class="control-label">商户别名</label>
+						</td>
+						<td>
+							<input name="merchantAlias" id="merchantAlias" th:value="${merchantAlias}" class="form-control" required="required" readonly>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="control-label">短信单价1(元/条)</label>
+						</td>
+						<td>
+							<input name="sms1Price" id="sms1Price" th:value="${sms1Price}" class="form-control" required="required"/>
+							<!--<input name="sms1Price" id="sms1Price"  class="form-control" required="required" onkeyup="value=/^\d{0,10}$/.test(value)?value:''" onblur="value=/^\d{0,10}$/.test(value)?value:''" />-->
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="control-label">短信单价2(元/条)</label>
+						</td>
+						<td>
+							<input name="sms2Price" id="sms2Price" th:value="${sms2Price}" class="form-control" required="required" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="control-label">有盾单价(元/次)</label>
+						</td>
+						<td>
+							<input name="youdunPrice" id="youdunPrice" th:value="${youdunPrice}" class="form-control" required="required" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="control-label">运营商单价(元/次)</label>
+						</td>
+						<td>
+							<input name="operatorPrice" id="operatorPrice" th:value="${operatorPrice}" class="form-control" required="required" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="control-label">风控单价(元/次)</label>
+						</td>
+						<td>
+							<input name="riskPrice" id="riskPrice" th:value="${riskPrice}" class="form-control" required="required" />
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</form>
+		<div>
+			<a class="btn btn-mini btn-primary" id="saveButton">保存</a>
+			<a class="btn btn-mini btn-danger" onclick="top.Dialog.close()">取消</a>
+		</div>
+	</div>
+	<script type="text/javascript">
+		var merchant = "[[${merchantAlias}]]";
+		var contextPath="[[@{/}]]";
+		$(top.hangge());
+		$("#saveButton").unbind();
+		$("#saveButton").bind("click",function(){
+			$.ajax({
+        		url : contextPath+"merchant/merchant_fee_edit_ajax",
+        		type : "POST",
+				dataType : "json",
+				data : $("#myForm").serialize(),
+				success : function(data) {
+					if(data.status == 2000){
+						Dialog.alert("操作成功",function(){
+							Dialog.close();
+						});
+					}else{
+						Dialog.alert(data.message);
+					}
+				}
+			});
+		});
+	</script>
+</body>
+</html>

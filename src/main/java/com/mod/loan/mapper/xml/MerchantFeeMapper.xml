@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.mod.loan.mapper.MerchantFeeMapper">
+  <resultMap id="BaseResultMap" type="com.mod.loan.model.MerchantFee">
+    <id column="merchant_alias" jdbcType="VARCHAR" property="merchantAlias" />
+    <result column="sms1_price" jdbcType="DECIMAL" property="sms1Price" />
+    <result column="sms2_price" jdbcType="DECIMAL" property="sms2Price" />
+    <result column="youdun_price" jdbcType="DECIMAL" property="youdunPrice" />
+    <result column="operator_price" jdbcType="DECIMAL" property="operatorPrice" />
+    <result column="risk_price" jdbcType="DECIMAL" property="riskPrice" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="update_time" jdbcType="TIMESTAMP" property="updateTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    merchant_alias, sms1_price, sms2_price, youdun_price, operator_price, risk_price, 
+    create_time, update_time
+  </sql>
+
+  <select id="findMerchantFeeCount" parameterType="map" resultType="int">
+    select count(1) from tb_merchant_fee
+    <where>
+      <if test="merchantAlias !='' and merchantAlias != null">
+        and merchant_alias = #{merchantAlias}
+      </if>
+    </where>
+  </select>
+
+  <select id="findMerchantFeeList" parameterType="map" resultMap="BaseResultMap">
+    select <include refid="Base_Column_List"/> from tb_merchant_fee
+    <where>
+      <if test="merchantAlias !='' and merchantAlias != null">
+        and merchant_alias = #{merchantAlias}
+      </if>
+    </where>
+    limit #{startIndex},#{pageSize}
+  </select>
+
+  <select id="merchantNofeeList" resultType="string">
+    select merchant_alias from tb_merchant where merchant_alias not in (select merchant_alias from tb_merchant_fee)
+  </select>
+</mapper>

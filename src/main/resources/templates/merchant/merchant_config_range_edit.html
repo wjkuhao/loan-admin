@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:insert="common/top :: head">
+</head>
+<head>
+    <link href="/static/css/bootstrap3.3.7.min.css" rel="stylesheet" th:href="@{/static/css/bootstrap3.3.7.min.css}"/>
+</head>
+<body>
+<div id="zhongxin" align="center">
+    <hr/>
+    <form name="myForm" id="myForm">
+        <fieldset>
+            <legend>修改</legend>
+        </fieldset>
+        <table>
+            <tbody>
+            <tr>
+                <td>
+                    <label class="control-label" style="font-size: 18px">商户参数限制</label>
+                </td>
+            </tr>
+            <input name="merchantAlias" id="merchantAlias" th:value="${merchantAlias}" class="form-control"
+                   required="required" style="display: none">
+            <tr>
+                <td>
+                    <label class="control-label">借款期限(天)</label>
+                </td>
+                <td>
+                    <label class="control-label">最大</label>
+                    <input name="productDayMax" id="productDayMax" th:value="${productDayMax}" class="form-control"
+                           required="required" >
+                </td>
+                <td>
+                    <label class="control-label">最小</label>
+                    <input name="productDayMin" id="productDayMin" th:value="${productDayMin}" class="form-control"
+                           required="required" >
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">借款金额(元)</label>
+                </td>
+                <td>
+                    <label class="control-label">最大</label>
+                    <input name="productMoneyMax" id="productMoneyMax" th:value="${productMoneyMax}" class="form-control"
+                           required="required"/>
+                    <!--<input name="sms1Price" id="sms1Price"  class="form-control" required="required" onkeyup="value=/^\d{0,10}$/.test(value)?value:''" onblur="value=/^\d{0,10}$/.test(value)?value:''" />-->
+                </td>
+                <td>
+                    <label class="control-label">最小</label>
+                    <input name="productMoneyMin" id="productMoneyMin" th:value="${productMoneyMin}" class="form-control"
+                           required="required"/>
+                    <!--<input name="sms1Price" id="sms1Price"  class="form-control" required="required" onkeyup="value=/^\d{0,10}$/.test(value)?value:''" onblur="value=/^\d{0,10}$/.test(value)?value:''" />-->
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">综合费率(%)</label>
+                </td>
+                <td>
+                    <label class="control-label">最大</label>
+                    <input name="totalRateMax" id="totalRateMax" th:value="${totalRateMax}" class="form-control"
+                           required="required"/>
+                </td>
+                <td>
+                    <label class="control-label">最小</label>
+                    <input name="totalRateMin" id="totalRateMin" th:value="${totalRateMin}" class="form-control"
+                           required="required"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">逾期费率(%)</label>
+                </td>
+                <td>
+                    <label class="control-label">最大</label>
+                    <input name="overdueRateMax" id="overdueRateMax" th:value="${overdueRateMax}" class="form-control"
+                           required="required"/>
+                </td>
+                <td>
+                    <label class="control-label">最小</label>
+                    <input name="overdueRateMin" id="overdueRateMin" th:value="${overdueRateMin}" class="form-control"
+                           required="required"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label" style="font-size: 18px">展期参数限制</label>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">日续期费(元)</label>
+                </td>
+                <td>
+                    <label class="control-label">最大</label>
+                    <input name="dailyDeferFeeMax" id="dailyDeferFeeMax" th:value="${dailyDeferFeeMax}" class="form-control"
+                           required="required"/>
+                </td>
+                <td>
+                    <label class="control-label">最小</label>
+                    <input name="dailyDeferFeeMin" id="dailyDeferFeeMin" th:value="${dailyDeferFeeMin}" class="form-control"
+                           required="required"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">日续期费费率(%)</label>
+                </td>
+                <td>
+                    <label class="control-label">最大</label>
+                    <input name="dailyDeferRateMax" id="dailyDeferRateMax" th:value="${dailyDeferRateMax}" class="form-control"
+                           required="required"/>
+                </td>
+                <td>
+                    <label class="control-label">最小</label>
+                    <input name="dailyDeferRateMin" id="dailyDeferRateMin" th:value="${dailyDeferRateMin}" class="form-control"
+                           required="required"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">日额外费(元)</label>
+                </td>
+                <td>
+                    <label class="control-label">最大</label>
+                    <input name="dailyOtherFeeMax" id="dailyOtherFeeMax" th:value="${dailyOtherFeeMax}" class="form-control"
+                           required="required"/>
+                </td>
+                <td>
+                    <label class="control-label">最小</label>
+                    <input name="dailyOtherFeeMin" id="dailyOtherFeeMin" th:value="${dailyOtherFeeMin}" class="form-control"
+                           required="required"/>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <label class="control-label">续期天数(天)</label>
+                </td>
+                <td>
+                    <label class="control-label">最大</label>
+                    <input name="deferDayMax" id="deferDayMax" th:value="${deferDayMax}" class="form-control"
+                           required="required"/>
+                </td>
+                <td>
+                    <label class="control-label">最小</label>
+                    <input name="deferDayMin" id="deferDayMin" th:value="${deferDayMin}" class="form-control"
+                           required="required"/>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </form>
+    <div>
+        <a class="btn btn-mini btn-primary" id="saveButton">保存</a>
+        <a class="btn btn-mini btn-danger" onclick="top.Dialog.close()">取消</a>
+    </div>
+</div>
+<script type="text/javascript">
+    var merchant = "[[${merchantAlias}]]";
+    var contextPath = "[[@{/}]]";
+    $(top.hangge());
+    $("#saveButton").unbind();
+    $("#saveButton").bind("click", function () {
+        $.ajax({
+            url: contextPath + "merchant/merchant_config_range_edit_ajax",
+            type: "POST",
+            dataType: "json",
+            data: $("#myForm").serialize(),
+            success: function (data) {
+                if (data.status == 2000) {
+                    Dialog.alert("操作成功", function () {
+                        Dialog.close();
+                    });
+                } else {
+                    Dialog.alert(data.message);
+                }
+            }
+        });
+    });
+</script>
+</body>
+</html>
