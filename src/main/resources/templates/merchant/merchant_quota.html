@@ -32,6 +32,7 @@
                         <th class="center">字段比较符</th>
                         <th class="center">预设值</th>
                         <th class="center">商户别名</th>
+                        <th class="center">借款次数</th>
                         <th class="center">创建时间</th>
                         <th class="center">状态</th>
                         <th class="center">操作</th>
@@ -99,6 +100,12 @@
             },
             {
                 id : "merchant",
+                renderer : function(idValue,value,record){
+                    return value == null ? "---" :value;
+                }
+            },
+            {
+                id : "borrow_type",
                 renderer : function(idValue,value,record){
                     return value == null ? "---" :value;
                 }

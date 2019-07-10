@@ -38,6 +38,8 @@
 								<th class="center">创建时间</th>
 								<th class="center">修改时间</th>
 								<th class="center">最大逾期费费率</th>
+								<th class="center">共债商户检查</th>
+								<th class="center">共债系统个数</th>
 								<th class="center">操作</th>
 							</tr>
 						</thead>
@@ -166,12 +168,25 @@
 					renderer : function(idValue,value,record){
 						return value ? value:"---";
 					}
-				},{
+				},
+				{
+					id : "multiLoanMerchant",
+					renderer : function(idValue,value,record){
+						return value ? value:"---";
+					}
+				},
+				{
+					id : "multiLoanCount",
+					renderer : function(idValue,value,record){
+						return value ? value:"---";
+					}
+				},
+				{
 		            id : "id",
 		            renderer : function(idValue,value,record){
 		            	var html = "<div class='btn-group'>";
 		            	html += "<a class='btn btn-mini btn-info' title='修改' onclick=\"edit(" + value + ");\">编辑</a>";
-						html += "<a class='btn btn-mini btn-info' title='修改' onclick=\"del(" + value + ");\">删除</a>";
+						html += "<a class='btn btn-mini btn-info' title='删除' onclick=\"del(" + value + ");\">删除</a>";
 						html += "</div>";
 			        	return html;
 			        }
