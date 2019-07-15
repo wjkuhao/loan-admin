@@ -153,4 +153,14 @@ public class TimeUtils {
 			return date;
 		}
 	}
+
+	/**
+	 * Date转yyyy-MM-dd HH:mm:ss
+	 * @param date
+	 * @return
+	 */
+	public static String formatDate(Date date){
+		SimpleDateFormat sdf = new SimpleDateFormat(dateformat1);
+		return sdf.format(date);
+	}
 }

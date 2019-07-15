@@ -20,6 +20,8 @@
         <result column="create_time" jdbcType="CHAR" property="createTime" />
         <result column="update_time" jdbcType="CHAR" property="updateTime" />
         <result column="max_overdue_fee_rate" jdbcType="TINYINT" property="maxOverdueFeeRate" />
+        <result column="old_customer_risk" jdbcType="TINYINT" property="oldCustomerRisk" />
+        <result column="promote_quota_type" jdbcType="TINYINT" property="promoteQuotaType" />
     </resultMap>
     <select id="findMerchantConfigList" resultMap="BaseResultMap">
         select * from tb_merchant_config

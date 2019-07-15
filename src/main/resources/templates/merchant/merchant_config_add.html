@@ -35,7 +35,7 @@
 							<label class="col-sm-2 control-label">风控续借token</label>
 						</td>
 						<td>
-							<input name="mxRiskRenewToken" id="mxRiskRenewToken"  class="form-control" required="required" />
+							<input name="mxRiskRenewToken" id="mxRiskRenewToken"  class="form-control"  />
 						</td>
 					</tr>
 					<tr>
@@ -59,7 +59,7 @@
 							<label class="col-sm-2 control-label">地址、公司拒绝关键字</label>
 						</td>
 						<td>
-							<textarea  name="rejectKeyword" id="rejectKeyword"  rows="1"  style="height: 80px;" class="form-control" required="required" placeholder="请使用，隔开关键字"></textarea>
+							<textarea  name="rejectKeyword" id="rejectKeyword"  rows="1"  style="height: 80px;" class="form-control"  placeholder="请使用，隔开关键字"></textarea>
 						</td>
 					</tr>
 					<tr>
@@ -68,7 +68,7 @@
 						</td>
 						<td>
 							<select name="autoApplyOrder" id="autoApplyOrder" class="form-control">
-								<option value="0">手动</option>
+								<option value="0" selected="selected">手动</option>
 								<option value="1">自动</option>
 							</select>
 						</td>
@@ -89,7 +89,7 @@
                             <label class="col-sm-2 control-label">客服电话</label>
                         </td>
                         <td>
-                            <input name="servicePhone" id="servicePhone" maxlength="11" class="form-control" required="required" />
+                            <input name="servicePhone" id="servicePhone" class="form-control" />
 
                         </td>
                     </tr>
@@ -98,17 +98,41 @@
 							<label class="col-sm-2 control-label">认证失效天数</label>
 						</td>
 						<td>
-							<input name="identInvalidDay" id="identInvalidDay"  class="form-control" required="required" width="40px"/>
+							<input name="identInvalidDay" id="identInvalidDay"  class="form-control"  width="40px"/>
 						</td>
 					</tr>
 					<tr>
 						<td>
-							<label class="col-sm-2 control-label">流量注册</label>
+							<label class="col-sm-2 control-label">自然流量注册</label>
 						</td>
 						<td>
 							<select name="defaultOriginStatus" id="defaultOriginStatus" class="form-control">
-							<option value="0">拒绝</option>
+							<option value="0" selected="selected">拒绝</option>
 							<option value="1">允许</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">老客是否过风控</label>
+						</td>
+						<td>
+							<select name="oldCustomerRisk" id="oldCustomerRisk" class="form-control">
+								<option value="0" selected="selected">不过风控</option>
+								<option value="1">过风控</option>
+							</select>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">提额类型</label>
+						</td>
+						<td>
+							<select name="promoteQuotaType" id="promoteQuotaType" class="form-control">
+								<option value="0">关闭提额</option>
+								<option value="1" selected="selected">新老客都提额</option>
+								<option value="2">新客提额</option>
+								<option value="3">老客提额</option>
 							</select>
 						</td>
 					</tr>
@@ -119,6 +143,24 @@
 						<td>
 
 							<input name="maxOverdueFeeRate" id="maxOverdueFeeRate"  class="form-control" required="required" />
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">共债检查商户</label>
+						</td>
+						<td>
+
+							<input name="multiLoanMerchant" id="multiLoanMerchant"  class="form-control" placeholder="多个商户请用，号隔开"/>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<label class="col-sm-2 control-label">允许的共债系统个数</label>
+						</td>
+						<td>
+
+							<input name="multiLoanCount" id="multiLoanCount"  class="form-control"  value="0" required="required" />
 						</td>
 					</tr>
 				</table>

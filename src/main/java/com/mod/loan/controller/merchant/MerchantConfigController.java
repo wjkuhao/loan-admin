@@ -57,14 +57,14 @@ public class MerchantConfigController {
      */
     @RequestMapping(value = "/merchant_config_add_ajax",method = {RequestMethod.POST})
     public ResultMessage merchant_config_add(MerchantConfig merchantConfig){
+        if(StringUtils.isBlank(merchantConfig.getMerchant())){
+            return new ResultMessage(ResponseEnum.M4000.getCode(),"商户名不能为空");
+        }
         if(StringUtils.isBlank(merchantConfig.getMxRiskToken())){
             return new ResultMessage(ResponseEnum.M4000.getCode(),"风控默认token不能为空");
         }
         if(merchantConfig.getOverdueBlacklistDay()==null ){
             return new ResultMessage(ResponseEnum.M4000.getCode(),"加入黑名单逾期天数不能为空");
-        }
-        if(StringUtils.isBlank(merchantConfig.getRejectKeyword())){
-            return new ResultMessage(ResponseEnum.M4000.getCode(),"关键字不能为空");
         }
         if(merchantConfig.getMaxOverdueFeeRate()==null){
             return new ResultMessage(ResponseEnum.M4000.getCode(),"最大逾期费费率不能为空");
@@ -72,17 +72,14 @@ public class MerchantConfigController {
             if(merchantConfig.getMultiLoanCount()==null){
                 merchantConfig.setMultiLoanCount(0);
             }
-            Date date = new Date();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            System.out.println(merchantConfig.getId());
             if(merchantConfig.getId()==null){
-                merchantConfig.setCreateTime(sdf.format(date));
-                merchantConfig.setUpdateTime(sdf.format(date));
+                merchantConfig.setCreateTime(TimeUtils.formatDate(new Date()));
+                merchantConfig.setUpdateTime(TimeUtils.formatDate(new Date()));
                 merchantConfigService.insert(merchantConfig);
                 return new ResultMessage(ResponseEnum.M2000);
             }else {
-                merchantConfig.setUpdateTime(sdf.format(date));
-                merchantConfigService.updateByPrimaryKey(merchantConfig);
+                merchantConfig.setUpdateTime(TimeUtils.formatDate(new Date()));
+                merchantConfigService.updateByPrimaryKeySelective(merchantConfig);
             }
 
         }

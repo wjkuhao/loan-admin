@@ -34,12 +34,14 @@
                                 <th class="center">确认借款</th>
 								<th class="center">客服电话</th>
 								<th class="center">认证失效天数</th>
-								<th class="center">流量注册</th>
-								<th class="center">创建时间</th>
-								<th class="center">修改时间</th>
+								<th class="center">自然流量注册</th>
+								<th class="center">老客是否过风控</th>
+								<th class="center">提额类型</th>
 								<th class="center">最大逾期费费率</th>
 								<th class="center">共债商户检查</th>
 								<th class="center">共债系统个数</th>
+								<th class="center">创建时间</th>
+								<th class="center">修改时间</th>
 								<th class="center">操作</th>
 							</tr>
 						</thead>
@@ -152,15 +154,33 @@
 					}
 				},
 				{
-					id : "createTime",
+					id : "oldCustomerRisk",
 					renderer : function(idValue,value,record){
-						return (value == undefined) ? "---" : moment(value).format("YYYY-MM-DD HH:mm:ss");
+						if (value == 1){
+							return "<font color='green'>过风控</font>";
+						}
+						if(value == 0){
+							return "<font color='red'>不过风控</font>";
+						}
+						return "---";
 					}
 				},
 				{
-					id : "updateTime",
+					id : "promoteQuotaType",
 					renderer : function(idValue,value,record){
-						return (value == undefined) ? "---" : moment(value).format("YYYY-MM-DD HH:mm:ss");
+						if(value == 0){
+							return "<font>关闭提额</font>";
+						}
+						if (value == 1){
+							return "<font>新老客都提额</font>";
+						}
+						if (value == 2){
+							return "<font>新客提额</font>";
+						}
+						if (value == 3){
+							return "<font>老客提额</font>";
+						}
+						return "---";
 					}
 				},
 				{
@@ -179,6 +199,18 @@
 					id : "multiLoanCount",
 					renderer : function(idValue,value,record){
 						return value ? value:"---";
+					}
+				},
+				{
+					id : "createTime",
+					renderer : function(idValue,value,record){
+						return (value == undefined) ? "---" : moment(value).format("YYYY-MM-DD HH:mm:ss");
+					}
+				},
+				{
+					id : "updateTime",
+					renderer : function(idValue,value,record){
+						return (value == undefined) ? "---" : moment(value).format("YYYY-MM-DD HH:mm:ss");
 					}
 				},
 				{

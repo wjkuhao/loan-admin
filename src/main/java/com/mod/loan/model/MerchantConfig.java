@@ -84,6 +84,12 @@ public class MerchantConfig {
     @Column(name = "multi_loan_count")
     private Integer multiLoanCount;
 
+    @Column(name = "old_customer_risk")
+    private Integer oldCustomerRisk;
+
+    @Column(name = "promote_quota_type")
+    private Integer promoteQuotaType;
+
     public Integer getId() {
         return id;
     }
@@ -218,5 +224,21 @@ public class MerchantConfig {
 
     public void setMultiLoanCount(Integer multiLoanCount) {
         this.multiLoanCount = multiLoanCount;
+    }
+
+    public Integer getOldCustomerRisk() {
+        return oldCustomerRisk;
+    }
+
+    public void setOldCustomerRisk(Integer oldCustomerRisk) {
+        this.oldCustomerRisk = oldCustomerRisk;
+    }
+
+    public Integer getPromoteQuotaType() {
+        return promoteQuotaType;
+    }
+
+    public void setPromoteQuotaType(Integer promoteQuotaType) {
+        this.promoteQuotaType = promoteQuotaType;
     }
 }
