@@ -287,7 +287,7 @@
         and STR_TO_DATE(`day`,'%Y-%m-%d') &lt;= #{endTime}
       </if>
     </where>
-    group by `day` order by `day`
+    group by `day` order by `day` desc
     limit #{startIndex},#{pageSize}
   </select>
 
